@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using PerformanceAppraisalService.Application.Dtos;
+
+namespace PerformanceAppraisalService.Application.Interfaces
+{
+    public interface IOrganizationService
+    {
+        Task<string> CreateOrganizationAsync(OrganizationDto organizationDto);
+        Task<List<OrganizationDto>> GetOrganizationListAsync();
+        Task<OrganizationDto> GetOrganizationByIdAsync(Guid id);
+        Task<string> UpdateOrganizationAsync(OrganizationDto organizationDto);
+        Task<string> DeleteOrganizationAsync(Guid id);
+    }
+}

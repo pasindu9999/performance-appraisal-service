@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PerformanceAppraisalService.Application\PerformanceAppraisalService.Application.csproj" />
+    <ProjectReference Include="..\PerformanceAppraisalService.Domain\PerformanceAppraisalService.Domain.csproj" />
+    <ProjectReference Include="..\PerformanceAppraisalService.Infrastructure\PerformanceAppraisalService.Infrastructure.csproj" />
+  </ItemGroup>
+
+
+</Project>
