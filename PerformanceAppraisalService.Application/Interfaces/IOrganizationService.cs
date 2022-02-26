@@ -11,6 +11,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<List<OrganizationDto>> GetOrganizationListAsync();
         Task<OrganizationDto> GetOrganizationByIdAsync(Guid id);
         Task<string> UpdateOrganizationAsync(OrganizationDto organizationDto);
-        Task<string> DeleteOrganizationAsync(Guid id);
+        Task<object> DeleteOrganizationAsync(Guid id);
     }
 }

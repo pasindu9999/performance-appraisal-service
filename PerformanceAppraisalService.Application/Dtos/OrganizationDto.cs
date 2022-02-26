@@ -8,5 +8,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public string Name { get; set; }
         public string Address { get; set; }
         public int RegistationNumber { get; set; }
+        public string WebLink { get; set; }
+        public byte[] Image { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220209042228_organization_entity_added_v2")]
-    partial class organization_entity_added_v2
+    [Migration("20220221030842_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -232,11 +232,17 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte>("Image")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RegistationNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("WebLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

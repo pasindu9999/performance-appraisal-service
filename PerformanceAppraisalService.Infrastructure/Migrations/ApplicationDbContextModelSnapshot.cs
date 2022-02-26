@@ -230,11 +230,17 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RegistationNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("WebLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
