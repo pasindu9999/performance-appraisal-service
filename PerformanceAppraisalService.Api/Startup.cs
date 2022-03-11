@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Application.Services;
+using Create_PA.application.Interfaces;
+using Create_PA.application.Services;
 
 namespace PerformanceAppraisalService.Api
 {
@@ -35,7 +37,9 @@ namespace PerformanceAppraisalService.Api
             
             //Register Services
             services.AddTransient<IOrganizationService, OrganizationService>();
-            
+
+            services.AddTransient<IPA_sheetService, PA_sheetService>();
+
             services.AddCors();
 
             services.AddControllers();

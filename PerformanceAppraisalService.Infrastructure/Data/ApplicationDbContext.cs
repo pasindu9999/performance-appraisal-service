@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Create_PA.domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PerformanceAppraisalService.Domain.Entities;
 using System;
@@ -16,6 +17,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<PA_Sheet> PA_lists { get; set; }
 
     }
 }

@@ -3,29 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
-    public partial class organization_entity_added_v2 : Migration
+    public partial class second : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Organizations",
+                name: "PA_lists",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    RegistationNumber = table.Column<int>(nullable: false)
+                    Employee_Name = table.Column<string>(nullable: true),
+                    Designation = table.Column<string>(nullable: true),
+                    Dep_Head_Name = table.Column<string>(nullable: true),
+                    Due_date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.PrimaryKey("PK_PA_lists", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Organizations");
+                name: "PA_lists");
         }
     }
 }
