@@ -12,6 +12,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<List<DepartmentDto>> GetDepartmentListAsync();
         Task<DepartmentDto> GetDepartmentByIdAsync(Guid id);
         Task<string> UpdateDepartmentAsync(DepartmentDto departmentDto);
-        Task<object> DeleteDepartmentAsync(Guid id);
+        Task<string> DeleteDepartmentAsync(Guid id);
     }
 }

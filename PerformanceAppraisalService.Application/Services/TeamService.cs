@@ -22,10 +22,11 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var team = new Team
             {
-                tName = teamDto.tName,
-                depName = teamDto.depName,
-                tDescription = teamDto.tDescription,
-                noOfEmployees = teamDto.noOfEmployees
+                RegNo = teamDto.RegNo,
+                Name = teamDto.Name,
+                DepartmentName = teamDto.DepartmentName,
+                Description = teamDto.Description,
+                NoOfEmployees = teamDto.NoOfEmployees
             };
 
             _context.Add(team);
@@ -40,10 +41,11 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
-                    tName = x.tName,
-                    depName = x.depName,
-                    tDescription = x.tDescription,
-                    noOfEmployees = x.noOfEmployees
+                    RegNo=x.RegNo,
+                    Name = x.Name,
+                    DepartmentName = x.DepartmentName,
+                    Description = x.Description,
+                    NoOfEmployees = x.NoOfEmployees
                 })
                 .ToListAsync();
 
@@ -56,10 +58,11 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
-                    tName = x.tName,
-                    depName = x.depName,
-                    tDescription = x.tDescription,
-                    noOfEmployees = x.noOfEmployees
+                    RegNo = x.RegNo,
+                    Name = x.Name,
+                    DepartmentName = x.DepartmentName,
+                    Description = x.Description,
+                    NoOfEmployees = x.NoOfEmployees
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -72,10 +75,11 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (team != null)
             {
-                team.tName = team.tName;
-                team.depName = team.depName;
-                team.tDescription = team.tDescription;
-                team.noOfEmployees = team.noOfEmployees;
+                team.RegNo = team.RegNo;
+                team.Name = team.Name;
+                team.DepartmentName = team.DepartmentName;
+                team.Description = team.Description;
+                team.NoOfEmployees = team.NoOfEmployees;
 
                 await _context.SaveChangesAsync();
                 return "Team update success...!";
