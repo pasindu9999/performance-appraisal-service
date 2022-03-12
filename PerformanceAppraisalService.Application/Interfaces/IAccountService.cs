@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace PerformanceAppraisalService.Application.Interfaces
 {
-    public interface ILogInService
+    public interface IAccountService
     {
-        Task<object> LogIn(LogInDto logInDto);
+        Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto);
+        Task<string> LogIn(LogInDto logInDto);
     }
 }

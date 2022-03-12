@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using System;
@@ -12,10 +14,10 @@ using System.Threading.Tasks;
 namespace PerformanceAppraisalService.Application.Services
 {
     
-    public class UserProfileService : ControllerBase
+    public class UserProfileService : IUserProfileService
     {
 
-        /*private UserManager<ApplicationUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
 
         public UserProfileService(UserManager<ApplicationUser> userManager)
         {
@@ -23,16 +25,27 @@ namespace PerformanceAppraisalService.Application.Services
 
         }
        
-        public async Task<Object> GetUserProfile()
+        /*public async Task<List<string>> GetUserProfile(string userId)
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _userManager.FindByIdAsync(userId);
-            return new
+            List<string> myList = new List<string>
             {
                 user.FullName,
-                user.Email,
                 user.UserName
             };
+            return myList;
         }*/
+
+        public async Task<UserProfileDto> GetUserProfile(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            UserProfileDto x = new UserProfileDto();
+            x.FullName = user.FullName;
+            x.UserName = user.UserName;
+            return x;
+        }
+
+
     }
 }
+

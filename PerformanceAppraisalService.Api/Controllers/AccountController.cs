@@ -11,21 +11,31 @@ namespace PerformanceAppraisalService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LogInController : ControllerBase
+    public class AccountController : ControllerBase
     {
-
-        private readonly ILogInService _logInService;
-        public LogInController(ILogInService logInService)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
         {
-            _logInService = logInService;
+            _accountService = accountService;
+        }
+
+
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Create(ApplicationUserDto applicationUserDto)
+        {
+            var response = await _accountService.PostApplicationUser(applicationUserDto);
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Create(LogInDto logInDto)
         {
-            var response = await _logInService.LogIn(logInDto);
+            var response = await _accountService.LogIn(logInDto);
             return Ok(response);
         }
+
+
     }
 }

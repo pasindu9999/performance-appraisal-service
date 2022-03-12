@@ -63,11 +63,9 @@ namespace PerformanceAppraisalService.Api
             //Register Services
             services.AddTransient<IOrganizationService, OrganizationService>();
 
-            services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<IAccountService, AccountService>();
 
-            services.AddTransient<ILogInService, LogInService>();
-
-            /*services.AddTransient<IUserProfileService, UserProfileService>();*/
+            services.AddTransient<IUserProfileService, UserProfileService>();
 
             services.AddCors();
 

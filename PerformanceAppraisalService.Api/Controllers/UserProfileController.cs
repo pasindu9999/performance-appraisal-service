@@ -16,32 +16,19 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class UserProfileController : ControllerBase
     {
 
-       /* private readonly IUserProfileService _userProfileService;
+        private readonly IUserProfileService _userProfileService;
         public UserProfileController(IUserProfileService userProfileService)
         {
             _userProfileService = userProfileService;
-        }*/
-        
-        private UserManager<ApplicationUser> _userManager;
-
-        public UserProfileController(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-
         }
-
+        
         [HttpGet]
         [Authorize]
-        public async Task<Object> GetUserProfile()
+        public async Task<IActionResult> GetUser()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            return new
-            {
-                user.FullName,
-                user.Email,
-                user.UserName
-            };
+            var response = await _userProfileService.GetUserProfile(userId);
+            return Ok(response);
         }
     }
 }
