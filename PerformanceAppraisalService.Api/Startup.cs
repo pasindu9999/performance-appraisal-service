@@ -37,6 +37,7 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<ITeamService, TeamService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
 
             services.AddCors();
 

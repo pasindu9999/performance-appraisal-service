@@ -18,6 +18,6 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Team> Teams { get; set; }
-
+        public DbSet<Employee> Employees { get; set; }
     }
 }
