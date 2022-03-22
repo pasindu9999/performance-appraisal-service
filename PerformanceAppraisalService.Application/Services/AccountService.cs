@@ -40,8 +40,16 @@ namespace PerformanceAppraisalService.Application.Services
            
             try
             {
-                var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
-                return "Registration successfull";
+                var user = await _userManager.FindByNameAsync(applicationUserDto.Email);
+                if (user != null)
+                {
+                    return "Duplicate Username";
+                }
+                else
+                {
+                    var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
+                    return "Registration successfull";
+                }
             }
             catch(Exception ex)
             {
