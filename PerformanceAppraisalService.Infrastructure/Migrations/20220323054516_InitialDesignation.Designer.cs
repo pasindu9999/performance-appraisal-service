@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220323054516_InitialDesignation")]
+    partial class InitialDesignation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,24 +307,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Organizations");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Salary", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("BasicAmount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("float");
-
-                    b.Property<double>("Increment")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Salarys");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Team", b =>

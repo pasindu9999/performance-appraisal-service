@@ -70,8 +70,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (organization != null)
             {
-                organization.Name = organization.Name;
-                organization.Address = organization.Address;
+                organization.Name = organizationDto.Name;
+                organization.Address = organizationDto.Address;
                 organization.RegistationNumber = organizationDto.RegistationNumber;
                 
                 await _context.SaveChangesAsync();
