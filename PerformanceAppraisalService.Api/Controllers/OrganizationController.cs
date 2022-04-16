@@ -55,7 +55,7 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(response);
         }
         
-        // api/organization/delete?id=
+        // api/organization/delete?id= 
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> Delete(Guid id)

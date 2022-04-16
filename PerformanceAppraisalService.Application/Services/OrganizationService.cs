@@ -25,10 +25,11 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 Name = organizationDto.Name,
                 Address = organizationDto.Address,
-                RegistationNumber = organizationDto.RegistationNumber,
-                Image = organizationDto.Image,
-                WebLink=organizationDto.WebLink
+                RegistationNumber = organizationDto.RegistationNumber,                
+                WebLink=organizationDto.WebLink,
+                Email = organizationDto.Email
             };
+
 
             _context.Add(organizaion);
             await _context.SaveChangesAsync();
@@ -46,7 +47,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Address = x.Address,
                     RegistationNumber = x.RegistationNumber,
                     WebLink=x.WebLink,
-                    Image=x.Image
+                    
                 })
                 .ToListAsync();
 
@@ -62,7 +63,6 @@ namespace PerformanceAppraisalService.Application.Services
                     Name = x.Name,
                     Address = x.Address,
                     RegistationNumber = x.RegistationNumber,
-                    Image=x.Image,
                     WebLink=x.WebLink
                 })
                 .FirstOrDefaultAsync(x=> x.Id == id);
@@ -70,23 +70,23 @@ namespace PerformanceAppraisalService.Application.Services
             return orgaznization;
         }
         
-        public async Task<string> UpdateOrganizationAsync(OrganizationDto organizationDto)
+        public async Task<object> UpdateOrganizationAsync(OrganizationDto organizationDto)
         {
             var organization = await _context.Organizations.FirstOrDefaultAsync(x => x.Id == organizationDto.Id);
 
             if (organization != null)
             {
-                organization.Name = organization.Name;
-                organization.Address = organization.Address;
+                organization.Name = organizationDto.Name;
+                organization.Address = organizationDto.Address;
                 organization.RegistationNumber = organizationDto.RegistationNumber;
                 organization.WebLink = organizationDto.WebLink;
-                organization.Image = organizationDto.Image;
+                
                 
                 await _context.SaveChangesAsync();
-                return "Organization update success...!";
+                return 1;
             }
 
-            return "Organization not update...!";
+            return 0;
         }
 
         public async Task<object> DeleteOrganizationAsync(Guid id)

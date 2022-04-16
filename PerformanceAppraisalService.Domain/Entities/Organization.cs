@@ -6,6 +6,8 @@
         public string Address { get; set; }
         public int RegistationNumber { get; set; }
         public string WebLink { get; set; }
+        public string Email { get; set; }
         public byte[] Image { get; set; }
+
     }
 }
