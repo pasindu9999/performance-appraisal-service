@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PerformanceAppraisalService.Application.Dtos;
+using Create_PA.application.Interfaces;
+using Create_PA.application.Services;
 
 namespace PerformanceAppraisalService.Api
 {
@@ -72,6 +74,9 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDesignationService, DesignationService>();
             services.AddTransient<ISalaryService, SalaryService>();
+
+
+            services.AddTransient<IPA_sheetService, PA_sheetService>();
 
             services.AddCors();
 
