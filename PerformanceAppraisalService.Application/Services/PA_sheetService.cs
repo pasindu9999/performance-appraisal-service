@@ -26,9 +26,9 @@ namespace Create_PA.application.Services
         {
             var pa_sheet = new PA_Sheet
             {
-                Employee_Name = pa_sheet_Dto.Employee_Name,
-                Designation = pa_sheet_Dto.Designation,
+                Department = pa_sheet_Dto.Department,
                 Dep_Head_Name = pa_sheet_Dto.Dep_Head_Name,
+                Start_date = pa_sheet_Dto.Start_date,
                 Due_date = pa_sheet_Dto.Due_date
 
             };
@@ -45,9 +45,9 @@ namespace Create_PA.application.Services
                 .Select(x => new PA_sheet_Dto
                 {
                     Id = x.Id,
-                    Employee_Name = x.Employee_Name,
-                    Designation = x.Designation,
+                    Department = x.Department,
                     Dep_Head_Name = x.Dep_Head_Name,
+                    Start_date = x.Start_date, 
                     Due_date = x.Due_date
                 })
                 .ToListAsync();
@@ -61,9 +61,9 @@ namespace Create_PA.application.Services
                 .Select(x => new PA_sheet_Dto
                 {
                     Id = x.Id,
-                    Employee_Name = x.Employee_Name,
-                    Designation = x.Designation,
+                    Department = x.Department,
                     Dep_Head_Name = x.Dep_Head_Name,
+                    Start_date = x.Start_date,
                     Due_date = x.Due_date
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -71,25 +71,25 @@ namespace Create_PA.application.Services
             return pa_sheet;
         }
 
-        public async Task<string> UpdatePA_sheetAsync(PA_sheet_Dto pa_sheet_Dto)
+        public async Task<object> UpdatePA_sheetAsync(PA_sheet_Dto pa_sheet_Dto)
         {
             var pa_sheet = await _context.PA_lists.FirstOrDefaultAsync(x => x.Id == pa_sheet_Dto.Id);
 
             if (pa_sheet != null)
             {
-                pa_sheet.Employee_Name = pa_sheet_Dto.Employee_Name;
-                pa_sheet.Designation = pa_sheet_Dto.Designation;
+                pa_sheet.Department = pa_sheet_Dto.Department;
                 pa_sheet.Dep_Head_Name = pa_sheet_Dto.Dep_Head_Name;
+                pa_sheet.Start_date = pa_sheet_Dto.Start_date;
                 pa_sheet.Due_date = pa_sheet_Dto.Due_date;
 
                 await _context.SaveChangesAsync();
-                return "pa sheet update success...!";
+                return 1;
             }
 
-            return "pa sheet not update...!";
+            return 0;
         }
 
-        public async Task<string> DeletePA_sheetAsync(Guid id)
+        public async Task<object> DeletePA_sheetAsync(Guid id)
         {
             var pa_sheet = await _context.PA_lists.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -97,10 +97,10 @@ namespace Create_PA.application.Services
             {
                 _context.Remove(pa_sheet);
                 await _context.SaveChangesAsync();
-                return "pa sheet deleted...!";
+                return 1;
             }
 
-            return "can not delete pa sheet";
+            return 0;
         }
 
     }

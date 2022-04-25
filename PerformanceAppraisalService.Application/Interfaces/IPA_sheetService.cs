@@ -11,7 +11,7 @@ namespace Create_PA.application.Interfaces
         Task<string> CreatePA_sheetAsync(PA_sheet_Dto pa_sheet_Dto);
         Task<List<PA_sheet_Dto>> GetPA_sheetListAsync();
         Task<PA_sheet_Dto> GetPA_sheetByIdAsync(Guid id);
-        Task<string> UpdatePA_sheetAsync(PA_sheet_Dto pa_sheet_Dto);
-        Task<string> DeletePA_sheetAsync(Guid id);
+        Task<object> UpdatePA_sheetAsync(PA_sheet_Dto pa_sheet_Dto);
+        Task<object> DeletePA_sheetAsync(Guid id);
     }
 }

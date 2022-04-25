@@ -39,7 +39,7 @@ namespace Create_PA.api.Controllers
 
         // api/organization/by-id?id=
         [HttpGet]
-        [Route("by/{id}")]
+        [Route("by-id")]
         public async Task<IActionResult> PA_sheetById(Guid id)
         {
             var result = await _pa_sheetService.GetPA_sheetByIdAsync(id);

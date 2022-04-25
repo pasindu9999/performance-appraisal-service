@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,6 +50,30 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Criteria_groups",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CriteriaGroup = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Criteria_groups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Criterias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CriteriaName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Criterias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
                 {
@@ -61,6 +85,21 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organizations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PA_lists",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Department = table.Column<string>(nullable: true),
+                    Dep_Head_Name = table.Column<string>(nullable: true),
+                    Start_date = table.Column<DateTime>(nullable: false),
+                    Due_date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PA_lists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -227,7 +266,16 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Criteria_groups");
+
+            migrationBuilder.DropTable(
+                name: "Criterias");
+
+            migrationBuilder.DropTable(
                 name: "Organizations");
+
+            migrationBuilder.DropTable(
+                name: "PA_lists");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
