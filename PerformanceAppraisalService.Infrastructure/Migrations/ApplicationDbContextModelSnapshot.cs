@@ -268,6 +268,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<int>("RegistationNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("WebLink")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Organizations");
