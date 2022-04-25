@@ -21,9 +21,11 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var department = new Department
             {
-                dName = departmentDto.dName,
-                dDescription = departmentDto.dDescription,
-                noOfEmployees = departmentDto.noOfEmployees
+                RegNo = departmentDto.RegNo,
+                Name = departmentDto.Name,
+                DepartmentHead = departmentDto.DepartmentHead,
+                Description = departmentDto.Description,
+                NoOfEmployees = departmentDto.NoOfEmployees
             };
 
             _context.Add(department);
@@ -38,9 +40,11 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    dName = x.dName,
-                    dDescription = x.dDescription,
-                    noOfEmployees = x.noOfEmployees
+                    RegNo = x.RegNo,
+                    Name = x.Name,
+                    DepartmentHead = x.DepartmentHead,
+                    Description = x.Description,
+                    NoOfEmployees = x.NoOfEmployees
                 })
                 .ToListAsync();
 
@@ -53,9 +57,11 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    dName = x.dName,
-                    dDescription = x.dDescription,
-                    noOfEmployees = x.noOfEmployees
+                    RegNo = x.RegNo,
+                    Name = x.Name,
+                    DepartmentHead = x.DepartmentHead,
+                    Description = x.Description,
+                    NoOfEmployees = x.NoOfEmployees
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -68,9 +74,11 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (department != null)
             {
-                department.dName = department.dName;
-                department.dDescription = department.dDescription;
-                department.noOfEmployees = department.noOfEmployees;
+                department.RegNo = department.RegNo;
+                department.Name = department.Name;
+                department.DepartmentHead = department.DepartmentHead;
+                department.Description = department.Description;
+                department.NoOfEmployees = department.NoOfEmployees;
 
                 await _context.SaveChangesAsync();
                 return "Department update success...!";
@@ -79,7 +87,7 @@ namespace PerformanceAppraisalService.Application.Services
             return "Department not update...!";
         }
 
-        public async Task<object> DeleteDepartmentAsync(Guid id)
+        public async Task<string> DeleteDepartmentAsync(Guid id)
         {
             var departmnent = await _context.Departments.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -87,10 +95,10 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(departmnent);
                 await _context.SaveChangesAsync();
-                return 1;
+                return "Department deleted";
             }
 
-            return 0;
+            return "Department not deleted";
         }
     }
 }
