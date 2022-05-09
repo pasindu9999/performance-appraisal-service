@@ -22,11 +22,11 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var team = new Team
             {
-                RegNo = teamDto.RegNo,
                 Name = teamDto.Name,
-                DepartmentName = teamDto.DepartmentName,
+                DepartmentId = teamDto.DepartmentId,
                 Description = teamDto.Description,
-                NoOfEmployees = teamDto.NoOfEmployees
+                NoOfEmployees = teamDto.NoOfEmployees,
+                //TeamLeaderId = teamDto.TeamLeaderId
             };
 
             _context.Add(team);
@@ -37,20 +37,47 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<TeamDto>> GetTeamListAsync()
         {
-            var teamsList = await _context.Teams
+            var teamsList = await _context.Teams.Include(x => x.Department)
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
-                    RegNo=x.RegNo,
                     Name = x.Name,
-                    DepartmentName = x.DepartmentName,
+                    DepartmentId = x.DepartmentId,
                     Description = x.Description,
-                    NoOfEmployees = x.NoOfEmployees
+                    NoOfEmployees = x.NoOfEmployees,
+                    DepartmentName = x.Department.Name,
+                    //TeamLeaderId = x.TeamLeaderId
                 })
                 .ToListAsync();
 
             return teamsList;
         }
+
+
+        //filter according to the departments
+        public Task<List<TeamDto>> GetTeamsAsync(Guid DepartmentId)
+        {
+            if (DepartmentId == Guid.Empty)
+            {
+                return GetTeamListAsync();
+            }
+
+            var teamsList =  _context.Teams.Include(x => x.Department).Where(x=> x.DepartmentId== DepartmentId)
+                .Select(x => new TeamDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    DepartmentId = x.DepartmentId,
+                    Description = x.Description,
+                    NoOfEmployees = x.NoOfEmployees,
+                    //TeamLeaderId = x.TeamLeaderId
+                })
+                .ToListAsync();
+
+            return teamsList;
+
+        }
+
 
         public async Task<TeamDto> GetTeamByIdAsync(Guid id)
         {
@@ -58,11 +85,11 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
-                    RegNo = x.RegNo,
                     Name = x.Name,
-                    DepartmentName = x.DepartmentName,
+                    DepartmentId = x.DepartmentId,
                     Description = x.Description,
-                    NoOfEmployees = x.NoOfEmployees
+                    NoOfEmployees = x.NoOfEmployees,
+                    //TeamLeaderId = x.TeamLeaderId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -75,9 +102,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (team != null)
             {
-                team.RegNo = team.RegNo;
                 team.Name = team.Name;
-                team.DepartmentName = team.DepartmentName;
+                team.DepartmentId = team.DepartmentId;
                 team.Description = team.Description;
                 team.NoOfEmployees = team.NoOfEmployees;
 

@@ -21,9 +21,8 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var department = new Department
             {
-                RegNo = departmentDto.RegNo,
                 Name = departmentDto.Name,
-                DepartmentHead = departmentDto.DepartmentHead,
+                //DepartmentHeadId = departmentDto.DepartmentHeadId,
                 Description = departmentDto.Description,
                 NoOfEmployees = departmentDto.NoOfEmployees
             };
@@ -40,9 +39,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    RegNo = x.RegNo,
                     Name = x.Name,
-                    DepartmentHead = x.DepartmentHead,
+                    //DepartmentHeadId = x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -57,9 +55,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    RegNo = x.RegNo,
                     Name = x.Name,
-                    DepartmentHead = x.DepartmentHead,
+                    //DepartmentHeadId = x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -74,9 +71,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (department != null)
             {
-                department.RegNo = department.RegNo;
                 department.Name = department.Name;
-                department.DepartmentHead = department.DepartmentHead;
+                //department.DepartmentHead = department.DepartmentHead;
                 department.Description = department.Description;
                 department.NoOfEmployees = department.NoOfEmployees;
 

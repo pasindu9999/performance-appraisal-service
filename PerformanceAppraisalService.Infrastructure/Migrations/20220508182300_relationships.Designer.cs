@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220508182300_relationships")]
+    partial class relationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,9 +270,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DesignationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -289,8 +288,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DesignationId");
 
                     b.HasIndex("TeamId");
 
@@ -432,12 +429,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Employee", b =>
                 {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
-                        .WithMany("EmployeeTeam")
-                        .HasForeignKey("DesignationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", "Team")
                         .WithMany("EmployeeTeam")
                         .HasForeignKey("TeamId")

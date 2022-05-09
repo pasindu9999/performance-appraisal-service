@@ -32,9 +32,9 @@ namespace PerformanceAppraisalService.Api.Controllers
         // api/team/list
         [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(Guid DepartmentId)
         {
-            var result = await _teamService.GetTeamListAsync();
+            var result = await _teamService.GetTeamsAsync(DepartmentId);
             return Ok(result);
         }
 

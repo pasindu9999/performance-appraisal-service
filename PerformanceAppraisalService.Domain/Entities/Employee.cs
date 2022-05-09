@@ -12,7 +12,18 @@ namespace PerformanceAppraisalService.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Designation { get; set; }
+        
 
+        //relationship with designation 1:m
+        public Guid DesignationId { get; set; }
+        public virtual Designation Designation { get; set; }
+
+
+        //relationship with team 1:m
+        public Guid TeamId { get; set; }
+        public virtual Team Team { get; set; }
+
+
+        
     }
 }

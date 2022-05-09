@@ -28,7 +28,7 @@ namespace PerformanceAppraisalService.Application.Services
                 FirstName = employeeDto.FirstName,
                 LastName = employeeDto.LastName,
                 Email = employeeDto.Email,
-                Designation = employeeDto.Designation
+                //DesignationId = employeeDto.DesignationId
             };
 
             _context.Add(employee);
@@ -47,7 +47,7 @@ namespace PerformanceAppraisalService.Application.Services
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Email = x.Email,
-                    Designation = x.Designation
+                    //DesignationId = x.DesignationId
                 })
                 .ToListAsync();
 
@@ -64,7 +64,7 @@ namespace PerformanceAppraisalService.Application.Services
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Email = x.Email,
-                    Designation = x.Designation
+                    //DesignationId = x.DesignationId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -81,7 +81,7 @@ namespace PerformanceAppraisalService.Application.Services
                 employee.FirstName = employee.FirstName;
                 employee.LastName = employee.LastName;
                 employee.Email = employee.Email;
-                employee.Designation = employeeDto.Designation;
+                //employee.DesignationId = employeeDto.DesignationId;
 
                 await _context.SaveChangesAsync();
                 return "Employee update success...!";

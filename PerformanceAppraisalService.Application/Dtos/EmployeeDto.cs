@@ -11,7 +11,11 @@ namespace PerformanceAppraisalService.Application.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Designation { get; set; }
+        //public Guid DepartmentId { get; set; }
+        //public Guid TeamId { get; set; }
+        //public Guid DesignationId { get; set; }
+        //public Guid DepartmentHeadId { get; set; }
+        //public Guid TeamLeaderId { get; set; }
 
     }
 }
