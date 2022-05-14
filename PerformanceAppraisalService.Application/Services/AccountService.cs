@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Storage.Queues;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
+using PerformanceAppraisalService.Domain.Enum;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -22,11 +25,14 @@ namespace PerformanceAppraisalService.Application.Services
 
         private readonly ApplicationSettings _appSettings;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings)
+        private readonly QueueStorageString _queueStorageString;
+
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IOptions<QueueStorageString> queueStorageString)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
+            _queueStorageString = queueStorageString.Value;
         }
 
         public async Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto)
@@ -35,7 +41,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 UserName = applicationUserDto.Email,
                 Email = applicationUserDto.Email,
-                FullName = applicationUserDto.FullName
+                FullName = applicationUserDto.FullName,
             };
            
             try
@@ -48,6 +54,28 @@ namespace PerformanceAppraisalService.Application.Services
                 else
                 {
                     var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
+
+                    try
+                    {
+                        var client = new QueueClient(_queueStorageString.QueueClientString, "email-queue");
+
+                        var user1 = await _userManager.FindByNameAsync(applicationUserDto.Email);
+
+                        EmailQueueDto e = new EmailQueueDto();
+                        e.UserId = new Guid(user1.Id);
+                        e.EmailType = EmailType.Registration;
+
+                        var jsonString = JsonConvert.SerializeObject(e);
+
+                        string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
+
+                        await client.SendMessageAsync(encodedStr);
+                    }
+                    catch(Exception e)
+                    {
+                        return "Exception Occured " + e;
+                    }
+
                     return "Registration successfull";
                 }
             }
@@ -62,6 +90,26 @@ namespace PerformanceAppraisalService.Application.Services
             var user = await _userManager.FindByNameAsync(logInDto.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, logInDto.Password))
             {
+
+                try
+                {
+                    var client = new QueueClient(_queueStorageString.QueueClientString, "email-queue");
+
+                    EmailQueueDto e = new EmailQueueDto();
+                    e.UserId = new Guid(user.Id);
+                    e.EmailType = EmailType.LogIn;
+
+                    var jsonString = JsonConvert.SerializeObject(e);
+
+                    string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
+
+                    await client.SendMessageAsync(encodedStr);
+                }
+                catch (Exception e)
+                {
+                    return "Exception Occured " + e;
+                }
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]

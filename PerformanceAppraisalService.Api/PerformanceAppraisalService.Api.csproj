@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PerformanceAppraisalService.Application\PerformanceAppraisalService.Application.csproj" />
     <ProjectReference Include="..\PerformanceAppraisalService.Domain\PerformanceAppraisalService.Domain.csproj" />
+    <ProjectReference Include="..\PerformanceAppraisalService.EmailFunction\PerformanceAppraisalService.EmailFunction.csproj" />
     <ProjectReference Include="..\PerformanceAppraisalService.Infrastructure\PerformanceAppraisalService.Infrastructure.csproj" />
   </ItemGroup>
 

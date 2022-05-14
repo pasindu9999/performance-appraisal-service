@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F40BE26F-BE3F-4AB6-874F-872807157F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.Api", "PerformanceAppraisalService.Api\PerformanceAppraisalService.Api.csproj", "{9E1724BE-6760-4B94-B9B9-F6358E41A682}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.Api", "PerformanceAppraisalService.Api\PerformanceAppraisalService.Api.csproj", "{9E1724BE-6760-4B94-B9B9-F6358E41A682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.Domain", "PerformanceAppraisalService.Domain\PerformanceAppraisalService.Domain.csproj", "{5D7D7503-2176-4D3B-8375-EA71E998A031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.Domain", "PerformanceAppraisalService.Domain\PerformanceAppraisalService.Domain.csproj", "{5D7D7503-2176-4D3B-8375-EA71E998A031}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.Application", "PerformanceAppraisalService.Application\PerformanceAppraisalService.Application.csproj", "{287BFD0D-AF5D-4BB0-A43E-D70558B7F93D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.Application", "PerformanceAppraisalService.Application\PerformanceAppraisalService.Application.csproj", "{287BFD0D-AF5D-4BB0-A43E-D70558B7F93D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.Infrastructure", "PerformanceAppraisalService.Infrastructure\PerformanceAppraisalService.Infrastructure.csproj", "{B1025926-C95B-4E1A-999E-1C84D001E310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.Infrastructure", "PerformanceAppraisalService.Infrastructure\PerformanceAppraisalService.Infrastructure.csproj", "{B1025926-C95B-4E1A-999E-1C84D001E310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.EmailFunction", "PerformanceAppraisalService.EmailFunction\PerformanceAppraisalService.EmailFunction.csproj", "{AD392AA2-A872-444F-B4BC-40BDE96409FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{B1025926-C95B-4E1A-999E-1C84D001E310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1025926-C95B-4E1A-999E-1C84D001E310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1025926-C95B-4E1A-999E-1C84D001E310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD392AA2-A872-444F-B4BC-40BDE96409FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD392AA2-A872-444F-B4BC-40BDE96409FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD392AA2-A872-444F-B4BC-40BDE96409FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD392AA2-A872-444F-B4BC-40BDE96409FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{5D7D7503-2176-4D3B-8375-EA71E998A031} = {F40BE26F-BE3F-4AB6-874F-872807157F38}
 		{287BFD0D-AF5D-4BB0-A43E-D70558B7F93D} = {F40BE26F-BE3F-4AB6-874F-872807157F38}
 		{B1025926-C95B-4E1A-999E-1C84D001E310} = {F40BE26F-BE3F-4AB6-874F-872807157F38}
+		{AD392AA2-A872-444F-B4BC-40BDE96409FD} = {F40BE26F-BE3F-4AB6-874F-872807157F38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2AE9ED8-8C43-4BFC-8944-28AB833E94BC}

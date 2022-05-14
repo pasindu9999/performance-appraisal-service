@@ -40,6 +40,10 @@ namespace PerformanceAppraisalService.Api
             var applicationSettings = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(applicationSettings);
 
+            var queueStorage = Configuration.GetSection("QueueStorage");
+            services.Configure<QueueStorageString>(queueStorage);
+
+
             var appSettingsSecretKey = applicationSettings.Get<ApplicationSettings>();
 
 
