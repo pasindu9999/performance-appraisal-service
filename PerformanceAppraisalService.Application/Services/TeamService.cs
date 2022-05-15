@@ -26,7 +26,7 @@ namespace PerformanceAppraisalService.Application.Services
                 DepartmentId = teamDto.DepartmentId,
                 Description = teamDto.Description,
                 NoOfEmployees = teamDto.NoOfEmployees,
-                //TeamLeaderId = teamDto.TeamLeaderId
+                TeamLeaderId = teamDto.TeamLeaderId
             };
 
             _context.Add(team);
@@ -46,7 +46,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
                     DepartmentName = x.Department.Name,
-                    //TeamLeaderId = x.TeamLeaderId
+                    TeamLeaderId = x.TeamLeaderId
                 })
                 .ToListAsync();
 
@@ -70,7 +70,7 @@ namespace PerformanceAppraisalService.Application.Services
                     DepartmentId = x.DepartmentId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
-                    //TeamLeaderId = x.TeamLeaderId
+                    TeamLeaderId = (Guid)x.TeamLeaderId
                 })
                 .ToListAsync();
 
@@ -89,7 +89,7 @@ namespace PerformanceAppraisalService.Application.Services
                     DepartmentId = x.DepartmentId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
-                    //TeamLeaderId = x.TeamLeaderId
+                    TeamLeaderId = x.TeamLeaderId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 

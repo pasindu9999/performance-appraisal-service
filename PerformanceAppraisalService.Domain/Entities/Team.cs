@@ -13,16 +13,16 @@ namespace PerformanceAppraisalService.Domain.Entities
 
 
         //relationship with employee
-        public ICollection<Employee> EmployeeTeam { get; set; }
+        public ICollection<Employee> Employees { get; set; }
+
+        //relationship with designation table teamleader team 1:1
+        public Guid? TeamLeaderId { get; set; }
+        public Employee TeamLeader { get; set; }
+
 
         //relationship with department
         public Guid DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-
-
-
-        //relationship with designation table teamleader team 1:1
-        public Guid TeamLeaderId { get; set; }
-        public Employee TeamLeader { get; set; }
+ 
     }
 }

@@ -13,6 +13,7 @@ namespace PerformanceAppraisalService.Domain.Entities
 
         //relationship with team table 1 : M
         public ICollection<Team> Teams { get; set; }
+        public ICollection<Employee> Employees { get; set; }
 
 
         //relationship with designation table  M:N
@@ -20,8 +21,8 @@ namespace PerformanceAppraisalService.Domain.Entities
 
 
         //relationship with employee table department head department 1:1
-        //public Guid DepartmentHeadId { get; set; }
-        //public Employee DepartmentHead { get; set; }
+        public Guid DepartmentHeadId { get; set; }
+        public Employee DepartmentHead { get; set; }
     }
 }
 

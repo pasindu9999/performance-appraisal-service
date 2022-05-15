@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
-    public partial class relationships : Migration
+    public partial class relationship : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,20 +46,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Departments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    NoOfEmployees = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,6 +198,53 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RegistrationNumber = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    DesignationId = table.Column<Guid>(nullable: false),
+                    DepartmentId = table.Column<Guid>(nullable: false),
+                    TeamId = table.Column<Guid>(nullable: true),
+                    DepartmentId1 = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_Designations_DesignationId",
+                        column: x => x.DesignationId,
+                        principalTable: "Designations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    NoOfEmployees = table.Column<int>(nullable: false),
+                    DepartmentHeadId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Departments_Employees_DepartmentHeadId",
+                        column: x => x.DepartmentHeadId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
@@ -228,29 +261,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         name: "FK_Teams_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    RegistrationNumber = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    TeamId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -295,6 +305,22 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Departments_DepartmentHeadId",
+                table: "Departments",
+                column: "DepartmentHeadId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_DepartmentId1",
+                table: "Employees",
+                column: "DepartmentId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_DesignationId",
+                table: "Employees",
+                column: "DesignationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_TeamId",
                 table: "Employees",
                 column: "TeamId");
@@ -303,10 +329,30 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "IX_Teams_DepartmentId",
                 table: "Teams",
                 column: "DepartmentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Departments_DepartmentId1",
+                table: "Employees",
+                column: "DepartmentId1",
+                principalTable: "Departments",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Teams_TeamId",
+                table: "Employees",
+                column: "TeamId",
+                principalTable: "Teams",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Departments_Employees_DepartmentHeadId",
+                table: "Departments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -323,12 +369,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Designations");
-
-            migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
                 name: "Organizations");
 
             migrationBuilder.DropTable(
@@ -339,6 +379,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Designations");
 
             migrationBuilder.DropTable(
                 name: "Teams");

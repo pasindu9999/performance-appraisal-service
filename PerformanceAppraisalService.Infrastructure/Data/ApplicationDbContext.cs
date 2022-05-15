@@ -14,6 +14,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 
         }
 
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Department> Departments { get; set; }
@@ -21,7 +22,24 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Salary> Salarys { get; set; }
-        
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Department)
+                .WithOne(d => d.DepartmentHead)
+                .HasForeignKey<Department>(e => e.DepartmentHeadId);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Team)
+                .WithOne(t => t.TeamLeader)
+                .HasForeignKey<Team>(e => e.TeamLeaderId);
+
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
+    
 
 }

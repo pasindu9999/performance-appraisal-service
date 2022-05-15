@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -19,11 +20,23 @@ namespace PerformanceAppraisalService.Domain.Entities
         public virtual Designation Designation { get; set; }
 
 
+        //relationship with department 1:m
+        public Guid DepartmentId { get; set; }
+        public virtual Department Department { get; set; }
+
+
         //relationship with team 1:m
-        public Guid TeamId { get; set; }
+        public Guid? TeamId { get; set; }
         public virtual Team Team { get; set; }
 
 
+
         
+
+
+
+
+
+
     }
 }

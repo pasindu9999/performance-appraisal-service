@@ -22,7 +22,7 @@ namespace PerformanceAppraisalService.Application.Services
             var department = new Department
             {
                 Name = departmentDto.Name,
-                //DepartmentHeadId = departmentDto.DepartmentHeadId,
+                DepartmentHeadId = departmentDto.DepartmentHeadId,
                 Description = departmentDto.Description,
                 NoOfEmployees = departmentDto.NoOfEmployees
             };
@@ -40,7 +40,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    //DepartmentHeadId = x.DepartmentHeadId,
+                    DepartmentHeadId = x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -56,7 +56,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    //DepartmentHeadId = x.DepartmentHeadId,
+                    DepartmentHeadId = x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -72,7 +72,7 @@ namespace PerformanceAppraisalService.Application.Services
             if (department != null)
             {
                 department.Name = department.Name;
-                //department.DepartmentHead = department.DepartmentHead;
+                department.DepartmentHead = department.DepartmentHead;
                 department.Description = department.Description;
                 department.NoOfEmployees = department.NoOfEmployees;
 

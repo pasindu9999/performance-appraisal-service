@@ -10,8 +10,8 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220508182548_relationship-employeeDesignation")]
-    partial class relationshipemployeeDesignation
+    [Migration("20220515212209_relationship")]
+    partial class relationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,6 +233,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DepartmentHeadId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -243,6 +246,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentHeadId")
+                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -270,6 +276,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DepartmentId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("DesignationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -287,10 +299,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("TeamId")
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId1");
 
                     b.HasIndex("DesignationId");
 
@@ -432,8 +446,21 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "DepartmentHead")
+                        .WithOne("Department")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Employee", b =>
                 {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId1");
+
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
                         .WithMany("EmployeeTeam")
                         .HasForeignKey("DesignationId")
@@ -441,10 +468,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", "Team")
-                        .WithMany("EmployeeTeam")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Employees")
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Team", b =>
