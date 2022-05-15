@@ -45,7 +45,20 @@ namespace PerformanceAppraisalService.Application.Services
             return x;
         }
 
+        public Task<string> GetForAdmin()
+        {
+            return Task.FromResult("Web Method For Admin");
+        }
 
+        public Task<string> GetForEmployee()
+        {
+            return Task.FromResult("Web Method For Employee");
+        }
+
+        public Task<string> GetForAdminOrEmployee()
+        {
+            return Task.FromResult("Web Method For Admin or Employee");
+        }
     }
 }
 

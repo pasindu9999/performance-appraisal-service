@@ -7,10 +7,12 @@ using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Domain.Enum;
+using PerformanceAppraisalService.Domain.Roles;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +39,7 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto)
         {
+            applicationUserDto.Role = UserRoles.Admin;
             var applicationUser = new ApplicationUser()
             {
                 UserName = applicationUserDto.Email,
@@ -54,6 +57,7 @@ namespace PerformanceAppraisalService.Application.Services
                 else
                 {
                     var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
+                    await _userManager.AddToRoleAsync(applicationUser, applicationUserDto.Role);
 
                     try
                     {
@@ -110,11 +114,16 @@ namespace PerformanceAppraisalService.Application.Services
                     return "Exception Occured " + e;
                 }
 
+                //Get role assigned to the user
+                var role = await _userManager.GetRolesAsync(user);
+                IdentityOptions _options = new IdentityOptions();
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserID", user.Id.ToString())
+                        new Claim("UserID", user.Id.ToString()),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
                     }),
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
