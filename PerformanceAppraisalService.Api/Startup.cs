@@ -41,7 +41,8 @@ namespace PerformanceAppraisalService.Api
             services.Configure<ApplicationSettings>(applicationSettings);
 
             var appSettingsSecretKey = applicationSettings.Get<ApplicationSettings>();
-
+            services.Configure<AzureBlobConfigurations>(Configuration.GetSection("AzureBlobConfigurations"));
+           
 
             //Register AppSettings
             services.AddDbContext<ApplicationDbContext>(options =>

@@ -13,6 +13,23 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PanelReviwer>()
+                .HasKey(t => new { t.PanelId, t.ReviwerId });
+
+            modelBuilder.Entity<PanelReviwer>()
+                .HasOne(pt => pt.Panel)
+                .WithMany(p => p.PanelReviwers)
+                .HasForeignKey(pt => pt.PanelId);
+
+            modelBuilder.Entity<PanelReviwer>()
+                .HasOne(pt => pt.Reviwer)
+                .WithMany(t => t.PanelReviwers)
+                .HasForeignKey(pt => pt.ReviwerId);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
@@ -21,5 +38,11 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Salary> Salarys { get; set; }
+        public DbSet<Panel> Panels { get; set; }
+        public DbSet<Reviwer> Reviwers { get; set; }
+        public DbSet<Reviwee> Reviewees { get; set; }
+
     }
+
+
 }

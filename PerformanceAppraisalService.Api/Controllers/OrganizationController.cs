@@ -14,8 +14,10 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
-        public OrganizationController(IOrganizationService organizationService)
+        private readonly IAzureBlobService _azureBlobService;
+        public OrganizationController(IOrganizationService organizationService, IAzureBlobService azureBlobService)
         {
+            _azureBlobService = azureBlobService;
             _organizationService = organizationService;
         }
 
@@ -24,8 +26,14 @@ namespace PerformanceAppraisalService.Api.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(OrganizationDto organizationDto)
         {
-            var response = await _organizationService.CreateOrganizationAsync(organizationDto);
-            return Ok(response);
+            var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
+            if(imgresponse != null)
+            {
+                var response = await _organizationService.CreateOrganizationAsync(organizationDto);
+                return Ok(response);
+            }
+            
+            return BadRequest();
         }
         
         // api/organization/list
