@@ -29,12 +29,16 @@ namespace PerformanceAppraisalService.Application.Services
 
         private readonly QueueStorageString _queueStorageString;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IOptions<QueueStorageString> queueStorageString)
+        private readonly IQueueService _queueService;
+
+
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IOptions<QueueStorageString> queueStorageString, IQueueService queueService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _queueStorageString = queueStorageString.Value;
+            _queueService = queueService;
         }
 
         public async Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto)
@@ -58,27 +62,10 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
                     await _userManager.AddToRoleAsync(applicationUser, applicationUserDto.Role);
+                    
+                    await _queueService.SendToQueue(applicationUserDto.Email, EmailType.Registration);
+                    
 
-                    try
-                    {
-                        var client = new QueueClient(_queueStorageString.QueueClientString, "email-queue");
-
-                        var user1 = await _userManager.FindByNameAsync(applicationUserDto.Email);
-
-                        EmailQueueDto e = new EmailQueueDto();
-                        e.UserId = new Guid(user1.Id);
-                        e.EmailType = EmailType.Registration;
-
-                        var jsonString = JsonConvert.SerializeObject(e);
-
-                        string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
-
-                        await client.SendMessageAsync(encodedStr);
-                    }
-                    catch(Exception e)
-                    {
-                        return "Exception Occured " + e;
-                    }
 
                     return "Registration successfull";
                 }
@@ -95,24 +82,7 @@ namespace PerformanceAppraisalService.Application.Services
             if (user != null && await _userManager.CheckPasswordAsync(user, logInDto.Password))
             {
 
-                try
-                {
-                    var client = new QueueClient(_queueStorageString.QueueClientString, "email-queue");
-
-                    EmailQueueDto e = new EmailQueueDto();
-                    e.UserId = new Guid(user.Id);
-                    e.EmailType = EmailType.LogIn;
-
-                    var jsonString = JsonConvert.SerializeObject(e);
-
-                    string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonString));
-
-                    await client.SendMessageAsync(encodedStr);
-                }
-                catch (Exception e)
-                {
-                    return "Exception Occured " + e;
-                }
+                await _queueService.SendToQueue(logInDto.UserName, EmailType.LogIn);
 
                 //Get role assigned to the user
                 var role = await _userManager.GetRolesAsync(user);

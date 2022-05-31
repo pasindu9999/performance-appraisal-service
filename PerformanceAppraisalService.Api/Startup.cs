@@ -72,6 +72,8 @@ namespace PerformanceAppraisalService.Api
 
             services.AddTransient<IUserProfileService, UserProfileService>();
 
+            services.AddTransient<IQueueService, QueueService>();
+
             services.AddCors();
 
             services.AddControllers();
