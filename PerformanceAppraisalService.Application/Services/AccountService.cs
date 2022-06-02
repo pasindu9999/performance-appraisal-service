@@ -1,5 +1,7 @@
 ﻿using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -27,18 +29,18 @@ namespace PerformanceAppraisalService.Application.Services
 
         private readonly ApplicationSettings _appSettings;
 
-        private readonly QueueStorageString _queueStorageString;
-
         private readonly IQueueService _queueService;
 
+        private IConfiguration _configuration;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IOptions<QueueStorageString> queueStorageString, IQueueService queueService)
+
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IQueueService queueService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
-            _queueStorageString = queueStorageString.Value;
             _queueService = queueService;
+            _configuration = configuration;
         }
 
         public async Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto)
@@ -63,7 +65,23 @@ namespace PerformanceAppraisalService.Application.Services
                     var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
                     await _userManager.AddToRoleAsync(applicationUser, applicationUserDto.Role);
                     
-                    await _queueService.SendToQueue(applicationUserDto.Email, EmailType.Registration);
+                    await _queueService.SendToQueue(applicationUserDto.Email, EmailType.Registration, null);
+
+                    if(result.Succeeded)
+                    {
+
+                        var user1 = await _userManager.FindByNameAsync(applicationUserDto.Email);
+
+                        var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user1);
+                        var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
+                        var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
+
+                        string url = $"{_configuration["AppUrl"]}/api/account/confirm-email?userid={user1.Id}&token={validEmailToken}";
+
+
+                        await _queueService.SendToQueue(applicationUserDto.Email, EmailType.ConfirmEmail, url);
+                        
+                    }
                     
 
 
@@ -79,33 +97,72 @@ namespace PerformanceAppraisalService.Application.Services
         public async Task<string> LogIn(LogInDto logInDto)
         {
             var user = await _userManager.FindByNameAsync(logInDto.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, logInDto.Password))
+            var response = await _signInManager.PasswordSignInAsync(logInDto.UserName,logInDto.Password,false,false);//3rd parameter userd for cookies, 4th parameter is used for if the user enter the password multiple times block access
+            if (response.IsNotAllowed)
             {
-
-                await _queueService.SendToQueue(logInDto.UserName, EmailType.LogIn);
-
-                //Get role assigned to the user
-                var role = await _userManager.GetRolesAsync(user);
-                IdentityOptions _options = new IdentityOptions();
-
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID", user.Id.ToString()),
-                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
-                return token;
+                return "Not allowed to login";
             }
             else
-                return "Username or password is incorrect";
+            {
+                if (user != null && await _userManager.CheckPasswordAsync(user, logInDto.Password))
+                {
 
+                    await _queueService.SendToQueue(logInDto.UserName, EmailType.LogIn, null);
+
+                    //Get role assigned to the user
+                    var role = await _userManager.GetRolesAsync(user);
+                    IdentityOptions _options = new IdentityOptions();
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                        new Claim("UserID", user.Id.ToString()),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return token;
+                }
+                else
+                    return "Username or password is incorrect";
+
+            }
+
+        }
+
+        public async Task<UserManagerResponse> ConfirmEmailAsync(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "User not found"
+                };
+
+            var decodedToken = WebEncoders.Base64UrlDecode(token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+            if (result.Succeeded)
+                return new UserManagerResponse
+                {
+                    Message = "Email confirmed successfully!",
+                    IsSuccess = true,
+                };
+
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Email did not confirm",
+                Errors = result.Errors.Select(e => e.Description)
+            };
         }
 
     }

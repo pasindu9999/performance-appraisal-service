@@ -11,7 +11,7 @@ namespace PerformanceAppraisalService.Application.Processors.Email
     public class EmailSender
     {
         
-        public async void Send(string toEmail,string body,string name)
+        public async void Send(string toEmail,string body,string name,string eTemplateId, string url) 
         {
             var apiKey = Environment.GetEnvironmentVariable("SendgridAPIKey");
             var client = new SendGridClient(apiKey);
@@ -20,11 +20,12 @@ namespace PerformanceAppraisalService.Application.Processors.Email
             {
                 From = new EmailAddress("nipunaaluthdeniya@gmail.com", "JRC-PerformanceAppraisalSystem"),
             };
-            sendGridMessage.SetTemplateId("d-2a2c063235e04a7babf95468fbe467f1");
+            sendGridMessage.SetTemplateId(eTemplateId);
             sendGridMessage.SetTemplateData(new
             {
                 name = name,
-                body = body
+                body = body,
+                link = url
             });
             sendGridMessage.AddTo(toEmail);
             await client.SendEmailAsync(sendGridMessage);

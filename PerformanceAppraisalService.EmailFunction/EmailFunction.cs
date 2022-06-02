@@ -17,10 +17,13 @@ namespace PerformanceAppraisalService.EmailFunction
 
         private readonly ILoginEmailProcessor loginemailProcessor;
 
-        public EmailFunction(IRegistrationEmailProcessor registrationEmailProcessor, ILoginEmailProcessor loginemailProcessor)
+        private readonly IConfirmEmailProcessor confirmEmailProcessor;
+
+        public EmailFunction(IRegistrationEmailProcessor registrationEmailProcessor, ILoginEmailProcessor loginemailProcessor, IConfirmEmailProcessor confirmEmailProcessor)
         {
             this.registrationEmailProcessor = registrationEmailProcessor;
             this.loginemailProcessor = loginemailProcessor;
+            this.confirmEmailProcessor = confirmEmailProcessor;
         }
 
         [FunctionName("Email")]
@@ -35,8 +38,9 @@ namespace PerformanceAppraisalService.EmailFunction
                 dynamic jsonData = JObject.Parse(queueItem);
                 Guid  userId = (Guid)jsonData.UserId;
                 int emailType = (int)jsonData.EmailType;
+                string url = (string)jsonData.Url;
 
-                ProcessEmail(userId, emailType);
+                ProcessEmail(userId, emailType, url);
 
             }
 
@@ -47,16 +51,19 @@ namespace PerformanceAppraisalService.EmailFunction
 
         }
 
-        public void ProcessEmail(Guid userId, int emailType)
+        public void ProcessEmail(Guid userId, int emailType, string url)
         {
 
             switch (emailType)
             {
                 case 0:
-                    this.registrationEmailProcessor.Process(userId);
+                    this.registrationEmailProcessor.Process(userId, url);
                     break;
                 case 1:
-                    this.loginemailProcessor.Process(userId);
+                    this.loginemailProcessor.Process(userId, url);
+                    break;
+                case 2:
+                    this.confirmEmailProcessor.Process(userId, url);
                     break;
                 default:
                     return;

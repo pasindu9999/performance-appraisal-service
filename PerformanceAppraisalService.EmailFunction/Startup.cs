@@ -19,6 +19,8 @@ namespace PerformanceAppraisalService.EmailFunction
 
             builder.Services.AddTransient<ILoginEmailProcessor, LoginEmailProcessor>();
 
+            builder.Services.AddTransient<IConfirmEmailProcessor, ConfirmEmailProcessor>();
+
             string connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(
                 options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, connectionString));

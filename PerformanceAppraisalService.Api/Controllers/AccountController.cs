@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using System;
@@ -14,9 +15,13 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+
+        private IConfiguration _configuration;
+
+        public AccountController(IAccountService accountService, IConfiguration configuration)
         {
             _accountService = accountService;
+            _configuration = configuration;
         }
 
 
@@ -34,6 +39,27 @@ namespace PerformanceAppraisalService.Api.Controllers
         {
             var response = await _accountService.LogIn(logInDto);
             return Ok(response);
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+                return NotFound();
+
+            var result = await _accountService.ConfirmEmailAsync(userId, token);
+
+            if (result.IsSuccess)
+            {
+                return Redirect($"{_configuration["AppUrl"]}/ConfirmEmail.html");
+            }
+            else
+            {
+                return Redirect($"{_configuration["AppUrl"]}/NotVerifiedEmail.html");
+            }
+
+            //return BadRequest(result);
+
         }
 
 

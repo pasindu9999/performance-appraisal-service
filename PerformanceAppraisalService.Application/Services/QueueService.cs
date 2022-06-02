@@ -27,7 +27,7 @@ namespace PerformanceAppraisalService.Application.Services
         }
 
 
-        public async Task<string> SendToQueue(string email, EmailType type)
+        public async Task<string> SendToQueue(string email, EmailType type, string url)
         {
             try
             {
@@ -38,6 +38,7 @@ namespace PerformanceAppraisalService.Application.Services
                 EmailQueueDto e = new EmailQueueDto();
                 e.UserId = new Guid(user.Id);
                 e.EmailType = type;
+                e.Url = url;
 
                 var jsonString = JsonConvert.SerializeObject(e);
 

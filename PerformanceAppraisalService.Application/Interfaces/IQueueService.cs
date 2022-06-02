@@ -8,6 +8,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
 {
     public interface IQueueService
     {
-        Task<string> SendToQueue(string email, EmailType type);
+        Task<string> SendToQueue(string email, EmailType type, string url);
     }
 }

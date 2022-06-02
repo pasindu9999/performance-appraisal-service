@@ -6,6 +6,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
 {
     public interface IRegistrationEmailProcessor
     {
-        void Process(Guid userId);
+        void Process(Guid userId, string url);
     }
 }

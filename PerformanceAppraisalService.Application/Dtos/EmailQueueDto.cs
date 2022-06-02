@@ -10,5 +10,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public EmailType EmailType { get; set; }
 
         public Guid UserId { get; set; }
+
+        public string Url { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PerformanceAppraisalService.Application.Interfaces
 {
-    public interface ILoginEmailProcessor
+    public interface IConfirmEmailProcessor
     {
         void Process(Guid userId, string url);
     }
