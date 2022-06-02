@@ -40,7 +40,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Salary> Salarys { get; set; }
         public DbSet<Panel> Panels { get; set; }
         public DbSet<Reviwer> Reviwers { get; set; }
-        public DbSet<Reviwee> Reviewees { get; set; }
+        public DbSet<Reviwee> Reviwees { get; set; }
 
     }
 

@@ -14,5 +14,9 @@ namespace PerformanceAppraisalService.Domain.Entities
         public string Email { get; set; }
         public string Designation { get; set; }
 
+        //relationship with reviwee 1:1
+        //public Guid? TeamId { get; set; }
+        //public virtual Team Team { get; set; }
+
     }
 }

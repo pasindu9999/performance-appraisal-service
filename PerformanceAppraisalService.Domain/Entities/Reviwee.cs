@@ -7,7 +7,7 @@ namespace PerformanceAppraisalService.Domain.Entities
     public class Reviwee : BaseEntity
     {
         
-        public Guid PanelId { get; set; }
+        public Guid? PanelId { get; set; }
         public Guid EmployeeId { get; set; }
         public string EmployeeFirstName { get; set; }
         public virtual Employee Employee { get; set; }
