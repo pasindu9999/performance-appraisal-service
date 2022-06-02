@@ -19,11 +19,14 @@ namespace PerformanceAppraisalService.EmailFunction
 
         private readonly IConfirmEmailProcessor confirmEmailProcessor;
 
-        public EmailFunction(IRegistrationEmailProcessor registrationEmailProcessor, ILoginEmailProcessor loginemailProcessor, IConfirmEmailProcessor confirmEmailProcessor)
+        private readonly IForgotPasswordEmailProcessor forgotPasswordEmailProcessor;
+
+        public EmailFunction(IRegistrationEmailProcessor registrationEmailProcessor, ILoginEmailProcessor loginemailProcessor, IConfirmEmailProcessor confirmEmailProcessor, IForgotPasswordEmailProcessor forgotPasswordEmailProcessor)
         {
             this.registrationEmailProcessor = registrationEmailProcessor;
             this.loginemailProcessor = loginemailProcessor;
             this.confirmEmailProcessor = confirmEmailProcessor;
+            this.forgotPasswordEmailProcessor = forgotPasswordEmailProcessor;
         }
 
         [FunctionName("Email")]
@@ -64,6 +67,9 @@ namespace PerformanceAppraisalService.EmailFunction
                     break;
                 case 2:
                     this.confirmEmailProcessor.Process(userId, url);
+                    break;
+                case 3:
+                    this.forgotPasswordEmailProcessor.Process(userId, url);
                     break;
                 default:
                     return;

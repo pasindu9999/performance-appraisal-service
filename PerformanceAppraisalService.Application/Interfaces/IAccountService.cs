@@ -12,5 +12,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto);
         Task<UserManagerResponse> ConfirmEmailAsync(string userid, string token);
         Task<string> LogIn(LogInDto logInDto);
+        Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
+        Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model);
     }
 }

@@ -62,6 +62,34 @@ namespace PerformanceAppraisalService.Api.Controllers
 
         }
 
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            if (string.IsNullOrEmpty(forgotPasswordDto.Email))
+                return NotFound();
+
+            var result = await _accountService.ForgotPasswordAsync(forgotPasswordDto);
+            return Ok(result); // 200
+
+            //return BadRequest(result); // 400
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.ResetPasswordAsync(model);
+
+                if (result.IsSuccess)
+                    return Ok(result);
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
+        }
+
 
     }
 }

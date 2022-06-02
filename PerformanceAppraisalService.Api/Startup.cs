@@ -81,6 +81,8 @@ namespace PerformanceAppraisalService.Api
 
             services.AddControllers();
 
+            services.AddRazorPages();
+
             //Jwt Authentication
 
             var key = Encoding.UTF8.GetBytes(appSettingsSecretKey.JWT_Secret);
@@ -133,6 +135,7 @@ namespace PerformanceAppraisalService.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }

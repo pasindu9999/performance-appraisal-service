@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.Infrastructure", "PerformanceAppraisalService.Infrastructure\PerformanceAppraisalService.Infrastructure.csproj", "{B1025926-C95B-4E1A-999E-1C84D001E310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceAppraisalService.EmailFunction", "PerformanceAppraisalService.EmailFunction\PerformanceAppraisalService.EmailFunction.csproj", "{AD392AA2-A872-444F-B4BC-40BDE96409FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceAppraisalService.EmailFunction", "PerformanceAppraisalService.EmailFunction\PerformanceAppraisalService.EmailFunction.csproj", "{AD392AA2-A872-444F-B4BC-40BDE96409FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

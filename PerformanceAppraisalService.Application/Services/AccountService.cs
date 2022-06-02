@@ -165,5 +165,64 @@ namespace PerformanceAppraisalService.Application.Services
             };
         }
 
+        public async Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+            if (user == null)
+            {
+                return "No user associated with email";
+            }
+
+
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={forgotPasswordDto.Email}&token={validToken}";
+
+            await _queueService.SendToQueue(forgotPasswordDto.Email, EmailType.ForgotPassword, url);
+
+
+            return "Reset password URL has been sent to the email successfully!";
+        }
+
+        public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "No user associated with email",
+                };
+
+            if (model.NewPassword != model.ConfirmPassword)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Password doesn't match its confirmation",
+                };
+
+            var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
+
+            if (result.Succeeded)
+                return new UserManagerResponse
+                {
+                    Message = "Password has been reset successfully!",
+                    IsSuccess = true,
+                };
+
+            return new UserManagerResponse
+            {
+                Message = "Something went wrong",
+                IsSuccess = false,
+                Errors = result.Errors.Select(e => e.Description),
+            };
+        }
+
     }
 }

@@ -8,6 +8,7 @@ namespace PerformanceAppraisalService.Domain.Enum
     {
         Registration = 0,
         LogIn = 1,
-        ConfirmEmail = 2
+        ConfirmEmail = 2,
+        ForgotPassword = 3
     }
 }
