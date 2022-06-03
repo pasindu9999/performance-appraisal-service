@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,18 +59,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Criteria_groups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Criterias",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CriteriaName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Criterias", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,6 +196,25 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Criterias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CriteriaName = table.Column<string>(nullable: true),
+                    criteria_GroupID = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Criterias", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Criterias_Criteria_groups_criteria_GroupID",
+                        column: x => x.criteria_GroupID,
+                        principalTable: "Criteria_groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -246,6 +253,11 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Criterias_criteria_GroupID",
+                table: "Criterias",
+                column: "criteria_GroupID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -266,9 +278,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Criteria_groups");
-
-            migrationBuilder.DropTable(
                 name: "Criterias");
 
             migrationBuilder.DropTable(
@@ -282,6 +291,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Criteria_groups");
         }
     }
 }

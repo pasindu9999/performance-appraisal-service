@@ -2,6 +2,7 @@
 using Create_PA.domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using PerformanceAppraisalService.Application.Dtos;
+using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PerformanceAppraisalService.Application.Services
 {
-    public class Criteria_GroupService
+    public class Criteria_GroupService : ICriteria_GroupService
     {
         private readonly ApplicationDbContext _context;
 
@@ -90,5 +91,7 @@ namespace PerformanceAppraisalService.Application.Services
 
             return 0;
         }
+
+       
     }
 }

@@ -267,7 +267,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<string>("CriteriaName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("criteria_GroupID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("criteria_GroupID");
 
                     b.ToTable("Criterias");
                 });
@@ -354,6 +359,13 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Criteria", b =>
+                {
+                    b.HasOne("Create_Criteria_Group.Domain.Entities.Criteria_Group", "criteria_Group")
+                        .WithMany("Criterias")
+                        .HasForeignKey("criteria_GroupID");
                 });
 #pragma warning restore 612, 618
         }

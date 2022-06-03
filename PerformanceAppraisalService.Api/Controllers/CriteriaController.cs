@@ -24,7 +24,7 @@ namespace PerformanceAppraisalService.Api.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(CriteriaDto criteria_Dto)
         {
-            var response = await _criteriaService.Create_criteriaGroupAsync(criteria_Dto);
+            var response = await _criteriaService.Create_criteriaAsync(criteria_Dto);
             return Ok(response);
         }
 
@@ -34,6 +34,14 @@ namespace PerformanceAppraisalService.Api.Controllers
         public async Task<IActionResult> List()
         {
             var result = await _criteriaService.GetCriteriaAsync();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("by-criteriagroupid")]
+        public async Task<IActionResult> List(Guid criteria_GroupID)
+        {
+            var result = await _criteriaService.GetCriteriabyGroupAsync(criteria_GroupID);
             return Ok(result);
         }
 

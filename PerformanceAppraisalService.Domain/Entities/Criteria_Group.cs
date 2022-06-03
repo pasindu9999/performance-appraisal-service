@@ -9,6 +9,6 @@ namespace Create_Criteria_Group.Domain.Entities
     {
         public string CriteriaGroup { get; set; }
 
-        
+        public ICollection<Criteria> Criterias { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerformanceAppraisalService.Application.Dtos;
+using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PerformanceAppraisalService.Application.Services
 {
-    public class Criteria_Service
+    public class Criteria_Service : ICriteria_Service
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,7 +19,7 @@ namespace PerformanceAppraisalService.Application.Services
             _context = context;
         }
 
-        public async Task<string> Create_criteriaGroupAsync(CriteriaDto criteriaDto)
+        public async Task<string> Create_criteriaAsync(CriteriaDto criteriaDto)
         {
             var criteria = new Criteria
             {
@@ -44,6 +45,24 @@ namespace PerformanceAppraisalService.Application.Services
 
             return criteria;
         }
+
+        public Task<List<CriteriaDto>> GetCriteriabyGroupAsync(Guid criteria_GroupID)
+        {
+            var criteriaList = _context.Criterias.Include(x => x.criteria_Group).Where(x => x.criteria_GroupID == criteria_GroupID)
+                .Select(x => new CriteriaDto
+                {
+                    Id = x.Id,
+                    CriteriaName = x.CriteriaName,
+                  
+                })
+                .ToListAsync();
+
+            return criteriaList;
+
+        }
+
+
+
 
         public async Task<CriteriaDto> GetCriteriaByIdAsync(Guid id)
         {
