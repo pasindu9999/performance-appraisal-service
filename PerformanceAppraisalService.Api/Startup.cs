@@ -40,6 +40,10 @@ namespace PerformanceAppraisalService.Api
 
             services.AddTransient<IPA_sheetService, PA_sheetService>();
 
+            services.AddTransient<ICriteria_GroupService, Criteria_GroupService>();
+
+            services.AddTransient<ICriteria_Service, Criteria_Service>();
+
             services.AddCors();
 
             services.AddControllers();
