@@ -46,7 +46,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
                     DepartmentName = x.Department.Name,
-                    TeamLeaderId = x.TeamLeaderId
+                    TeamLeaderId = (Guid)x.TeamLeaderId
                 })
                 .ToListAsync();
 
@@ -55,14 +55,9 @@ namespace PerformanceAppraisalService.Application.Services
 
 
         //filter according to the departments
-        public Task<List<TeamDto>> GetTeamsAsync(Guid DepartmentId)
+        public Task<List<TeamDto>> GetTeamsbyDepartmentAsync(Guid departmentId)
         {
-            if (DepartmentId == Guid.Empty)
-            {
-                return GetTeamListAsync();
-            }
-
-            var teamsList =  _context.Teams.Include(x => x.Department).Where(x=> x.DepartmentId== DepartmentId)
+            var teamsList =  _context.Teams.Include(x => x.Department).Where(x=> x.DepartmentId== departmentId)
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
@@ -89,7 +84,7 @@ namespace PerformanceAppraisalService.Application.Services
                     DepartmentId = x.DepartmentId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
-                    TeamLeaderId = x.TeamLeaderId
+                    TeamLeaderId = (Guid)x.TeamLeaderId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -100,12 +95,13 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var team = await _context.Teams.FirstOrDefaultAsync(x => x.Id == teamDto.Id);
 
-            if (team != null)
+            if (team.Id != null)
             {
                 team.Name = team.Name;
-                team.DepartmentId = team.DepartmentId;
-                team.Description = team.Description;
-                team.NoOfEmployees = team.NoOfEmployees;
+                team.DepartmentId = teamDto.DepartmentId;
+                team.TeamLeaderId = teamDto.TeamLeaderId;
+                team.Description = teamDto.Description;
+                team.NoOfEmployees = teamDto.NoOfEmployees;
 
                 await _context.SaveChangesAsync();
                 return "Team update success...!";

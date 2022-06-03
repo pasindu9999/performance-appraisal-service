@@ -231,7 +231,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentHeadId")
+                    b.Property<Guid?>("DepartmentHeadId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -246,7 +246,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentHeadId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[DepartmentHeadId] IS NOT NULL");
 
                     b.ToTable("Departments");
                 });
@@ -274,7 +275,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DesignationId")
@@ -455,21 +456,17 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "DepartmentHead")
                         .WithOne("Department")
-                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", null)
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
-                        .WithMany("EmployeeTeam")
+                        .WithMany("Employee")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

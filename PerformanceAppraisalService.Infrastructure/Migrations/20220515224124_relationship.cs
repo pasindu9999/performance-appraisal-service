@@ -208,9 +208,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     LastName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     DesignationId = table.Column<Guid>(nullable: false),
-                    DepartmentId = table.Column<Guid>(nullable: false),
+                    DepartmentId = table.Column<Guid>(nullable: true),
                     TeamId = table.Column<Guid>(nullable: true),
-                    DepartmentId1 = table.Column<Guid>(nullable: true)
+                    TeamId1 = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -252,6 +252,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     NoOfEmployees = table.Column<int>(nullable: false),
+                    TeamLeaderId = table.Column<Guid>(nullable: true),
                     DepartmentId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -263,6 +264,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Teams_Employees_TeamLeaderId",
+                        column: x => x.TeamLeaderId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -311,9 +318,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentId1",
+                name: "IX_Employees_DepartmentId",
                 table: "Employees",
-                column: "DepartmentId1");
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DesignationId",
@@ -321,27 +328,34 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 column: "DesignationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_TeamId",
+                name: "IX_Employees_TeamId1",
                 table: "Employees",
-                column: "TeamId");
+                column: "TeamId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_DepartmentId",
                 table: "Teams",
                 column: "DepartmentId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_TeamLeaderId",
+                table: "Teams",
+                column: "TeamLeaderId",
+                unique: true,
+                filter: "[TeamLeaderId] IS NOT NULL");
+
             migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Departments_DepartmentId1",
+                name: "FK_Employees_Departments_DepartmentId",
                 table: "Employees",
-                column: "DepartmentId1",
+                column: "DepartmentId",
                 principalTable: "Departments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Employees_Teams_TeamId",
+                name: "FK_Employees_Teams_TeamId1",
                 table: "Employees",
-                column: "TeamId",
+                column: "TeamId1",
                 principalTable: "Teams",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -352,6 +366,10 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Departments_Employees_DepartmentHeadId",
                 table: "Departments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Teams_Employees_TeamLeaderId",
+                table: "Teams");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

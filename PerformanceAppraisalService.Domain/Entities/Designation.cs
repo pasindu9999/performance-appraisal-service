@@ -11,7 +11,7 @@ namespace PerformanceAppraisalService.Domain.Entities
         public string Description { get; set; }
 
         //relationship with employee
-        public ICollection<Employee> EmployeeTeam { get; set; }
+        public ICollection<Employee> Employee { get; set; }
 
         //relationship with despartment table  M:N
         //public ICollection<Department> Departments { get; set; }

@@ -8,6 +8,8 @@ namespace PerformanceAppraisalService.Domain.Entities
 {
     public class Employee: BaseEntity
     {
+        public readonly object DepartmentName;
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RegistrationNumber { get; set; }
         public string FirstName { get; set; }
@@ -21,20 +23,13 @@ namespace PerformanceAppraisalService.Domain.Entities
 
 
         //relationship with department 1:m
-        public Guid DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
         public virtual Department Department { get; set; }
 
 
         //relationship with team 1:m
         public Guid? TeamId { get; set; }
         public virtual Team Team { get; set; }
-
-
-
-        
-
-
-
 
 
 

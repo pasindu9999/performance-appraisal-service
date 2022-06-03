@@ -40,7 +40,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    DepartmentHeadId = x.DepartmentHeadId,
+                    DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -56,7 +56,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    DepartmentHeadId = x.DepartmentHeadId,
+                    DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -69,12 +69,12 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var department = await _context.Departments.FirstOrDefaultAsync(x => x.Id == departmentDto.Id);
 
-            if (department != null)
+            if (department.Id != null)
             {
-                department.Name = department.Name;
-                department.DepartmentHead = department.DepartmentHead;
-                department.Description = department.Description;
-                department.NoOfEmployees = department.NoOfEmployees;
+                department.Name = departmentDto.Name;
+                department.DepartmentHeadId = departmentDto.DepartmentHeadId;
+                department.Description = departmentDto.Description;
+                department.NoOfEmployees = departmentDto.NoOfEmployees;
 
                 await _context.SaveChangesAsync();
                 return "Department update success...!";

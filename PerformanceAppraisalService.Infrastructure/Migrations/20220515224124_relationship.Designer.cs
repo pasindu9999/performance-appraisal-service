@@ -10,8 +10,8 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220515212859_relationship2")]
-    partial class relationship2
+    [Migration("20220515224124_relationship")]
+    partial class relationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -276,7 +276,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DesignationId")
@@ -466,12 +466,10 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", null)
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
-                        .WithMany("EmployeeTeam")
+                        .WithMany("Employee")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

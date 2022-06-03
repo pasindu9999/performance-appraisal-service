@@ -28,7 +28,7 @@ namespace PerformanceAppraisalService.Application.Services
                 FirstName = employeeDto.FirstName,
                 LastName = employeeDto.LastName,
                 Email = employeeDto.Email,
-                //DesignationId = employeeDto.DesignationId
+                DesignationId = employeeDto.DesignationId
             };
 
             _context.Add(employee);
@@ -39,19 +39,68 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<EmployeeDto>> GetEmployeeListAsync()
         {
-            var employeesList = await _context.Employees
+            var employeesList = await _context.Employees.Include(x => x.Designation)
+
+
                 .Select(x => new EmployeeDto
                 {
                     Id = x.Id,
                     RegistrationNumber = x.RegistrationNumber,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
+                    DesignationName = x.Designation.Name,
                     Email = x.Email,
-                    //DesignationId = x.DesignationId
+                    DesignationId = x.DesignationId,
+                    DepartmentId = (Guid)x.DepartmentId,
+                    DepartmentName = x.DepartmentName
+                }) 
+                .ToListAsync();
+
+            return employeesList;
+        }
+
+        //filter according to the departments
+        public Task<List<EmployeeDto>> GetEmployeesbyDepartmentAsync(Guid departmentId)
+        {
+            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.DepartmentId == departmentId)
+                .Select(x => new EmployeeDto
+                {
+                    Id = x.Id,
+                    RegistrationNumber = x.RegistrationNumber,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    DesignationName = x.Designation.Name,
+                    Email = x.Email,
+                    DesignationId = x.DesignationId,
+                    DepartmentId = (Guid)x.DepartmentId,
+                    TeamId = (Guid)x.TeamId
                 })
                 .ToListAsync();
 
             return employeesList;
+
+        }
+
+        //filter according to the teams
+        public Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid teamId)
+        {
+            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.TeamId == teamId)
+                .Select(x => new EmployeeDto
+                {
+                    Id = x.Id,
+                    RegistrationNumber = x.RegistrationNumber,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    DesignationName = x.Designation.Name,
+                    Email = x.Email,
+                    DesignationId = x.DesignationId,
+                    DepartmentId = (Guid)x.DepartmentId,
+                    TeamId = (Guid)x.TeamId
+                })
+                .ToListAsync();
+
+            return employeesList;
+
         }
 
         public async Task<EmployeeDto> GetEmployeeByIdAsync(Guid id)
@@ -64,7 +113,9 @@ namespace PerformanceAppraisalService.Application.Services
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Email = x.Email,
-                    //DesignationId = x.DesignationId
+                    DesignationId = x.DesignationId,
+                    DepartmentId = (Guid)x.DepartmentId,
+                    TeamId = (Guid)x.TeamId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -81,8 +132,9 @@ namespace PerformanceAppraisalService.Application.Services
                 employee.FirstName = employee.FirstName;
                 employee.LastName = employee.LastName;
                 employee.Email = employee.Email;
-                //employee.DesignationId = employeeDto.DesignationId;
-
+                employee.DesignationId = employeeDto.DesignationId;
+                employee.DepartmentId = employeeDto.DepartmentId;
+                employee.TeamId = employeeDto.TeamId;
                 await _context.SaveChangesAsync();
                 return "Employee update success...!";
             }

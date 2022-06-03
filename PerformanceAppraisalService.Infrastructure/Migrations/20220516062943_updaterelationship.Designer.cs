@@ -10,8 +10,8 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220515212209_relationship")]
-    partial class relationship
+    [Migration("20220516062943_updaterelationship")]
+    partial class updaterelationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,7 +233,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentHeadId")
+                    b.Property<Guid?>("DepartmentHeadId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -248,7 +248,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentHeadId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[DepartmentHeadId] IS NOT NULL");
 
                     b.ToTable("Departments");
                 });
@@ -276,10 +277,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DepartmentId1")
+                    b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DesignationId")
@@ -302,13 +300,16 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("TeamId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("DesignationId");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId1");
 
                     b.ToTable("Employees");
                 });
@@ -378,9 +379,16 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<int>("NoOfEmployees")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TeamLeaderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("TeamLeaderId")
+                        .IsUnique()
+                        .HasFilter("[TeamLeaderId] IS NOT NULL");
 
                     b.ToTable("Teams");
                 });
@@ -450,26 +458,24 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "DepartmentHead")
                         .WithOne("Department")
-                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Employee", b =>
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", null)
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId1");
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
-                        .WithMany("EmployeeTeam")
+                        .WithMany("Employee")
                         .HasForeignKey("DesignationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", "Team")
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", null)
                         .WithMany("Employees")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId1");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Team", b =>
@@ -479,6 +485,10 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "TeamLeader")
+                        .WithOne("Team")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Team", "TeamLeaderId");
                 });
 #pragma warning restore 612, 618
         }

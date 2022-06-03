@@ -21,7 +21,7 @@ namespace PerformanceAppraisalService.Domain.Entities
 
 
         //relationship with employee table department head department 1:1
-        public Guid DepartmentHeadId { get; set; }
+        public Guid? DepartmentHeadId { get; set; }
         public Employee DepartmentHead { get; set; }
     }
 }
