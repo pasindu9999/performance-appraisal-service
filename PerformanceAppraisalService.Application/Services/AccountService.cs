@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Queues;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
@@ -33,14 +34,17 @@ namespace PerformanceAppraisalService.Application.Services
 
         private IConfiguration _configuration;
 
+        private readonly IHttpContextAccessor _httpContext;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IQueueService queueService, IConfiguration configuration)
+
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings, IQueueService queueService, IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _queueService = queueService;
             _configuration = configuration;
+            _httpContext = httpContext;
         }
 
         public async Task<string> PostApplicationUser(ApplicationUserDto applicationUserDto)
@@ -135,6 +139,21 @@ namespace PerformanceAppraisalService.Application.Services
 
         }
 
+        public async Task<string> ChangePasswordAsync(ChangePasswordDto model)
+        {
+            var userId = _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+                return "Password doesn't match its confirmation";
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (result.Succeeded)
+                return "Password changed successfully";
+
+            return "Something went wrong";
+        }
+
         public async Task<UserManagerResponse> ConfirmEmailAsync(string userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -179,7 +198,6 @@ namespace PerformanceAppraisalService.Application.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            //string url = $"{_configuration["AppUrl"]}/ResetPassword?email={forgotPasswordDto.Email}&token={validToken}";
             string url = $"{_configuration["ClientAppUrl"]}/resetpassword/{forgotPasswordDto.Email}/{validToken}";
 
             await _queueService.SendToQueue(forgotPasswordDto.Email, EmailType.ForgotPassword, url);

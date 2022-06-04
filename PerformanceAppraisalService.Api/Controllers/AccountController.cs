@@ -41,6 +41,13 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(response);
         }
 
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+        {
+            var result = await _accountService.ChangePasswordAsync(model);
+            return Ok(result);
+        }
+
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {

@@ -14,5 +14,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<string> LogIn(LogInDto logInDto);
         Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<string> ResetPasswordAsync(ResetPasswordViewModel model);
+        Task<string> ChangePasswordAsync(ChangePasswordDto model);
+
     }
 }
