@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519054335_panelrelationship")]
+    partial class panelrelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,22 +369,14 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeFirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PanelId")
+                    b.Property<Guid>("PanelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("PanelId");
 
-                    b.ToTable("Reviwees");
+                    b.ToTable("Reviewees");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
@@ -391,15 +385,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeFirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Reviwers");
                 });
@@ -528,22 +514,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
                 {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
                         .WithMany("Reviwees")
-                        .HasForeignKey("PanelId");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
-                {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

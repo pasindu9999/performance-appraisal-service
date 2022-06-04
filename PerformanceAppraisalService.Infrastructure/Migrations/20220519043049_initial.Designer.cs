@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519043049_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,73 +337,40 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PanelNumber")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReviweeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviwerID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Panels");
                 });
 
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
-                {
-                    b.Property<Guid>("PanelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ReviwerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PanelId", "ReviwerId");
-
-                    b.HasIndex("ReviwerId");
-
-                    b.ToTable("PanelReviwer");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmployeeFirstName")
+                    b.Property<string>("PanelID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ReviweeDesignation")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PanelId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ReviweeID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviweeName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("PanelId");
-
-                    b.ToTable("Reviwees");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmployeeFirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("Reviwers");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Salary", b =>
@@ -507,43 +476,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
-                {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
-                        .WithMany("PanelReviwers")
-                        .HasForeignKey("PanelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwer")
-                        .WithMany("PanelReviwers")
-                        .HasForeignKey("ReviwerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
-                {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
-                        .WithMany("Reviwees")
-                        .HasForeignKey("PanelId");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
-                {
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

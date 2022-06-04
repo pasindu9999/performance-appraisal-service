@@ -1,7 +1,11 @@
-﻿using PerformanceAppraisalService.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
+using PerformanceAppraisalService.Domain.Entities;
+using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,29 +13,85 @@ namespace PerformanceAppraisalService.Application.Services
 {
     public class ReviwerService : IReviwerService
     {
-        public Task<string> CreateReviwerAsync(ReviwerDto reviwerDto)
+        private readonly ApplicationDbContext _context;
+
+        public ReviwerService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<string> CreateReviwerAsync(ReviwerDto reviwerDto)
+        {
+            var reviwer = new Reviwer
+            {
+                EmployeeId = reviwerDto.EmployeeId,
+                EmployeeFirstName = reviwerDto.EmployeeFirstName,
+                PanelId = reviwerDto.PanelId
+            };
+
+
+            _context.Add(reviwer);
+            await _context.SaveChangesAsync();
+
+            return "Reviwer added successfully...!";
         }
 
-        public Task<object> DeleteReviwerAsync(Guid id)
+        public async Task<string> DeleteReviwerAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var reviwer = await _context.Reviwers.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (reviwer != null)
+            {
+                _context.Remove(reviwer);
+                await _context.SaveChangesAsync();
+                return "Reviwer deleted successfully";
+            }
+
+            return "Reviwer not deleted...";
         }
 
-        public Task<ReviwerDto> GetReviwerByIdAsync(Guid id)
+        public async Task<ReviwerDto> GetReviwerByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var reviwer = await _context.Reviwers
+                .Select(x => new ReviwerDto
+                {
+                    Id = x.Id,
+                    EmployeeFirstName = x.EmployeeFirstName,
+                    EmployeeId = x.EmployeeId,
+                    PanelId = x.PanelId
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return reviwer;
         }
 
-        public Task<List<ReviwerDto>> GetReviwerListAsync()
+        public async Task<List<ReviwerDto>> GetReviwerListAsync()
         {
-            throw new NotImplementedException();
+            var reviwersList = await _context.Reviwers
+                .Select(x => new ReviwerDto
+                {
+                    Id = x.Id,
+                    EmployeeId = x.EmployeeId,
+                    EmployeeFirstName = x.EmployeeFirstName,
+                    PanelId = x.PanelId
+                })
+                .ToListAsync();
+
+            return reviwersList;
         }
 
-        public Task<object> UpdateReviwerAsync(ReviwerDto reviwerDto)
+        public async Task<string> UpdateReviwerAsync(ReviwerDto reviwerDto)
         {
-            throw new NotImplementedException();
+            var reviwer = await _context.Reviwers.FirstOrDefaultAsync(x => x.Id == reviwerDto.Id);
+
+            if (reviwer != null)
+            {
+                reviwer.EmployeeFirstName = reviwerDto.EmployeeFirstName;
+
+                await _context.SaveChangesAsync();
+                return "Reviwer updated successfully";
+            }
+
+            return "Reviwer not updated..";
         }
     }
 }

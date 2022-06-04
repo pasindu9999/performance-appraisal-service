@@ -26,14 +26,8 @@ namespace PerformanceAppraisalService.Api.Controllers
         [Route("create")]
         public async Task<IActionResult> Create(OrganizationDto organizationDto)
         {
-            var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
-            if(imgresponse != null)
-            {
-                var response = await _organizationService.CreateOrganizationAsync(organizationDto);
-                return Ok(response);
-            }
-            
-            return BadRequest();
+            var response = await _organizationService.CreateOrganizationAsync(organizationDto);
+            return Ok(response);
         }
         
         // api/organization/list

@@ -17,16 +17,18 @@ namespace PerformanceAppraisalService.Application.Services
     public class OrganizationService: IOrganizationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAzureBlobService _azureBlobService;
         
-        
-        public OrganizationService(ApplicationDbContext context) 
+        public OrganizationService(ApplicationDbContext context, IAzureBlobService azureBlobService) 
         {
             _context = context;
+            _azureBlobService = azureBlobService;
             
         }
 
         public async Task<string> CreateOrganizationAsync(OrganizationDto organizationDto)
         {
+           var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
             
 
             var organizaion = new Organization

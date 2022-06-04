@@ -6,9 +6,9 @@ namespace PerformanceAppraisalService.Application.Dtos
 {
     public class ReviweeDto
     {
-        public Guid Id { get; set; }
-        public int RegistrationNumber { get; set; }
+        public Guid Id { get; set; }        
         public Guid EmployeeId { get; set; }
+        public Guid EmployeeDepartmentId { get; set; }
         public Guid PanelId { get; set; }        
         public string EmployeeFirstName { get; set; }
     }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602183518_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,7 +375,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PanelId")
+                    b.Property<Guid>("PanelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -536,7 +538,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
                         .WithMany("Reviwees")
-                        .HasForeignKey("PanelId");
+                        .HasForeignKey("PanelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>

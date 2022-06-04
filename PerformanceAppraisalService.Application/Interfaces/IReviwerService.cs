@@ -11,7 +11,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<string> CreateReviwerAsync(ReviwerDto reviwerDto);
         Task<List<ReviwerDto>> GetReviwerListAsync();
         Task<ReviwerDto> GetReviwerByIdAsync(Guid id);
-        Task<object> UpdateReviwerAsync(ReviwerDto reviwerDto);
-        Task<object> DeleteReviwerAsync(Guid id);
+        Task<string> UpdateReviwerAsync(ReviwerDto reviwerDto);
+        Task<string> DeleteReviwerAsync(Guid id);
     }
 }

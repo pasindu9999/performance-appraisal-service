@@ -11,7 +11,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<string> CreatePanelAsync(PanelDto panelDto);
         Task<List<PanelDto>> GetPanelListAsync();
         Task<PanelDto> GetPanelByIdAsync(Guid id);
-        Task<object> UpdatePanelAsync(PanelDto panelDto);
-        Task<object> DeletePanelAsync(Guid id);
+        Task<string> UpdatePanelAsync(PanelDto panelDto);
+        Task<string> DeletePanelAsync(Guid id);
     }
 }

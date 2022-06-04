@@ -19,10 +19,20 @@ namespace PerformanceAppraisalService.Application.Services
         }
         public async Task<string> CreatePanelAsync(PanelDto panelDto)
         {
-            throw new NotImplementedException();
+            var panel = new Panel
+            {
+                //Reviwees = panelDto.Reviwees,
+                //PanelReviwers = panelDto.PanelReviwers
+            };
+
+
+            _context.Add(panel);
+            await _context.SaveChangesAsync();
+
+            return "Organization Create success...!";
         }
 
-        public Task<object> DeletePanelAsync(Guid id)
+        public Task<string> DeletePanelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -37,7 +47,7 @@ namespace PerformanceAppraisalService.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<object> UpdatePanelAsync(PanelDto panelDto)
+        public Task<string> UpdatePanelAsync(PanelDto panelDto)
         {
             throw new NotImplementedException();
         }
