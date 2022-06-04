@@ -38,6 +38,23 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Salary> Salarys { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Department)
+                .WithOne(d => d.DepartmentHead)
+                .HasForeignKey<Department>(e => e.DepartmentHeadId);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Team)
+                .WithOne(t => t.TeamLeader)
+                .HasForeignKey<Team>(e => e.TeamLeaderId);
+
+
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<Panel> Panels { get; set; }
         public DbSet<Reviwer> Reviwers { get; set; }
         public DbSet<Reviwee> Reviwees { get; set; }
