@@ -179,7 +179,8 @@ namespace PerformanceAppraisalService.Application.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={forgotPasswordDto.Email}&token={validToken}";
+            //string url = $"{_configuration["AppUrl"]}/ResetPassword?email={forgotPasswordDto.Email}&token={validToken}";
+            string url = $"{_configuration["ClientAppUrl"]}/resetpassword/{forgotPasswordDto.Email}/{validToken}";
 
             await _queueService.SendToQueue(forgotPasswordDto.Email, EmailType.ForgotPassword, url);
 
@@ -187,22 +188,17 @@ namespace PerformanceAppraisalService.Application.Services
             return "Reset password URL has been sent to the email successfully!";
         }
 
-        public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model)
+        
+        public async Task<string> ResetPasswordAsync(ResetPasswordViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return new UserManagerResponse
-                {
-                    IsSuccess = false,
-                    Message = "No user associated with email",
-                };
+                return "No user associated with email";
+
 
             if (model.NewPassword != model.ConfirmPassword)
-                return new UserManagerResponse
-                {
-                    IsSuccess = false,
-                    Message = "Password doesn't match its confirmation",
-                };
+                return "Password doesn't match its confirmation";
+               
 
             var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
             string normalToken = Encoding.UTF8.GetString(decodedToken);
@@ -210,18 +206,11 @@ namespace PerformanceAppraisalService.Application.Services
             var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
 
             if (result.Succeeded)
-                return new UserManagerResponse
-                {
-                    Message = "Password has been reset successfully!",
-                    IsSuccess = true,
-                };
+                return "Password has been reset successfully!";
 
-            return new UserManagerResponse
-            {
-                Message = "Something went wrong",
-                IsSuccess = false,
-                Errors = result.Errors.Select(e => e.Description),
-            };
+
+            return "Something went wrong";
+
         }
 
     }

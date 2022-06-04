@@ -51,14 +51,13 @@ namespace PerformanceAppraisalService.Api.Controllers
 
             if (result.IsSuccess)
             {
-                return Redirect($"{_configuration["AppUrl"]}/ConfirmEmail.html");
+                return Redirect($"{_configuration["ClientAppUrl"]}/confirmemail");
             }
             else
             {
-                return Redirect($"{_configuration["AppUrl"]}/NotVerifiedEmail.html");
+                return Redirect($"{_configuration["ClientAppUrl"]}/verificationfail");
             }
 
-            //return BadRequest(result);
 
         }
 
@@ -69,25 +68,15 @@ namespace PerformanceAppraisalService.Api.Controllers
                 return NotFound();
 
             var result = await _accountService.ForgotPasswordAsync(forgotPasswordDto);
-            return Ok(result); // 200
+            return Ok(result); 
 
-            //return BadRequest(result); // 400
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _accountService.ResetPasswordAsync(model);
-
-                if (result.IsSuccess)
-                    return Ok(result);
-
-                return BadRequest(result);
-            }
-
-            return BadRequest("Some properties are not valid");
+            var result = await _accountService.ResetPasswordAsync(model);
+            return Ok(result);
         }
 
 

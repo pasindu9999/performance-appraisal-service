@@ -81,7 +81,6 @@ namespace PerformanceAppraisalService.Api
 
             services.AddControllers();
 
-            services.AddRazorPages();
 
             //Jwt Authentication
 
@@ -129,13 +128,10 @@ namespace PerformanceAppraisalService.Api
 
             app.UseRouting();
 
-            app.UseStaticFiles();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }

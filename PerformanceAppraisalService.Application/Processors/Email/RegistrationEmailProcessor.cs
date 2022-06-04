@@ -26,9 +26,9 @@ namespace PerformanceAppraisalService.Application.Processors.Email
         {
            
             var user =  _context1.ApplicationUsers.Where(u => u.Id == userId.ToString()).Single();
-            string body = "You have registered to the JRC Performance Appraisal System Successfully";
+            string body = "Your Account has been successfully created! We have sent you a verification link to your email address";
             EmailSender emailSender = new EmailSender();
-            string eTemplateId = "d-2a2c063235e04a7babf95468fbe467f1"; 
+            string eTemplateId = "d-190f81fbfee94f11a0ac11701ed6fa7b "; 
             emailSender.Send(user.UserName,body,user.FullName,eTemplateId, url);
         }
     }

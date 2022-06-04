@@ -13,6 +13,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<UserManagerResponse> ConfirmEmailAsync(string userid, string token);
         Task<string> LogIn(LogInDto logInDto);
         Task<string> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
-        Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model);
+        Task<string> ResetPasswordAsync(ResetPasswordViewModel model);
     }
 }
