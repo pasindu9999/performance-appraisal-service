@@ -37,7 +37,7 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<TeamDto>> GetTeamListAsync()
         {
-            var teamsList = await _context.Teams.Include(x => x.Department)
+            var teamsList = await _context.Teams
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
@@ -46,7 +46,8 @@ namespace PerformanceAppraisalService.Application.Services
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
                     DepartmentName = x.Department.Name,
-                    TeamLeaderId = (Guid)x.TeamLeaderId
+                    TeamLeaderId = (Guid)x.TeamLeaderId,
+                    TeamLeaderFirstName = x.TeamLeader.FirstName
                 })
                 .ToListAsync();
 

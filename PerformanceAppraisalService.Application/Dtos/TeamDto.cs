@@ -13,6 +13,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public int NoOfEmployees { get; set; }
         public string DepartmentName { get; set; }
         public Guid? TeamLeaderId { get; set; }
+        public string TeamLeaderFirstName { get; set; }
 
 
     }

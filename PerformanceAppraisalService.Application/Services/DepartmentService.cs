@@ -41,6 +41,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     DepartmentHeadId = (Guid)x.DepartmentHeadId,
+                    DepartmentHeadFirstName = x.DepartmentHead.FirstName,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })

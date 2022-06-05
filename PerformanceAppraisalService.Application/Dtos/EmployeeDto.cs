@@ -15,6 +15,6 @@ namespace PerformanceAppraisalService.Application.Dtos
         public string DesignationName { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid TeamId { get; set; }
-        public object DepartmentName { get; internal set; }
+        public string DepartmentName { get; set; }
     }
 }

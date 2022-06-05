@@ -39,8 +39,7 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<EmployeeDto>> GetEmployeeListAsync()
         {
-            var employeesList = await _context.Employees.Include(x => x.Designation)
-
+            var employeesList = await _context.Employees
 
                 .Select(x => new EmployeeDto
                 {
@@ -52,7 +51,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Email = x.Email,
                     DesignationId = x.DesignationId,
                     DepartmentId = (Guid)x.DepartmentId,
-                    DepartmentName = x.DepartmentName
+                    DepartmentName = x.Department.Name
                 }) 
                 .ToListAsync();
 
