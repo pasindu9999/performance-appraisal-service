@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
-    public partial class relationship : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -76,6 +76,19 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organizations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Panels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PanelNumber = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Panels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +244,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     NoOfEmployees = table.Column<int>(nullable: false),
-                    DepartmentHeadId = table.Column<Guid>(nullable: false)
+                    DepartmentHeadId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -239,6 +252,52 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Departments_Employees_DepartmentHeadId",
                         column: x => x.DepartmentHeadId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviwees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PanelId = table.Column<Guid>(nullable: true),
+                    EmployeeId = table.Column<Guid>(nullable: false),
+                    EmployeeFirstName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviwees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviwees_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviwees_Panels_PanelId",
+                        column: x => x.PanelId,
+                        principalTable: "Panels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviwers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PanelId = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<Guid>(nullable: false),
+                    EmployeeFirstName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviwers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviwers_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -270,6 +329,31 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PanelReviwer",
+                columns: table => new
+                {
+                    PanelId = table.Column<Guid>(nullable: false),
+                    ReviwerId = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PanelReviwer", x => new { x.PanelId, x.ReviwerId });
+                    table.ForeignKey(
+                        name: "FK_PanelReviwer_Panels_PanelId",
+                        column: x => x.PanelId,
+                        principalTable: "Panels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PanelReviwer_Reviwers_ReviwerId",
+                        column: x => x.ReviwerId,
+                        principalTable: "Reviwers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -315,7 +399,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "IX_Departments_DepartmentHeadId",
                 table: "Departments",
                 column: "DepartmentHeadId",
-                unique: true);
+                unique: true,
+                filter: "[DepartmentHeadId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",
@@ -331,6 +416,26 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "IX_Employees_TeamId1",
                 table: "Employees",
                 column: "TeamId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PanelReviwer_ReviwerId",
+                table: "PanelReviwer",
+                column: "ReviwerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviwees_EmployeeId",
+                table: "Reviwees",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviwees_PanelId",
+                table: "Reviwees",
+                column: "PanelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviwers_EmployeeId",
+                table: "Reviwers",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_DepartmentId",
@@ -390,6 +495,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "Organizations");
 
             migrationBuilder.DropTable(
+                name: "PanelReviwer");
+
+            migrationBuilder.DropTable(
+                name: "Reviwees");
+
+            migrationBuilder.DropTable(
                 name: "Salarys");
 
             migrationBuilder.DropTable(
@@ -397,6 +508,12 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Reviwers");
+
+            migrationBuilder.DropTable(
+                name: "Panels");
 
             migrationBuilder.DropTable(
                 name: "Employees");

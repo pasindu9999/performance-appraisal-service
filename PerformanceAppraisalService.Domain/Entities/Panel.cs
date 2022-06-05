@@ -8,7 +8,7 @@ namespace PerformanceAppraisalService.Domain.Entities
     public class Panel : BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string PanelNumber { get; set; }
+        public int PanelNumber { get; set; }
         public ICollection<PanelReviwer> PanelReviwers { get; set; }
         public ICollection<Reviwee> Reviwees { get; set; }
     }

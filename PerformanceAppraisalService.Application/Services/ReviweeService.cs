@@ -50,12 +50,13 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<ReviweeDto> GetReviweeByIdAsync(Guid id)
         {
-            var reviwee = await _context.Reviwees
+            var reviwee = await _context.Reviwees.Include(x => x.Employee)
                 .Select(x => new ReviweeDto
                 {
                     Id = x.Id,
                     EmployeeFirstName = x.EmployeeFirstName,
-                    EmployeeId = x.EmployeeId,                    
+                    EmployeeId = x.EmployeeId,
+                    DepartmentName = (string)x.Employee.DepartmentName,
                     PanelId = (Guid)x.PanelId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -70,6 +71,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     EmployeeFirstName = x.EmployeeFirstName,
+                    DepartmentName = (string)x.Employee.DepartmentName,
                     EmployeeId = x.EmployeeId,
                     PanelId = (Guid)x.PanelId
                 })

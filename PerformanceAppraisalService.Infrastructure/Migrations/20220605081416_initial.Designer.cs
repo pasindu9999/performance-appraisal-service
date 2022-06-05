@@ -10,7 +10,7 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220519043049_initial")]
+    [Migration("20220605081416_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,8 +233,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DepartmentHead")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("DepartmentHeadId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -245,12 +245,11 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<int>("NoOfEmployees")
                         .HasColumnType("int");
 
-                    b.Property<int>("RegNo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentHeadId")
+                        .IsUnique()
+                        .HasFilter("[DepartmentHeadId] IS NOT NULL");
 
                     b.ToTable("Departments");
                 });
@@ -265,7 +264,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -279,8 +277,11 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Designation")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DesignationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -296,7 +297,19 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<Guid?>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TeamId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DesignationId");
+
+                    b.HasIndex("TeamId1");
 
                     b.ToTable("Employees");
                 });
@@ -336,41 +349,78 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PanelNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReviweeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReviwerID")
-                        .HasColumnType("int");
+                    b.Property<int>("PanelNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("Id");
 
                     b.ToTable("Panels");
                 });
 
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Review", b =>
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
+                {
+                    b.Property<Guid>("PanelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ReviwerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PanelId", "ReviwerId");
+
+                    b.HasIndex("ReviwerId");
+
+                    b.ToTable("PanelReviwer");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PanelID")
+                    b.Property<string>("EmployeeFirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReviweeDesignation")
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PanelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PanelId");
+
+                    b.ToTable("Reviwees");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmployeeFirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReviweeID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ReviweeName")
+                    b.Property<string>("PanelId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reviews");
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Reviwers");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Salary", b =>
@@ -397,8 +447,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -409,12 +459,16 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<int>("NoOfEmployees")
                         .HasColumnType("int");
 
-                    b.Property<int>("RegNo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<Guid?>("TeamLeaderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("TeamLeaderId")
+                        .IsUnique()
+                        .HasFilter("[TeamLeaderId] IS NOT NULL");
 
                     b.ToTable("Teams");
                 });
@@ -478,6 +532,80 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "DepartmentHead")
+                        .WithOne("Department")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Department", "DepartmentHeadId");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Employee", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Designation", "Designation")
+                        .WithMany("Employee")
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("TeamId1");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
+                        .WithMany("PanelReviwers")
+                        .HasForeignKey("PanelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwer")
+                        .WithMany("PanelReviwers")
+                        .HasForeignKey("ReviwerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
+                        .WithMany("Reviwees")
+                        .HasForeignKey("PanelId");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Team", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Department", "Department")
+                        .WithMany("Teams")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "TeamLeader")
+                        .WithOne("Team")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Team", "TeamLeaderId");
                 });
 #pragma warning restore 612, 618
         }

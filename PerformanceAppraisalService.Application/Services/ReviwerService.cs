@@ -51,11 +51,12 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<ReviwerDto> GetReviwerByIdAsync(Guid id)
         {
-            var reviwer = await _context.Reviwers
+            var reviwer = await _context.Reviwers.Include(x => x.Employee)
                 .Select(x => new ReviwerDto
                 {
                     Id = x.Id,
                     EmployeeFirstName = x.EmployeeFirstName,
+                    EmployeeDepartmentId = (Guid)x.Employee.DepartmentId,
                     EmployeeId = x.EmployeeId,
                     PanelId = x.PanelId
                 })
@@ -66,12 +67,14 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<ReviwerDto>> GetReviwerListAsync()
         {
-            var reviwersList = await _context.Reviwers
+            var reviwersList = await _context.Reviwers.Include(x => x.Employee)
                 .Select(x => new ReviwerDto
                 {
                     Id = x.Id,
                     EmployeeId = x.EmployeeId,
-                    EmployeeFirstName = x.EmployeeFirstName,
+                    EmployeeFirstName = x.Employee.FirstName,
+                    EmployeeDepartmentId = (Guid)x.Employee.DepartmentId,
+                    
                     PanelId = x.PanelId
                 })
                 .ToListAsync();

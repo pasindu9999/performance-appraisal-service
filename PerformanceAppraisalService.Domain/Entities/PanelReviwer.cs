@@ -6,7 +6,7 @@ namespace PerformanceAppraisalService.Domain.Entities
 {
     public class PanelReviwer
     {
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public Guid PanelId { get; set; }
         public Panel Panel { get; set; }
 

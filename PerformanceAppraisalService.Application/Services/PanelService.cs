@@ -1,9 +1,11 @@
-﻿using PerformanceAppraisalService.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +25,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 //Reviwees = panelDto.Reviwees,
                 //PanelReviwers = panelDto.PanelReviwers
+                
             };
 
 
@@ -37,14 +40,29 @@ namespace PerformanceAppraisalService.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<PanelDto> GetPanelByIdAsync(Guid id)
+        public async Task<PanelDto> GetPanelByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var panel = await _context.Reviwers
+                .Select(x => new PanelDto
+                {
+                    Id = x.Id
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return panel;
         }
 
-        public Task<List<PanelDto>> GetPanelListAsync()
+        public async Task<List<PanelDto>> GetPanelListAsync()
         {
-            throw new NotImplementedException();
+            var panelList = await _context.Panels
+                .Select(x => new PanelDto
+                {
+                    Id = x.Id,
+                    PanelNumber = x.PanelNumber
+                })
+                .ToListAsync();
+
+            return panelList;
         }
 
         public Task<string> UpdatePanelAsync(PanelDto panelDto)

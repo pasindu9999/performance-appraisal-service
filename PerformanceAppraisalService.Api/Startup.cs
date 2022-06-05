@@ -75,6 +75,9 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<ISalaryService, SalaryService>();
             services.AddTransient<IAzureBlobService, AzureBlobService>();
             services.AddTransient<IReviweeService, ReviweeService>();
+            services.AddTransient<IReviwerService, ReviwerService>();
+            services.AddTransient<IPanelService, PanelService>();
+            services.AddTransient<IPanelReviwerService, PanelReviwerService>();
             services.AddCors();
 
             services.AddControllers();
