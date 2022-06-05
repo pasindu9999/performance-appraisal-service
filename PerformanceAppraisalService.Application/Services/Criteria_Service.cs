@@ -23,7 +23,8 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var criteria = new Criteria
             {
-                CriteriaName = criteriaDto.CriteriaName
+                CriteriaName = criteriaDto.CriteriaName,
+                description = criteriaDto.description
 
             };
 
@@ -39,7 +40,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new CriteriaDto
                 {
                     Id = x.Id,
-                    CriteriaName = x.CriteriaName
+                    CriteriaName = x.CriteriaName,
+                    description = x.description
                 })
                 .ToListAsync();
 
@@ -53,7 +55,8 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     CriteriaName = x.CriteriaName,
-                  
+                    description = x.description
+
                 })
                 .ToListAsync();
 
@@ -70,7 +73,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new CriteriaDto
                 {
                     Id = x.Id,
-                    CriteriaName = x.CriteriaName
+                    CriteriaName = x.CriteriaName,
+                    description = x.description
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -84,7 +88,7 @@ namespace PerformanceAppraisalService.Application.Services
             if (criteria != null)
             {
                 criteria.CriteriaName = criteriaDto.CriteriaName;
-
+                criteria.description = criteriaDto.description;
 
                 await _context.SaveChangesAsync();
                 return 1;

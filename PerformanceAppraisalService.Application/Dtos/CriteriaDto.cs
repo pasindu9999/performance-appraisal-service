@@ -10,5 +10,7 @@ namespace PerformanceAppraisalService.Application.Dtos
 
         public string CriteriaName { get; set; }
 
+        public string description { get; set; }
+
     }
 }

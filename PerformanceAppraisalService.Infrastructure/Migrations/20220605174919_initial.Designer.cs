@@ -10,7 +10,7 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220603150547_initial")]
+    [Migration("20220605174919_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.Property<string>("CriteriaGroup")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("weightage")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -271,6 +274,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.Property<Guid?>("criteria_GroupID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

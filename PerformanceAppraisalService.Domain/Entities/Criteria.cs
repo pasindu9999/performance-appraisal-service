@@ -9,6 +9,8 @@ namespace PerformanceAppraisalService.Domain.Entities
     {
         public string CriteriaName { get; set; }
 
+        public string description { get; set; }
+
         public Guid? criteria_GroupID { get; set; }
 
         public Criteria_Group criteria_Group { get; set; }

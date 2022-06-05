@@ -26,7 +26,8 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var criteria_group = new Criteria_Group
             {
-                CriteriaGroup = criteria_groupDto.CriteriaGroup
+                CriteriaGroup = criteria_groupDto.CriteriaGroup,
+                weightage = criteria_groupDto.weightage
 
             };
 
@@ -42,7 +43,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new Criteria_GroupDto
                 {
                     Id = x.Id,
-                    CriteriaGroup = x.CriteriaGroup
+                    CriteriaGroup = x.CriteriaGroup,
+                    weightage = x.weightage
                 })
                 .ToListAsync();
 
@@ -55,7 +57,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new Criteria_GroupDto
                 {
                     Id = x.Id,
-                    CriteriaGroup = x.CriteriaGroup
+                    CriteriaGroup = x.CriteriaGroup,
+                     weightage = x.weightage
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -69,7 +72,8 @@ namespace PerformanceAppraisalService.Application.Services
             if (criteria_group != null)
             {
                 criteria_group.CriteriaGroup = criteria_groupDto.CriteriaGroup;
-               
+                criteria_group.weightage = criteria_groupDto.weightage;
+
 
                 await _context.SaveChangesAsync();
                 return 1;

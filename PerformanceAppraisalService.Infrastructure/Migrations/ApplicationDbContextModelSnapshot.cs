@@ -28,6 +28,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<string>("CriteriaGroup")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("weightage")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Criteria_groups");
@@ -269,6 +272,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.Property<Guid?>("criteria_GroupID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -9,5 +9,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public Guid Id { get; set; }
 
         public string CriteriaGroup { get; set; }
+
+        public int weightage { get; set; }
     }
 }

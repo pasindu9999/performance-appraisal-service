@@ -54,7 +54,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CriteriaGroup = table.Column<string>(nullable: true)
+                    CriteriaGroup = table.Column<string>(nullable: true),
+                    weightage = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,6 +203,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CriteriaName = table.Column<string>(nullable: true),
+                    description = table.Column<string>(nullable: true),
                     criteria_GroupID = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
