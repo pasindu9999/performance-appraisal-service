@@ -13,7 +13,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         {
 
         }
-
+        
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
@@ -25,6 +25,10 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<PA_Sheet> PA_lists { get; set; }
         public DbSet<Criteria_Group> Criteria_groups { get; set; }
         public DbSet<Criteria> Criterias { get; set; }
+        public DbSet<Panel> Panels { get; set; }
+        public DbSet<Reviwer> Reviwers { get; set; }
+        public DbSet<Reviwee> Reviwees { get; set; }
+        public DbSet<PanelReviwer> PanelReviwers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +45,9 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        
+
     }
-    
+
 
 }

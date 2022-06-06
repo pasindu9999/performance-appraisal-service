@@ -392,6 +392,86 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.ToTable("Organizations");
                 });
 
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Panel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PanelNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Panels");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
+                {
+                    b.Property<Guid>("PanelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ReviwerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PanelId", "ReviwerId");
+
+                    b.HasIndex("ReviwerId");
+
+                    b.ToTable("PanelReviwers");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmployeeFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PanelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PanelId");
+
+                    b.ToTable("Reviwees");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmployeeFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PanelId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Reviwers");
+                });
+
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Salary", b =>
                 {
                     b.Property<Guid>("Id")
@@ -525,6 +605,43 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Team", null)
                         .WithMany("Employees")
                         .HasForeignKey("TeamId1");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.PanelReviwer", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
+                        .WithMany("PanelReviwers")
+                        .HasForeignKey("PanelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwer")
+                        .WithMany("PanelReviwers")
+                        .HasForeignKey("ReviwerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
+                        .WithMany("Reviwees")
+                        .HasForeignKey("PanelId");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
+                {
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Team", b =>

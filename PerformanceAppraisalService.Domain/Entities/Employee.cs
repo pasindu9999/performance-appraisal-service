@@ -33,5 +33,9 @@ namespace PerformanceAppraisalService.Domain.Entities
 
 
 
+        //relationship with reviwee 1:1
+        //public Guid? TeamId { get; set; }
+        //public virtual Team Team { get; set; }
+
     }
 }

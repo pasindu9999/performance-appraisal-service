@@ -14,8 +14,10 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
-        public OrganizationController(IOrganizationService organizationService)
+        private readonly IAzureBlobService _azureBlobService;
+        public OrganizationController(IOrganizationService organizationService, IAzureBlobService azureBlobService)
         {
+            _azureBlobService = azureBlobService;
             _organizationService = organizationService;
         }
 
