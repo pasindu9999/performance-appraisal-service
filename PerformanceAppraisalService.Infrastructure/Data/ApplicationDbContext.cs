@@ -22,6 +22,9 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Salary> Salarys { get; set; }
+        public DbSet<PA_Sheet> PA_lists { get; set; }
+        public DbSet<Criteria_Group> Criteria_groups { get; set; }
+        public DbSet<Criteria> Criterias { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,11 +38,6 @@ namespace PerformanceAppraisalService.Infrastructure.Data
                 .HasOne(e => e.Team)
                 .WithOne(t => t.TeamLeader)
                 .HasForeignKey<Team>(e => e.TeamLeaderId);
-
-        public DbSet<PA_Sheet> PA_lists { get; set; }
-        public DbSet<Criteria_Group> Criteria_groups { get; set; }
-
-        public DbSet<Criteria> Criterias { get; set; }
 
             base.OnModelCreating(modelBuilder);
         }
