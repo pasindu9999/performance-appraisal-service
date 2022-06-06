@@ -29,7 +29,7 @@ namespace PerformanceAppraisalService.Application.Services
         public async Task<string> CreateOrganizationAsync(OrganizationDto organizationDto)
         {
            var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
-            
+           
 
             var organizaion = new Organization
             {

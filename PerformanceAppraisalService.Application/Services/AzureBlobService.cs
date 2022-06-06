@@ -20,7 +20,7 @@ namespace PerformanceAppraisalService.Application.Services
         {
             _blobConfigurations = blobConfigurations.Value;
         }
-        public async Task<OrganizationDto> UploadAsync(IFormFile iFormFile)
+        public async Task<FileUploadResponseDto> UploadAsync(IFormFile iFormFile)
         {
             var client = new BlobServiceClient(_blobConfigurations.ConnectionString);
             var container = client.GetBlobContainerClient(_blobConfigurations.ImageContainerName);
@@ -29,7 +29,7 @@ namespace PerformanceAppraisalService.Application.Services
             var fileStream = iFormFile.OpenReadStream();
             await blob.UploadAsync(fileStream, true);
 
-            var response = new OrganizationDto
+            var response = new FileUploadResponseDto
             {
                 ImageName = iFormFile.Name,                
                 BlobUrl = blob.Uri.ToString(),

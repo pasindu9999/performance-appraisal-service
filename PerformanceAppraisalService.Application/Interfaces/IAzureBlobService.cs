@@ -9,6 +9,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
 {
     public interface IAzureBlobService
     {
-        Task<OrganizationDto> UploadAsync(IFormFile iFormFile);
+        Task<FileUploadResponseDto> UploadAsync(IFormFile iFormFile);
     }
 }
