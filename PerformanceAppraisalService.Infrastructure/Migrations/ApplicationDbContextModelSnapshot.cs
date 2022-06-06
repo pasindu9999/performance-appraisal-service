@@ -19,6 +19,43 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Create_Criteria_Group.Domain.Entities.Criteria_Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CriteriaGroup")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Criteria_groups");
+                });
+
+            modelBuilder.Entity("Create_PA.domain.Entities.PA_Sheet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Dep_Head_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Due_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Start_date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PA_lists");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -310,6 +347,20 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasIndex("TeamId1");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Criteria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CriteriaName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Criterias");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Organization", b =>
