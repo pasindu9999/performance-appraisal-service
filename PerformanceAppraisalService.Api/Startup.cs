@@ -14,8 +14,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Application.Services;
-using Create_PA.application.Interfaces;
-using Create_PA.application.Services;
 using PerformanceAppraisalService.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,13 +66,9 @@ namespace PerformanceAppraisalService.Api
             //Register Services
             services.AddTransient<IOrganizationService, OrganizationService>();
 
-            services.AddTransient<IPA_sheetService, PA_sheetService>();
-
-
+            services.AddTransient<IPAsheetService, PAsheetService>();
             services.AddTransient<IAccountService, AccountService>();
-
             services.AddTransient<IUserProfileService, UserProfileService>();
-
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
@@ -85,6 +79,9 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IReviwerService, ReviwerService>();
             services.AddTransient<IPanelService, PanelService>();
             services.AddTransient<IPanelReviwerService, PanelReviwerService>();
+            services.AddTransient<ICriteria_GroupService, Criteria_GroupService>();
+            services.AddTransient<ICriteria_Service, Criteria_Service>();
+            services.AddTransient<IResultService, ResultService>();
             services.AddCors();
 
             services.AddControllers();

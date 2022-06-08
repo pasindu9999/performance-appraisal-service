@@ -1,30 +1,30 @@
-﻿using Create_PA.application.Dtos;
-using Create_PA.application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PerformanceAppraisalService.Application.Interfaces;
+using PerformanceAppraisalService.Application.Dtos;
 
-namespace Create_PA.api.Controllers
+namespace PerformanceAppraisalService.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PA_sheetController : ControllerBase
+    public class PAsheetController : ControllerBase
     {
-        private readonly IPA_sheetService _pa_sheetService;
-        public PA_sheetController(IPA_sheetService pa_sheetService)
+        private readonly IPAsheetService _pasheetService;
+        public PAsheetController(IPAsheetService pa_sheetService)
         {
-            _pa_sheetService = pa_sheetService;
+            _pasheetService = pa_sheetService;
         }
 
         // api/organization/create
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> Create(PA_sheet_Dto pa_sheet_Dto)
+        public async Task<IActionResult> Create(PAsheetDto pa_sheet_Dto)
         {
-            var response = await _pa_sheetService.CreatePA_sheetAsync(pa_sheet_Dto);
+            var response = await _pasheetService.CreatePAsheetAsync(pa_sheet_Dto);
             return Ok(response);
         }
 
@@ -33,7 +33,7 @@ namespace Create_PA.api.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            var result = await _pa_sheetService.GetPA_sheetListAsync();
+            var result = await _pasheetService.GetPAsheetListAsync();
             return Ok(result);
         }
 
@@ -42,16 +42,16 @@ namespace Create_PA.api.Controllers
         [Route("by-id")]
         public async Task<IActionResult> PA_sheetById(Guid id)
         {
-            var result = await _pa_sheetService.GetPA_sheetByIdAsync(id);
+            var result = await _pasheetService.GetPAsheetByIdAsync(id);
             return Ok(result);
         }
 
         // api/organization/update
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> Update(PA_sheet_Dto pa_sheet_Dto)
+        public async Task<IActionResult> Update(PAsheetDto pa_sheet_Dto)
         {
-            var response = await _pa_sheetService.UpdatePA_sheetAsync(pa_sheet_Dto);
+            var response = await _pasheetService.UpdatePAsheetAsync(pa_sheet_Dto);
             return Ok(response);
         }
 
@@ -60,7 +60,7 @@ namespace Create_PA.api.Controllers
         [Route("delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var response = await _pa_sheetService.DeletePA_sheetAsync(id);
+            var response = await _pasheetService.DeletePAsheetAsync(id);
             return Ok(response);
         }
 

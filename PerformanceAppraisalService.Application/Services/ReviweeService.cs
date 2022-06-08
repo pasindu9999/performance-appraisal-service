@@ -23,9 +23,9 @@ namespace PerformanceAppraisalService.Application.Services
            
             var reviwee = new Reviwee
             {
-                PanelId = reviweeDto.PanelId,
+                PanelId = (Guid)reviweeDto.PanelId,
                 EmployeeId = reviweeDto.EmployeeId,
-                EmployeeFirstName = reviweeDto.EmployeeFirstName
+
             };
 
             _context.Add(reviwee);
@@ -54,9 +54,7 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new ReviweeDto
                 {
                     Id = x.Id,
-                    EmployeeFirstName = x.EmployeeFirstName,
                     EmployeeId = x.EmployeeId,
-                    DepartmentName = (string)x.Employee.DepartmentName,
                     PanelId = (Guid)x.PanelId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -70,8 +68,6 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new ReviweeDto
                 {
                     Id = x.Id,
-                    EmployeeFirstName = x.EmployeeFirstName,
-                    DepartmentName = (string)x.Employee.DepartmentName,
                     EmployeeId = x.EmployeeId,
                     PanelId = (Guid)x.PanelId
                 })
@@ -86,7 +82,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (reviwee != null)
             {
-                reviwee.PanelId = reviweeDto.PanelId;
+                reviwee.EmployeeId = reviweeDto.EmployeeId;
+                reviwee.PanelId = (Guid)reviweeDto.PanelId;
 
                 await _context.SaveChangesAsync();
                 return "Reviwee updated Success";

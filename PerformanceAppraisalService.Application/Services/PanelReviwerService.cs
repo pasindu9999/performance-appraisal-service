@@ -27,7 +27,7 @@ namespace PerformanceAppraisalService.Application.Services
             var panel = new PanelReviwer
             {
                 PanelId = panelDto.PanelId,
-                ReviwerId = panelDto.ReviwerId,
+                //ReviwerId = panelDto.ReviwerId,
                 CreateDate = panelDto.CreateDate
             };
 
@@ -63,7 +63,7 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new PanelReviwerDto
                 {
                     PanelId = x.PanelId,
-                    ReviwerId = x.ReviwerId
+                   // ReviwerId = x.ReviwerId
                 })
                 .ToListAsync();
 

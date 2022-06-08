@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceAppraisalService.Infrastructure.Data;
 
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220607190547_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,9 +433,14 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid>("PanelId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ReviwerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PanelId");
+
+                    b.HasIndex("ReviwerId");
 
                     b.ToTable("PanelReviwers");
                 });
@@ -453,7 +460,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid?>("ReviweeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ReviwerId")
+                    b.Property<Guid>("ReviwerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -663,6 +670,10 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", null)
+                        .WithMany("PanelReviwers")
+                        .HasForeignKey("ReviwerId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Result", b =>
@@ -673,13 +684,15 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwee", "Reviwee")
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwee")
                         .WithMany()
                         .HasForeignKey("ReviweeId");
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwer")
                         .WithMany()
-                        .HasForeignKey("ReviwerId");
+                        .HasForeignKey("ReviwerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
@@ -705,7 +718,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", null)
                         .WithMany("Reviwer")
                         .HasForeignKey("PanelId1");
                 });

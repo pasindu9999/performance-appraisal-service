@@ -24,7 +24,6 @@ namespace PerformanceAppraisalService.Application.Services
             var reviwer = new Reviwer
             {
                 EmployeeId = reviwerDto.EmployeeId,
-                EmployeeFirstName = reviwerDto.EmployeeFirstName,
                 PanelId = reviwerDto.PanelId
             };
 
@@ -55,8 +54,6 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new ReviwerDto
                 {
                     Id = x.Id,
-                    EmployeeFirstName = x.EmployeeFirstName,
-                    EmployeeDepartmentId = (Guid)x.Employee.DepartmentId,
                     EmployeeId = x.EmployeeId,
                     PanelId = x.PanelId
                 })
@@ -72,10 +69,8 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     EmployeeId = x.EmployeeId,
-                    EmployeeFirstName = x.Employee.FirstName,
-                    EmployeeDepartmentId = (Guid)x.Employee.DepartmentId,
+                    PanelId = x.PanelId,
                     
-                    PanelId = x.PanelId
                 })
                 .ToListAsync();
 
@@ -88,7 +83,9 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (reviwer != null)
             {
-                reviwer.EmployeeFirstName = reviwerDto.EmployeeFirstName;
+
+                reviwer.EmployeeId = reviwerDto.EmployeeId;
+                reviwer.PanelId = reviwerDto.PanelId;
 
                 await _context.SaveChangesAsync();
                 return "Reviwer updated successfully";

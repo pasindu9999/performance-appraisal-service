@@ -31,7 +31,7 @@ namespace PerformanceAppraisalService.Domain.Entities
         public Guid? TeamId { get; set; }
         public virtual Team Team { get; set; }
 
-
+        public ICollection<Reviwer> Reviwers { get; set; }
 
         //relationship with reviwee 1:1
         //public Guid? TeamId { get; set; }
