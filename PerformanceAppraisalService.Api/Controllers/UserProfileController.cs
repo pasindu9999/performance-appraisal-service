@@ -30,5 +30,32 @@ namespace PerformanceAppraisalService.Api.Controllers
             var response = await _userProfileService.GetUserProfile(userId);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("ForAdmin")]
+        public async Task<IActionResult> GetAdmin()
+        {
+            var response = await _userProfileService.GetForAdmin();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Senior_Developer")]
+        [Route("ForSenior_Developer")]
+        public async Task<IActionResult> GetEmployee()
+        {
+            var response = await _userProfileService.GetForEmployee();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee")]
+        [Route("ForAdminOrEmployee")]
+        public async Task<IActionResult> GetAdminEmployee()
+        {
+            var response = await _userProfileService.GetForAdminOrEmployee();
+            return Ok(response);
+        }
     }
 }
