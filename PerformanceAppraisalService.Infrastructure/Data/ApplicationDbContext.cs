@@ -56,6 +56,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Reviwer> Reviwers { get; set; }
         public DbSet<Reviwee> Reviwees { get; set; }
         public DbSet<PanelReviwer> PanelReviwers { get; set; }
+        public DbSet<Image> Images { get; set; }
 
     }
 

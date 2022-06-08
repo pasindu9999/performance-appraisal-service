@@ -41,7 +41,7 @@ namespace PerformanceAppraisalService.Api
             services.Configure<ApplicationSettings>(applicationSettings);
 
             var blobstoragekey = Configuration.GetSection("AzureBlobConfigurations");
-            services.Configure<AzureBlobConfigurations>(blobstoragekey);
+            services.Configure<AzureBlobConfiguratuions>(blobstoragekey);
 
             var appSettingsSecretKey = applicationSettings.Get<ApplicationSettings>();
 
@@ -79,7 +79,7 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IReviweeService, ReviweeService>();
             services.AddTransient<IReviwerService, ReviwerService>();
             services.AddTransient<IPanelService, PanelService>();
-            services.AddTransient<IPanelReviwerService, PanelReviwerService>();
+            services.AddTransient<IPanelReviwerService, PanelReviwerService>();            
             services.AddCors();
 
             services.AddControllers();
