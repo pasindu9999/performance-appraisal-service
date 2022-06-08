@@ -27,6 +27,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Reviwee> Reviwees { get; set; }
         public DbSet<PanelReviwer> PanelReviwers { get; set; }
         public DbSet<Result> Results { get; set; }
+        public DbSet<Image> Images { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,11 +57,8 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<Panel> Panels { get; set; }
-        public DbSet<Reviwer> Reviwers { get; set; }
-        public DbSet<Reviwee> Reviwees { get; set; }
-        public DbSet<PanelReviwer> PanelReviwers { get; set; }
-        public DbSet<Image> Images { get; set; }
+
+  
 
     }
 
