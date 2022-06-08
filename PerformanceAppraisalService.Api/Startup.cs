@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PerformanceAppraisalService.Application.Dtos;
+using PerformanceAppraisalService.Application.Processors.Email;
 
 namespace PerformanceAppraisalService.Api
 {
@@ -40,6 +41,9 @@ namespace PerformanceAppraisalService.Api
             var applicationSettings = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(applicationSettings);
 
+            var queueStorage = Configuration.GetSection("QueueStorage");
+            services.Configure<QueueStorageString>(queueStorage);
+
             var blobstoragekey = Configuration.GetSection("AzureBlobConfigurations");
             services.Configure<AzureBlobConfiguratuions>(blobstoragekey);
 
@@ -51,7 +55,9 @@ namespace PerformanceAppraisalService.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders(); //change 2
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -60,6 +66,8 @@ namespace PerformanceAppraisalService.Api
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
+
+                options.SignIn.RequireConfirmedEmail = true; //change 1
             }
             );
             
@@ -74,6 +82,9 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDesignationService, DesignationService>();
             services.AddTransient<ISalaryService, SalaryService>();
+
+            services.AddTransient<IQueueService, QueueService>();
+
             services.AddTransient<IAzureBlobService, AzureBlobService>();
             services.AddTransient<IReviweeService, ReviweeService>();
             services.AddTransient<IReviwerService, ReviwerService>();
@@ -85,6 +96,7 @@ namespace PerformanceAppraisalService.Api
             services.AddCors();
 
             services.AddControllers();
+
 
             //Jwt Authentication
 

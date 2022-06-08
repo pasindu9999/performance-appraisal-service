@@ -12,6 +12,7 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         }
         
 
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Department> Departments { get; set; }
