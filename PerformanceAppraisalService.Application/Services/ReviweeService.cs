@@ -64,10 +64,12 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<ReviweeDto>> GetReviweeListAsync()
         {
-            var reviweeList = await _context.Reviwees
+            var reviweeList = await _context.Reviwees.Include(x =>x.Employee)
                 .Select(x => new ReviweeDto
                 {
                     Id = x.Id,
+                    EmployeeFirstName = x.Employee.FirstName,
+                    DepartmentName = (string)x.Employee.DepartmentName,
                     EmployeeId = x.EmployeeId,
                     PanelId = (Guid)x.PanelId
                 })

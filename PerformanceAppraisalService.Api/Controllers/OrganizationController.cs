@@ -14,10 +14,10 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
-        private readonly IAzureBlobService _azureBlobService;
-        public OrganizationController(IOrganizationService organizationService, IAzureBlobService azureBlobService)
+        
+        public OrganizationController(IOrganizationService organizationService)
         {
-            _azureBlobService = azureBlobService;
+            
             _organizationService = organizationService;
         }
 
@@ -29,7 +29,8 @@ namespace PerformanceAppraisalService.Api.Controllers
             var response = await _organizationService.CreateOrganizationAsync(organizationDto);
             return Ok(response);
         }
-        
+                    
+
         // api/organization/list
         [HttpGet]
         [Route("list")]

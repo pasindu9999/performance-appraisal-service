@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PerformanceAppraisalService.Infrastructure.Data
+namespace PerformanceAppraisalService.Domain.Entities
 {
-    public class AzureBlobConfigurations
+    public class AzureBlobConfiguratuions
     {
         public string ConnectionString { get; set; }
         public string ImageContainerName { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
+using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,14 @@ namespace PerformanceAppraisalService.Application.Services
 {
     public class AzureBlobService : IAzureBlobService
     {
-        private readonly AzureBlobConfigurations _blobConfigurations;
+        private readonly AzureBlobConfiguratuions _blobConfigurations;
+        private readonly ApplicationDbContext _context;
+        
 
-        public AzureBlobService(IOptions<AzureBlobConfigurations> blobConfigurations)
+        public AzureBlobService(IOptions<AzureBlobConfiguratuions> blobConfigurations, ApplicationDbContext applicationDbContext)
         {
             _blobConfigurations = blobConfigurations.Value;
+            _context = applicationDbContext;
         }
         public async Task<FileUploadResponseDto> UploadAsync(IFormFile iFormFile)
         {
@@ -35,7 +39,17 @@ namespace PerformanceAppraisalService.Application.Services
                 BlobUrl = blob.Uri.ToString(),
             };
 
+            var image = new Image
+            {
+                BlobUrl = response.BlobUrl,
+                ImageName = response.ImageName
+            };
+
+            _context.Add(image);
+            await _context.SaveChangesAsync();
+
             return response;
+            //return response;
         }
 
         private string CreateNewFile(IFormFile iFormFile)
