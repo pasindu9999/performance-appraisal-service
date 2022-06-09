@@ -21,9 +21,8 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var department = new Department
             {
-                RegNo = departmentDto.RegNo,
                 Name = departmentDto.Name,
-                DepartmentHead = departmentDto.DepartmentHead,
+                DepartmentHeadId = departmentDto.DepartmentHeadId,
                 Description = departmentDto.Description,
                 NoOfEmployees = departmentDto.NoOfEmployees
             };
@@ -40,9 +39,9 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    RegNo = x.RegNo,
                     Name = x.Name,
-                    DepartmentHead = x.DepartmentHead,
+                    DepartmentHeadId = (Guid)x.DepartmentHeadId,
+                    DepartmentHeadFirstName = x.DepartmentHead.FirstName,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -57,9 +56,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new DepartmentDto
                 {
                     Id = x.Id,
-                    RegNo = x.RegNo,
                     Name = x.Name,
-                    DepartmentHead = x.DepartmentHead,
+                    DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees
                 })
@@ -72,13 +70,12 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var department = await _context.Departments.FirstOrDefaultAsync(x => x.Id == departmentDto.Id);
 
-            if (department != null)
+            if (department.Id != null)
             {
-                department.RegNo = department.RegNo;
-                department.Name = department.Name;
-                department.DepartmentHead = department.DepartmentHead;
-                department.Description = department.Description;
-                department.NoOfEmployees = department.NoOfEmployees;
+                department.Name = departmentDto.Name;
+                department.DepartmentHeadId = departmentDto.DepartmentHeadId;
+                department.Description = departmentDto.Description;
+                department.NoOfEmployees = departmentDto.NoOfEmployees;
 
                 await _context.SaveChangesAsync();
                 return "Department update success...!";

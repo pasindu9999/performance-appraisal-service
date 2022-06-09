@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using System;
@@ -14,9 +15,13 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+
+        private IConfiguration _configuration;
+
+        public AccountController(IAccountService accountService, IConfiguration configuration)
         {
             _accountService = accountService;
+            _configuration = configuration;
         }
 
 
@@ -34,6 +39,51 @@ namespace PerformanceAppraisalService.Api.Controllers
         {
             var response = await _accountService.LogIn(logInDto);
             return Ok(response);
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+        {
+            var result = await _accountService.ChangePasswordAsync(model);
+            return Ok(result);
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+                return NotFound();
+
+            var result = await _accountService.ConfirmEmailAsync(userId, token);
+
+            if (result.IsSuccess)
+            {
+                return Redirect($"{_configuration["ClientAppUrl"]}/confirmemail");
+            }
+            else
+            {
+                return Redirect($"{_configuration["ClientAppUrl"]}/verificationfail");
+            }
+
+
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            if (string.IsNullOrEmpty(forgotPasswordDto.Email))
+                return NotFound();
+
+            var result = await _accountService.ForgotPasswordAsync(forgotPasswordDto);
+            return Ok(result); 
+
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var result = await _accountService.ResetPasswordAsync(model);
+            return Ok(result);
         }
 
 

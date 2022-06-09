@@ -1,14 +1,17 @@
 ﻿using PerformanceAppraisalService.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Create_Criteria_Group.Domain.Entities
+namespace PerformanceAppraisalService.Domain.Entities
 {
    public class Criteria_Group : BaseEntity
     {
-        public string CriteriaGroup { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Weightages { get; set; }
+        public ICollection<Criteria> Criterias { get; set; }
 
-        
     }
 }

@@ -14,8 +14,10 @@ namespace PerformanceAppraisalService.Api.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
+        
         public OrganizationController(IOrganizationService organizationService)
         {
+            
             _organizationService = organizationService;
         }
 
@@ -27,7 +29,8 @@ namespace PerformanceAppraisalService.Api.Controllers
             var response = await _organizationService.CreateOrganizationAsync(organizationDto);
             return Ok(response);
         }
-        
+                    
+
         // api/organization/list
         [HttpGet]
         [Route("list")]

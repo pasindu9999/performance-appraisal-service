@@ -7,12 +7,22 @@ namespace PerformanceAppraisalService.Domain.Entities
 {
     public class Department : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RegNo { get; set; }
         public string Name { get; set; }
-        public string DepartmentHead { get; set; }
         public string Description { get; set; }
         public int NoOfEmployees { get; set; }
+
+        //relationship with team table 1 : M
+        public ICollection<Team> Teams { get; set; }
+        public ICollection<Employee> Employees { get; set; }
+
+
+        //relationship with designation table  M:N
+        //public ICollection<Designation> Designations { get; set; }
+
+
+        //relationship with employee table department head department 1:1
+        public Guid? DepartmentHeadId { get; set; }
+        public Employee DepartmentHead { get; set; }
     }
 }
 

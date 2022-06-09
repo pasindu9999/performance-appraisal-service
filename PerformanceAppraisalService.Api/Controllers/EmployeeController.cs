@@ -37,6 +37,26 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
+        //api/employee/by-departmentid?departmentid=
+        [HttpGet]
+        [Route("by-departmentid")]
+        public async Task<IActionResult> List(Guid departmentId)
+        {
+            var result = await _employeeService.GetEmployeesbyDepartmentAsync(departmentId);
+            return Ok(result);
+        }
+
+        //api/employee/by-teamid?teamid=
+        [HttpGet]
+        [Route("by-teamid")]
+        public async Task<IActionResult> Lists(Guid teamId)
+        {
+            var result = await _employeeService.GetEmployeesbyTeamAsync(teamId);
+            return Ok(result);
+        }
+
+
+
         // api/employee/by-id?id=
         [HttpGet]
         [Route("by-id")]

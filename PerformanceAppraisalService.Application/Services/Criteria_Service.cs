@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerformanceAppraisalService.Application.Dtos;
+using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PerformanceAppraisalService.Application.Services
 {
-    public class Criteria_Service
+    public class Criteria_Service : ICriteria_Service
     {
         private readonly ApplicationDbContext _context;
 
@@ -22,7 +23,9 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var criteria = new Criteria
             {
-                CriteriaName = criteriaDto.CriteriaName
+                Name = criteriaDto.Name,
+                Description = criteriaDto.Description,
+                GroupId = criteriaDto.GroupId
 
             };
 
@@ -38,20 +41,39 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new CriteriaDto
                 {
                     Id = x.Id,
-                    CriteriaName = x.CriteriaName
+                    Name = x.Name,
+                    Description = x.Description,
+                    GroupId = x.GroupId
                 })
                 .ToListAsync();
 
             return criteria;
         }
 
+        public async Task<List<CriteriaDto>> GetCriteriabyCriteriaGroupAsync(Guid CriteriaGroupId)
+        {
+            var criteria = await _context.Criterias.Where(x => x.GroupId == CriteriaGroupId)
+                .Select(x => new CriteriaDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    GroupId = x.GroupId
+
+                })
+                .ToListAsync();
+
+            return criteria;
+        }
         public async Task<CriteriaDto> GetCriteriaByIdAsync(Guid id)
         {
             var criteria = await _context.Criterias
                 .Select(x => new CriteriaDto
                 {
                     Id = x.Id,
-                    CriteriaName = x.CriteriaName
+                    Name = x.Name,
+                    Description = x.Description,
+                    GroupId = x.GroupId
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -64,14 +86,15 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (criteria != null)
             {
-                criteria.CriteriaName = criteriaDto.CriteriaName;
-
+                criteria.Name = criteriaDto.Name;
+                criteria.Description = criteriaDto.Description;
+                criteria.GroupId = criteriaDto.GroupId;
 
                 await _context.SaveChangesAsync();
-                return 1;
+                return "criteria updated";
             }
 
-            return 0;
+            return "criteria not updated";
         }
 
         public async Task<object> DeleteCriteriaAsync(Guid id)
@@ -82,10 +105,20 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(criteria);
                 await _context.SaveChangesAsync();
-                return 1;
+                return "criteria deleted";
             }
 
-            return 0;
+            return "criteria not deleted";
+        }
+
+        Task<string> ICriteria_Service.UpdateCriteriaAsync(CriteriaDto criteriaDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<string> ICriteria_Service.DeleteCriteriaAsync(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

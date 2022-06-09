@@ -10,6 +10,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
     {
         Task<string> CreateTeamAsync(TeamDto teamDto);
         Task<List<TeamDto>> GetTeamListAsync();
+        Task<List<TeamDto>> GetTeamsbyDepartmentAsync(Guid DepartmentId);
         Task<TeamDto> GetTeamByIdAsync(Guid id);
         Task<string> UpdateTeamAsync(TeamDto teamDto);
         Task<object> DeleteTeamAsync(Guid id);

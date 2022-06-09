@@ -19,7 +19,7 @@ namespace PerformanceAppraisalService.Api.Controllers
             _criteriaService = criteria_Service;
         }
 
-        // api/organization/create
+        // api/criteria/create
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(CriteriaDto criteria_Dto)
@@ -28,7 +28,7 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(response);
         }
 
-        // api/organization/list
+        // api/criteria/list
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> List()
@@ -37,7 +37,16 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
-        // api/organization/by-id?id=
+        //api/criteria/by-criteriagroupid?criteriagroupid=
+        [HttpGet]
+        [Route("by-criteriagroupid")]
+        public async Task<IActionResult> List(Guid criteriagroupId)
+        {
+            var result = await _criteriaService.GetCriteriabyCriteriaGroupAsync(criteriagroupId);
+            return Ok(result);
+        }
+
+        // api/criteria/by-id?id=
         [HttpGet]
         [Route("by-id")]
         public async Task<IActionResult> CriteriaById(Guid id)
@@ -46,7 +55,7 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
-        // api/organization/update
+        // api/criteria/update
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> Update(CriteriaDto criteriaDto)
@@ -55,7 +64,7 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(response);
         }
 
-        // api/organization/delete?id=
+        // api/criteria/delete?id=
         [HttpDelete]
         [Route("delete")]
         public async Task<IActionResult> Delete(Guid id)

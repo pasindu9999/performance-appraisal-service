@@ -11,5 +11,6 @@ namespace PerformanceAppraisalService.Domain.Entities
         public double BasicAmount { get; set; }
         public double Increment { get; set; }
 
+
     }
 }

@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PerformanceAppraisalService.Application.Dtos;
+using PerformanceAppraisalService.Application.Processors.Email;
 using Create_PA.application.Interfaces;
 using Create_PA.application.Services;
 
@@ -42,6 +43,12 @@ namespace PerformanceAppraisalService.Api
             var applicationSettings = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(applicationSettings);
 
+            var queueStorage = Configuration.GetSection("QueueStorage");
+            services.Configure<QueueStorageString>(queueStorage);
+
+            var blobstoragekey = Configuration.GetSection("AzureBlobConfigurations");
+            services.Configure<AzureBlobConfiguratuions>(blobstoragekey);
+
             var appSettingsSecretKey = applicationSettings.Get<ApplicationSettings>();
 
 
@@ -50,7 +57,9 @@ namespace PerformanceAppraisalService.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders(); //change 2
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -59,28 +68,40 @@ namespace PerformanceAppraisalService.Api
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
+
+                options.SignIn.RequireConfirmedEmail = true; //change 1
             }
             );
             
             //Register Services
             services.AddTransient<IOrganizationService, OrganizationService>();
 
+            services.AddTransient<IPAsheetService, PAsheetService>();
             services.AddTransient<IAccountService, AccountService>();
-
             services.AddTransient<IUserProfileService, UserProfileService>();
-
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDesignationService, DesignationService>();
             services.AddTransient<ISalaryService, SalaryService>();
 
+            services.AddTransient<IQueueService, QueueService>();
+
 
             services.AddTransient<IPA_sheetService, PA_sheetService>();
 
+            services.AddTransient<IAzureBlobService, AzureBlobService>();
+            services.AddTransient<IReviweeService, ReviweeService>();
+            services.AddTransient<IReviwerService, ReviwerService>();
+            services.AddTransient<IPanelService, PanelService>();
+            services.AddTransient<IPanelReviwerService, PanelReviwerService>();
+            services.AddTransient<ICriteria_GroupService, Criteria_GroupService>();
+            services.AddTransient<ICriteria_Service, Criteria_Service>();
+            services.AddTransient<IResultService, ResultService>();
             services.AddCors();
 
             services.AddControllers();
+
 
             //Jwt Authentication
 

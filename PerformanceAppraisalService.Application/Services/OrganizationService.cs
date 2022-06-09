@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
@@ -13,14 +17,20 @@ namespace PerformanceAppraisalService.Application.Services
     public class OrganizationService: IOrganizationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAzureBlobService _azureBlobService;
         
-        public OrganizationService(ApplicationDbContext context)
+        public OrganizationService(ApplicationDbContext context, IAzureBlobService azureBlobService) 
         {
             _context = context;
+            _azureBlobService = azureBlobService;
+            
         }
 
         public async Task<string> CreateOrganizationAsync(OrganizationDto organizationDto)
         {
+           //var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
+           
+
             var organizaion = new Organization
             {
                 Name = organizationDto.Name,
@@ -36,6 +46,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             return "Organization Create success...!";
         }
+
+        
         
         public async Task<List<OrganizationDto>> GetOrganizationListAsync()
         {
