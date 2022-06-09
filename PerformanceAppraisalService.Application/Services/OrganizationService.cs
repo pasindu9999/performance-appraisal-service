@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
@@ -13,26 +17,37 @@ namespace PerformanceAppraisalService.Application.Services
     public class OrganizationService: IOrganizationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAzureBlobService _azureBlobService;
         
-        public OrganizationService(ApplicationDbContext context)
+        public OrganizationService(ApplicationDbContext context, IAzureBlobService azureBlobService) 
         {
             _context = context;
+            _azureBlobService = azureBlobService;
+            
         }
 
         public async Task<string> CreateOrganizationAsync(OrganizationDto organizationDto)
         {
+           //var imgresponse = await _azureBlobService.UploadAsync(organizationDto.Image);
+           
+
             var organizaion = new Organization
             {
                 Name = organizationDto.Name,
                 Address = organizationDto.Address,
-                RegistationNumber = organizationDto.RegistationNumber
+                RegistationNumber = organizationDto.RegistationNumber,                
+                WebLink=organizationDto.WebLink,
+                Email = organizationDto.Email
             };
+
 
             _context.Add(organizaion);
             await _context.SaveChangesAsync();
 
             return "Organization Create success...!";
         }
+
+        
         
         public async Task<List<OrganizationDto>> GetOrganizationListAsync()
         {
@@ -42,7 +57,9 @@ namespace PerformanceAppraisalService.Application.Services
                     Id =x.Id,
                     Name = x.Name,
                     Address = x.Address,
-                    RegistationNumber = x.RegistationNumber
+                    RegistationNumber = x.RegistationNumber,
+                    WebLink=x.WebLink,
+                    
                 })
                 .ToListAsync();
 
@@ -57,31 +74,34 @@ namespace PerformanceAppraisalService.Application.Services
                     Id =x.Id,
                     Name = x.Name,
                     Address = x.Address,
-                    RegistationNumber = x.RegistationNumber
+                    RegistationNumber = x.RegistationNumber,
+                    WebLink=x.WebLink
                 })
                 .FirstOrDefaultAsync(x=> x.Id == id);
 
             return orgaznization;
         }
         
-        public async Task<string> UpdateOrganizationAsync(OrganizationDto organizationDto)
+        public async Task<object> UpdateOrganizationAsync(OrganizationDto organizationDto)
         {
             var organization = await _context.Organizations.FirstOrDefaultAsync(x => x.Id == organizationDto.Id);
 
             if (organization != null)
             {
-                organization.Name = organization.Name;
-                organization.Address = organization.Address;
+                organization.Name = organizationDto.Name;
+                organization.Address = organizationDto.Address;
                 organization.RegistationNumber = organizationDto.RegistationNumber;
+                organization.WebLink = organizationDto.WebLink;
+                
                 
                 await _context.SaveChangesAsync();
-                return "Organization update success...!";
+                return 1;
             }
 
-            return "Organization not update...!";
+            return 0;
         }
 
-        public async Task<string> DeleteOrganizationAsync(Guid id)
+        public async Task<object> DeleteOrganizationAsync(Guid id)
         {
             var organization = await _context.Organizations.FirstOrDefaultAsync(x => x.Id == id);
             
@@ -89,10 +109,10 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(organization);
                 await _context.SaveChangesAsync();
-                return "Organization deleted...!";
+                return 1;
             }
 
-            return "can not delete organization";
+            return 0;
         }
     }
 }

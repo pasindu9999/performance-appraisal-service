@@ -11,10 +11,10 @@ namespace PerformanceAppraisalService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CriteriaGroupController : ControllerBase
+    public class Criteria_GroupController : ControllerBase
     {
         private readonly ICriteria_GroupService _criteria_GroupService;
-        public CriteriaGroupController(ICriteria_GroupService criteria_GroupService)
+        public Criteria_GroupController(ICriteria_GroupService criteria_GroupService)
         {
             _criteria_GroupService = criteria_GroupService;
         }

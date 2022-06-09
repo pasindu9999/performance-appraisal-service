@@ -1,6 +1,4 @@
-﻿using Create_Criteria_Group.Domain.Entities;
-using Create_PA.domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
@@ -26,8 +24,9 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var criteria_group = new Criteria_Group
             {
-                CriteriaGroup = criteria_groupDto.CriteriaGroup,
-                weightage = criteria_groupDto.weightage
+                Name = criteria_groupDto.Name,
+                Description = criteria_groupDto.Description,
+                Weightages = criteria_groupDto.Weightages
 
             };
 
@@ -43,8 +42,9 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new Criteria_GroupDto
                 {
                     Id = x.Id,
-                    CriteriaGroup = x.CriteriaGroup,
-                    weightage = x.weightage
+                    Name = x.Name,
+                    Description = x.Description,
+                    Weightages = x.Weightages
                 })
                 .ToListAsync();
 
@@ -57,8 +57,9 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new Criteria_GroupDto
                 {
                     Id = x.Id,
-                    CriteriaGroup = x.CriteriaGroup,
-                     weightage = x.weightage
+                    Name = x.Name,
+                    Description = x.Description,
+                    Weightages = x.Weightages
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -71,15 +72,15 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (criteria_group != null)
             {
-                criteria_group.CriteriaGroup = criteria_groupDto.CriteriaGroup;
-                criteria_group.weightage = criteria_groupDto.weightage;
-
+                criteria_group.Name = criteria_groupDto.Name;
+                criteria_groupDto.Description = criteria_groupDto.Description;
+                criteria_groupDto.Weightages = criteria_groupDto.Weightages;
 
                 await _context.SaveChangesAsync();
-                return 1;
+                return "update sucessfull";
             }
 
-            return 0;
+            return "update not sucessfull";
         }
 
         public async Task<object> DeleteCriteria_GroupAsync(Guid id)
@@ -90,10 +91,15 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(criteria_group);
                 await _context.SaveChangesAsync();
-                return 1;
+                return "Criteria group deleted";
             }
 
-            return 0;
+            return "can't delete the group";
+        }
+
+        Task<string> ICriteria_GroupService.UpdateCriteria_GroupAsync(Criteria_GroupDto criteria_groupDto)
+        {
+            throw new NotImplementedException();
         }
 
        

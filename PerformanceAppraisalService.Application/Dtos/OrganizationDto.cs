@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace PerformanceAppraisalService.Application.Dtos
 {
@@ -8,5 +9,8 @@ namespace PerformanceAppraisalService.Application.Dtos
         public string Name { get; set; }
         public string Address { get; set; }
         public int RegistationNumber { get; set; }
+        public string WebLink { get; set; }
+        public string Email { get; set; }
+        public IFormFile Image { get; set; }        
     }
 }

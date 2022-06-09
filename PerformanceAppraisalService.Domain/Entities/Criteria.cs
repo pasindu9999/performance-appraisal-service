@@ -1,4 +1,4 @@
-﻿using Create_Criteria_Group.Domain.Entities;
+﻿using PerformanceAppraisalService.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,12 +7,10 @@ namespace PerformanceAppraisalService.Domain.Entities
 {
     public class Criteria : BaseEntity
     {
-        public string CriteriaName { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Guid GroupId { get; set; }
+        public Criteria_Group Group { get; set; }
 
-        public string description { get; set; }
-
-        public Guid? criteria_GroupID { get; set; }
-
-        public Criteria_Group criteria_Group { get; set; }
     }
 }

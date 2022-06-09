@@ -10,9 +10,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
     {
         Task<string> Create_criteriaAsync(CriteriaDto criteriaDto);
         Task<List<CriteriaDto>> GetCriteriaAsync();
-
-        Task<List<CriteriaDto>> GetCriteriabyGroupAsync(Guid criteria_GroupID);
-
+        Task<List<CriteriaDto>> GetCriteriabyCriteriaGroupAsync(Guid CriteriaGroupId);
         Task<CriteriaDto> GetCriteriaByIdAsync(Guid id);
         Task<object> UpdateCriteriaAsync(CriteriaDto criteriaDto);
         Task<object> DeleteCriteriaAsync(Guid id);
