@@ -10,7 +10,7 @@ using PerformanceAppraisalService.Infrastructure.Data;
 namespace PerformanceAppraisalService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220607190547_initial")]
+    [Migration("20220609072723_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -356,6 +356,23 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BlobUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Organization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -433,14 +450,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid>("PanelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ReviwerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PanelId");
-
-                    b.HasIndex("ReviwerId");
 
                     b.ToTable("PanelReviwers");
                 });
@@ -460,7 +472,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.Property<Guid?>("ReviweeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ReviwerId")
+                    b.Property<Guid?>("ReviwerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -670,10 +682,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasForeignKey("PanelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", null)
-                        .WithMany("PanelReviwers")
-                        .HasForeignKey("ReviwerId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Result", b =>
@@ -684,15 +692,13 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwee")
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwee", "Reviwee")
                         .WithMany()
                         .HasForeignKey("ReviweeId");
 
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Reviwer", "Reviwer")
                         .WithMany()
-                        .HasForeignKey("ReviwerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReviwerId");
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
@@ -718,7 +724,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", null)
+                    b.HasOne("PerformanceAppraisalService.Domain.Entities.Panel", "Panel")
                         .WithMany("Reviwer")
                         .HasForeignKey("PanelId1");
                 });

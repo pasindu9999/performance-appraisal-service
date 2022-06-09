@@ -111,14 +111,8 @@ namespace PerformanceAppraisalService.Application.Services
             return "criteria not deleted";
         }
 
-        Task<string> ICriteria_Service.UpdateCriteriaAsync(CriteriaDto criteriaDto)
-        {
-            throw new NotImplementedException();
-        }
+       
 
-        Task<string> ICriteria_Service.DeleteCriteriaAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

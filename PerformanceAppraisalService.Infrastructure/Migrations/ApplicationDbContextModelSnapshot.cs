@@ -225,33 +225,19 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Department", b =>
-=======
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Criteria", b =>
->>>>>>> c3d2788168f0b27920154c395e56e78850a46d87
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-<<<<<<< HEAD
-                    b.Property<string>("DepartmentHead")
-=======
                     b.Property<string>("Description")
->>>>>>> c3d2788168f0b27920154c395e56e78850a46d87
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("criteria_GroupID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -359,9 +345,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-<<<<<<< HEAD
-                    b.ToTable("Departments");
-=======
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("DesignationId");
@@ -386,7 +369,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
->>>>>>> c3d2788168f0b27920154c395e56e78850a46d87
                 });
 
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Organization", b =>
@@ -756,13 +738,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "TeamLeader")
                         .WithOne("Team")
                         .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Team", "TeamLeaderId");
-                });
-
-            modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Criteria", b =>
-                {
-                    b.HasOne("Create_Criteria_Group.Domain.Entities.Criteria_Group", "criteria_Group")
-                        .WithMany("Criterias")
-                        .HasForeignKey("criteria_GroupID");
                 });
 #pragma warning restore 612, 618
         }
