@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace PerformanceAppraisalService.Application.Services
 {
@@ -22,24 +23,33 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> CreateEmployeeAsync(EmployeeDto employeeDto)
         {
-            var employee = new Employee
+            var user = _context.Employees.Where(u => u.Email == employeeDto.Email).Single();
+            if(user != null)
             {
-                RegistrationNumber = employeeDto.RegistrationNumber,
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-                Email = employeeDto.Email,
-                DesignationId = employeeDto.DesignationId
-            };
+                return "Duplicate email";
+            }
+            else
+            {
+                var employee = new Employee
+                {
+                    RegistrationNumber = employeeDto.RegistrationNumber,
+                    FirstName = employeeDto.FirstName,
+                    LastName = employeeDto.LastName,
+                    Email = employeeDto.Email,
+                    DesignationId = employeeDto.DesignationId
+                };
 
-            _context.Add(employee);
-            await _context.SaveChangesAsync();
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
 
-            return "Employee Create success...!";
+                return "Employee Create success...!";
+            }
+            
         }
 
         public async Task<List<EmployeeDto>> GetEmployeeListAsync()
         {
-            var employeesList = await _context.Employees
+            var employeesList = await _context.Employees.Include(x=>x.Department)
 
                 .Select(x => new EmployeeDto
                 {
@@ -47,9 +57,10 @@ namespace PerformanceAppraisalService.Application.Services
                     RegistrationNumber = x.RegistrationNumber,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
-                    DesignationName = x.Designation.Name,
                     Email = x.Email,
                     DesignationId = x.DesignationId,
+                    DesignationName = x.Designation.Name,
+                    TeamName = x.Team.Name,
                     DepartmentId = (Guid)x.DepartmentId,
                     DepartmentName = x.Department.Name
                 }) 
@@ -59,9 +70,9 @@ namespace PerformanceAppraisalService.Application.Services
         }
 
         //filter according to the departments
-        public Task<List<EmployeeDto>> GetEmployeesbyDepartmentAsync(Guid departmentId)
+        public async Task<List<EmployeeDto>> GetEmployeesbyDepartmentAsync(Guid departmentId)
         {
-            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.DepartmentId == departmentId)
+            var employeesList = await _context.Employees.Include(x => x.Designation).Include(x=>x.Team).Where(x => x.DepartmentId == departmentId)
                 .Select(x => new EmployeeDto
                 {
                     Id = x.Id,
@@ -72,7 +83,8 @@ namespace PerformanceAppraisalService.Application.Services
                     Email = x.Email,
                     DesignationId = x.DesignationId,
                     DepartmentId = (Guid)x.DepartmentId,
-                    TeamId = (Guid)x.TeamId
+                    TeamId = (Guid)x.TeamId,
+                    TeamName = x.Team.Name
                 })
                 .ToListAsync();
 
@@ -80,10 +92,10 @@ namespace PerformanceAppraisalService.Application.Services
 
         }
 
-        //filter according to the teams
-        public Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid teamId)
+        //filter according to the teams n
+        public async Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid teamId)
         {
-            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.TeamId == teamId)
+            var employeesList =await _context.Employees.Include(x => x.Designation).Include(x=>x.Team).Where(x => x.TeamId == teamId)
                 .Select(x => new EmployeeDto
                 {
                     Id = x.Id,
@@ -94,7 +106,8 @@ namespace PerformanceAppraisalService.Application.Services
                     Email = x.Email,
                     DesignationId = x.DesignationId,
                     DepartmentId = (Guid)x.DepartmentId,
-                    TeamId = (Guid)x.TeamId
+                    TeamId = (Guid)x.TeamId,
+                    TeamName = x.Team.Name
                 })
                 .ToListAsync();
 
@@ -127,10 +140,10 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (employee != null)
             {
-                employee.RegistrationNumber = employee.RegistrationNumber;
-                employee.FirstName = employee.FirstName;
-                employee.LastName = employee.LastName;
-                employee.Email = employee.Email;
+                employee.RegistrationNumber = employeeDto.RegistrationNumber;
+                employee.FirstName = employeeDto.FirstName;
+                employee.LastName = employeeDto.LastName;
+                employee.Email = employeeDto.Email;
                 employee.DesignationId = employeeDto.DesignationId;
                 employee.DepartmentId = employeeDto.DepartmentId;
                 employee.TeamId = employeeDto.TeamId;
@@ -154,5 +167,7 @@ namespace PerformanceAppraisalService.Application.Services
 
             return 0;
         }
+
+        
     }
 }

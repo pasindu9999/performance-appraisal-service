@@ -111,7 +111,7 @@ namespace PerformanceAppraisalService.Application.Services
             return "Team not update...!";
         }
 
-        public async Task<object> DeleteTeamAsync(Guid id)
+        public async Task<string> DeleteTeamAsync(Guid id)
         {
             var team = await _context.Teams.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -119,10 +119,10 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(team);
                 await _context.SaveChangesAsync();
-                return 1;
+                return "Team delete sucessful";
             }
 
-            return 0;
+            return "Team can not delete";
         }
 
      

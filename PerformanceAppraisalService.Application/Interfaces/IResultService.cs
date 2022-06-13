@@ -10,9 +10,10 @@ namespace PerformanceAppraisalService.Application.Interfaces
     {
         Task<string> CreateResultAsync(ResultDto ResultDto);
         Task<List<ResultDto>> GetResultListAsync();
-        Task<List<ResultDto>> GetResultbyPanelAsync(Guid PanelId, Guid ReviwerId);
-       // Task<TeamDto> GetTeamByIdAsync(Guid id);
-        Task<string> UpdateResultAsync(TeamDto teamDto);
+        Task<List<ResultDto>> GetResultbyReviwerAsync(Guid ReviwerId);
+        Task<List<ResultDto>> GetResultbyReviweeAsync(Guid ReviweeId);
+        Task<ResultDto> GetResultByIdAsync(Guid id);
+        Task<string> UpdateResultAsync(ResultDto resultDto);
         Task<object> DeleteResultAsync(Guid id);
     }
 }

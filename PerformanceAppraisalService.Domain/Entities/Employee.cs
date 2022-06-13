@@ -7,8 +7,7 @@ using System.Text;
 namespace PerformanceAppraisalService.Domain.Entities
 {
     public class Employee: BaseEntity
-    {
-        public readonly object DepartmentName;
+    {       
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RegistrationNumber { get; set; }

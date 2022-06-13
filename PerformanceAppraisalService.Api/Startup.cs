@@ -82,6 +82,7 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IDesignationService, DesignationService>();
             services.AddTransient<ISalaryService, SalaryService>();
+            services.AddTransient<IQueryService, QueryService>();
 
             services.AddTransient<IQueueService, QueueService>();
 

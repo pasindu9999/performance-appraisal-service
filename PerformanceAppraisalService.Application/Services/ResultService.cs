@@ -35,24 +35,100 @@ namespace PerformanceAppraisalService.Application.Services
             return "Result stored...!";
         }
 
-        public Task<object> DeleteResultAsync(Guid id)
+        public async Task<object> DeleteResultAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Results.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result != null)
+            {
+                _context.Remove(result);
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+
+            return 0;
         }
 
-        public Task<List<ResultDto>> GetResultbyPanelAsync(Guid PanelId, Guid ReviwerId)
+        public async Task<List<ResultDto>> GetResultListAsync()
         {
-            throw new NotImplementedException();
+            var resultList = await _context.Results
+                .Select(x => new ResultDto
+                {
+                    Id = x.Id,
+                    CriteriaId = x.CriteriaId,
+                    ReviwerId = (Guid)x.ReviwerId,
+                    ReviweeId = (Guid)x.ReviweeId,
+                    Marks = (int)x.Marks,
+                })
+                .ToListAsync();
+
+            return resultList;
         }
 
-        public Task<List<ResultDto>> GetResultListAsync()
+        public async Task<ResultDto> GetResultByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Results
+                .Select(x => new ResultDto
+                {
+                    Id = x.Id,
+                    CriteriaId = x.CriteriaId,
+                    ReviwerId = (Guid)x.ReviwerId,
+                    ReviweeId = (Guid)x.ReviweeId,
+                    Marks = (int)x.Marks,
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return result;
         }
 
-        public Task<string> UpdateResultAsync(TeamDto teamDto)
+        public Task<List<ResultDto>> GetResultbyReviwerAsync(Guid ReviwerId)
         {
-            throw new NotImplementedException();
+            var resultList = _context.Results.Where(x=>x.ReviwerId == ReviwerId)
+                .Select(x => new ResultDto
+                {
+                    Id = x.Id,
+                    CriteriaId = x.CriteriaId,
+                    ReviwerId = (Guid)x.ReviwerId,
+                    ReviweeId = (Guid)x.ReviweeId,
+                    Marks = (int)x.Marks,
+                })
+                .ToListAsync();
+
+            return resultList;
+        }
+
+        public Task<List<ResultDto>> GetResultbyReviweeAsync(Guid ReviweeId)
+        {
+            var resultList = _context.Results.Where(x => x.ReviweeId == ReviweeId)
+                .Select(x => new ResultDto
+                {
+                    Id = x.Id,
+                    CriteriaId = x.CriteriaId,
+                    ReviwerId = (Guid)x.ReviwerId,
+                    ReviweeId = (Guid)x.ReviweeId,
+                    Marks = (int)x.Marks,
+                })
+                .ToListAsync();
+
+            return resultList;
+        }
+
+        public async Task<string> UpdateResultAsync(ResultDto resultDto)
+        {
+            var results = await _context.Results.FirstOrDefaultAsync(x => x.Id == resultDto.Id);
+
+            if (results.Id != null)
+            {
+                results.CriteriaId = resultDto.CriteriaId;
+                results.ReviwerId = resultDto.ReviwerId;
+                results.ReviweeId = resultDto.ReviweeId;
+                results.Marks = resultDto.Marks;
+
+                await _context.SaveChangesAsync();
+                return "Result update success...!";
+            }
+
+            return "Result not update...!";
         }
     }
 }

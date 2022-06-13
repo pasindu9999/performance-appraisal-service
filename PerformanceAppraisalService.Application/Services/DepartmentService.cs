@@ -92,10 +92,9 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(departmnent);
                 await _context.SaveChangesAsync();
-                return "Department deleted";
+                return "Department delete sucessful";
             }
-
-            return "Department not deleted";
+            return "cant delete department";
         }
     }
 }

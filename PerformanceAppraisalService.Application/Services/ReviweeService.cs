@@ -69,7 +69,7 @@ namespace PerformanceAppraisalService.Application.Services
                 {
                     Id = x.Id,
                     EmployeeFirstName = x.Employee.FirstName,
-                    DepartmentName = (string)x.Employee.DepartmentName,
+                    DepartmentName = (string)x.Employee.Department.Name,
                     EmployeeId = x.EmployeeId,
                     PanelId = (Guid)x.PanelId
                 })

@@ -76,6 +76,19 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ImageName = table.Column<string>(nullable: true),
+                    BlobUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
                 {
@@ -259,12 +272,31 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PanelReviwers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    PanelId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PanelReviwers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PanelReviwers_Panels_PanelId",
+                        column: x => x.PanelId,
+                        principalTable: "Panels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Results",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CriteriaId = table.Column<Guid>(nullable: false),
-                    ReviwerId = table.Column<Guid>(nullable: false),
+                    ReviwerId = table.Column<Guid>(nullable: true),
                     ReviweeId = table.Column<Guid>(nullable: true),
                     Marks = table.Column<int>(nullable: true)
                 },
@@ -405,32 +437,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PanelReviwers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: true),
-                    PanelId = table.Column<Guid>(nullable: false),
-                    ReviwerId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PanelReviwers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PanelReviwers_Panels_PanelId",
-                        column: x => x.PanelId,
-                        principalTable: "Panels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PanelReviwers_Reviwers_ReviwerId",
-                        column: x => x.ReviwerId,
-                        principalTable: "Reviwers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -503,11 +509,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 column: "PanelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PanelReviwers_ReviwerId",
-                table: "PanelReviwers",
-                column: "ReviwerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Results_CriteriaId",
                 table: "Results",
                 column: "CriteriaId");
@@ -555,10 +556,10 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 filter: "[TeamLeaderId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Results_Reviwers_ReviweeId",
+                name: "FK_Results_Reviwees_ReviweeId",
                 table: "Results",
                 column: "ReviweeId",
-                principalTable: "Reviwers",
+                principalTable: "Reviwees",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -568,7 +569,7 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 column: "ReviwerId",
                 principalTable: "Reviwers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Employees_Departments_DepartmentId",
@@ -613,6 +614,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
                 name: "Organizations");
 
             migrationBuilder.DropTable(
@@ -625,9 +629,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                 name: "Results");
 
             migrationBuilder.DropTable(
-                name: "Reviwees");
-
-            migrationBuilder.DropTable(
                 name: "Salarys");
 
             migrationBuilder.DropTable(
@@ -638,6 +639,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Criterias");
+
+            migrationBuilder.DropTable(
+                name: "Reviwees");
 
             migrationBuilder.DropTable(
                 name: "Reviwers");
