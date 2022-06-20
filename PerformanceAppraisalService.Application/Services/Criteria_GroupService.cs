@@ -22,6 +22,33 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> Create_criteriaGroupAsync(Criteria_GroupDto criteria_groupDto)
         {
+            /*//var critGroup = _context.Criteria_groups.Where(u => u.Name == criteria_groupDto.Name).Single();
+          
+
+            *//*if (critGroup != null) {
+
+                return "Two criteria groups cant have the same name";
+            }*//*
+            //else
+           // {
+                var criteria_group = new Criteria_Group
+                {
+                
+                Name = criteria_groupDto.Name,
+                Description = criteria_groupDto.Description,
+                Weightages = criteria_groupDto.Weightages,
+               // WeightageCount = criteria_groupDto.Weightages+ criteria_groupDto.WeightageCount
+
+
+                };
+
+            _context.Add(criteria_group);
+            await _context.SaveChangesAsync();
+
+            return "Criteria group Create success...!";
+
+            
+        }*/
             var criteria_group = new Criteria_Group
             {
                 Name = criteria_groupDto.Name,
@@ -44,7 +71,8 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
-                    Weightages = x.Weightages
+                    Weightages = x.Weightages,
+                  //  WeightageCount = x.Weightages+ x.WeightageCount
                 })
                 .ToListAsync();
 
@@ -59,7 +87,8 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
-                    Weightages = x.Weightages
+                    Weightages = x.Weightages,
+                   // WeightageCount = x.Weightages + x.WeightageCount
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -73,8 +102,8 @@ namespace PerformanceAppraisalService.Application.Services
             if (criteria_group != null)
             {
                 criteria_group.Name = criteria_groupDto.Name;
-                criteria_groupDto.Description = criteria_groupDto.Description;
-                criteria_groupDto.Weightages = criteria_groupDto.Weightages;
+                criteria_group.Description = criteria_groupDto.Description;
+                criteria_group.Weightages = criteria_groupDto.Weightages;
 
                 await _context.SaveChangesAsync();
                 return "update sucessfull";
@@ -97,10 +126,7 @@ namespace PerformanceAppraisalService.Application.Services
             return "can't delete the group";
         }
 
-        Task<string> ICriteria_GroupService.UpdateCriteria_GroupAsync(Criteria_GroupDto criteria_groupDto)
-        {
-            throw new NotImplementedException();
-        }
+     
 
        
     }

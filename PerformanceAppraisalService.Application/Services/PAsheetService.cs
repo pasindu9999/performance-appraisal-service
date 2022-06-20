@@ -21,7 +21,7 @@ namespace PerformanceAppraisalService.Application.Services
             _context = context;
         }
 
-        public async Task<string> CreatePA_sheetAsync(PAsheetDto pasheetDto)
+        public async Task<string> CreatePAsheetAsync(PAsheetDto pasheetDto)
         {
             var pa_sheet = new PAsheet
             {
@@ -38,7 +38,7 @@ namespace PerformanceAppraisalService.Application.Services
             return "PA sheet Create success...!";
         }
 
-        public async Task<List<PAsheetDto>> GetPA_sheetListAsync()
+        public async Task<List<PAsheetDto>> GetPAsheetListAsync()
         {
             var pa_sheetList = await _context.PAsheets
                 .Select(x => new PAsheetDto
@@ -70,7 +70,7 @@ namespace PerformanceAppraisalService.Application.Services
             return pa_sheet;
         }
 
-        public async Task<object> UpdatePA_sheetAsync(PAsheetDto pasheetDto)
+        public async Task<object> UpdatePAsheetAsync(PAsheetDto pasheetDto)
         {
             var pasheet = await _context.PAsheets.FirstOrDefaultAsync(x => x.Id == pasheetDto.Id);
 
@@ -88,7 +88,7 @@ namespace PerformanceAppraisalService.Application.Services
             return 0;
         }
 
-        public async Task<object> DeletePA_sheetAsync(Guid id)
+        public async Task<object> DeletePAsheetAsync(Guid id)
         {
             var pasheet = await _context.PAsheets.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -102,29 +102,6 @@ namespace PerformanceAppraisalService.Application.Services
             return 0;
         }
 
-        Task<string> IPAsheetService.CreatePAsheetAsync(PAsheetDto pasheet_Dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<PAsheetDto>> IPAsheetService.GetPAsheetListAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<PAsheetDto> IPAsheetService.GetPAsheetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<object> IPAsheetService.UpdatePAsheetAsync(PAsheetDto pa_sheet_Dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<object> IPAsheetService.DeletePAsheetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

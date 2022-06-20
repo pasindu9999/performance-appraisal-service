@@ -80,7 +80,7 @@ namespace PerformanceAppraisalService.Application.Services
             return criteria;
         }
 
-        public async Task<object> UpdateCriteriaAsync(CriteriaDto criteriaDto)
+        public async Task<string> UpdateCriteriaAsync(CriteriaDto criteriaDto)
         {
             var criteria = await _context.Criterias.FirstOrDefaultAsync(x => x.Id == criteriaDto.Id);
 
@@ -88,7 +88,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 criteria.Name = criteriaDto.Name;
                 criteria.Description = criteriaDto.Description;
-                criteria.GroupId = criteriaDto.GroupId;
+               // criteria.GroupId = criteriaDto.GroupId;
 
                 await _context.SaveChangesAsync();
                 return "criteria updated";

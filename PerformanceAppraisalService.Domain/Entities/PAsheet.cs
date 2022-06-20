@@ -12,5 +12,9 @@ namespace PerformanceAppraisalService.Domain.Entities
 
         public DateTime Start_date { get; set; }
         public DateTime Due_date { get; set; }
+
+      
+
+
     }
 }

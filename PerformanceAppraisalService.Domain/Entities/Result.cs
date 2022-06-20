@@ -9,7 +9,7 @@ namespace PerformanceAppraisalService.Domain.Entities
         public Guid CriteriaId { get; set; }
         public Guid? ReviwerId { get; set; }
         public Guid? ReviweeId { get; set; }
-        public  int? Marks { get; set; }
+        public int? Marks { get; set; }
         public virtual Criteria Criteria { get; set; }
         public virtual Reviwer Reviwer { get; set; }
         public virtual Reviwee Reviwee { get; set; }

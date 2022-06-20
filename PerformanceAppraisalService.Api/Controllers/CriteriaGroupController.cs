@@ -11,10 +11,10 @@ namespace PerformanceAppraisalService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Criteria_GroupController : ControllerBase
+    public class CriteriaGroupController : ControllerBase
     {
         private readonly ICriteria_GroupService _criteria_GroupService;
-        public Criteria_GroupController(ICriteria_GroupService criteria_GroupService)
+        public CriteriaGroupController(ICriteria_GroupService criteria_GroupService)
         {
             _criteria_GroupService = criteria_GroupService;
         }
@@ -40,7 +40,7 @@ namespace PerformanceAppraisalService.Api.Controllers
         // api/organization/by-id?id=
         [HttpGet]
         [Route("by-id")]
-        public async Task<IActionResult> PA_sheetById(Guid id)
+        public async Task<IActionResult> GetCriteria_GroupById(Guid id)
         {
             var result = await _criteria_GroupService.GetCriteria_GroupByIdAsync(id);
             return Ok(result);

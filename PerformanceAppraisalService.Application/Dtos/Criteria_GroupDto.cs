@@ -9,6 +9,8 @@ namespace PerformanceAppraisalService.Application.Dtos
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+       // public int WeightageCount { get; set; }
         public int Weightages { get; set; }
         
     }
