@@ -12,6 +12,8 @@ namespace PerformanceAppraisalService.Domain.Entities
         //public ICollection<PanelReviwer> PanelReviwers { get; set; }
         public ICollection<Reviwee> Reviwees { get; set; }
         public ICollection<Reviwer> Reviwer { get; set; }
+
+        public ICollection<PAsheet> PAsheet { get; set; }
     }
 
 }

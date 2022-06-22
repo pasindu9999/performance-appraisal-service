@@ -22,6 +22,7 @@ using Microsoft.IdentityModel.Tokens;
 using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Processors.Email;
 
+
 namespace PerformanceAppraisalService.Api
 {
     public class Startup
@@ -86,7 +87,8 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<IQueueService, QueueService>();
 
 
-           
+           // services.AddTransient<IPA_sheetService, PA_sheetService>();
+
             services.AddTransient<IAzureBlobService, AzureBlobService>();
             services.AddTransient<IReviweeService, ReviweeService>();
             services.AddTransient<IReviwerService, ReviwerService>();

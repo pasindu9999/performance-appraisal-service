@@ -6,10 +6,11 @@ namespace PerformanceAppraisalService.Domain.Entities
 {
     public class Reviwer : BaseEntity
     {
-        public string PanelId { get; set; }
+        public Guid? PanelId { get; set; }
+        public string EmployeeFirstName { get; set; }
         public Guid EmployeeId { get; set; }
         public virtual Panel Panel { get; set; }
         public virtual Employee Employee { get; set; }
-       
+
     }
 }
