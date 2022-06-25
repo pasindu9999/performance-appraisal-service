@@ -53,7 +53,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 Name = criteria_groupDto.Name,
                 Description = criteria_groupDto.Description,
-                Weightages = criteria_groupDto.Weightages
+                
 
             };
 
@@ -71,7 +71,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
-                    Weightages = x.Weightages,
+                    
                   //  WeightageCount = x.Weightages+ x.WeightageCount
                 })
                 .ToListAsync();
@@ -87,7 +87,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
-                    Weightages = x.Weightages,
+                    
                    // WeightageCount = x.Weightages + x.WeightageCount
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -103,7 +103,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 criteria_group.Name = criteria_groupDto.Name;
                 criteria_group.Description = criteria_groupDto.Description;
-                criteria_group.Weightages = criteria_groupDto.Weightages;
+                
 
                 await _context.SaveChangesAsync();
                 return "update sucessfull";

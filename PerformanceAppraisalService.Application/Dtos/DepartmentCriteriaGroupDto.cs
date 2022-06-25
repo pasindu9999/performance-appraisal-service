@@ -4,14 +4,17 @@ using System.Text;
 
 namespace PerformanceAppraisalService.Application.Dtos
 {
-    public class Criteria_GroupDto
+   public class DepartmentCriteriaGroupDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int Weightage { get; set; }
 
-       // public int WeightageCount { get; set; }
-       
-        
+        public Guid DepartmentId { get; set; }
+
+        public Guid CriteriaGroupId { get; set; }
+
+        public string Name { get; set; }
+
+
     }
 }

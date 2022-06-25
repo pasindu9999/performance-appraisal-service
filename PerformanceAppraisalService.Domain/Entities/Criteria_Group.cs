@@ -10,9 +10,10 @@ namespace PerformanceAppraisalService.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Weightages { get; set; }
 
-        //public int WeightageCount { get; set; }
+
+        
+        public virtual Department Department { get; set; }
         public ICollection<Criteria> Criterias { get; set; }
 
     }

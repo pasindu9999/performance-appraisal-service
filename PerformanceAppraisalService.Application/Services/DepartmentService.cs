@@ -22,7 +22,7 @@ namespace PerformanceAppraisalService.Application.Services
             var department = new Department
             {
                 Name = departmentDto.Name,
-                DepartmentHeadId = departmentDto.DepartmentHeadId,
+                //DepartmentHeadId = departmentDto.DepartmentHeadId,
                 Description = departmentDto.Description,
                 NoOfEmployees = departmentDto.NoOfEmployees
             };
@@ -43,7 +43,7 @@ namespace PerformanceAppraisalService.Application.Services
                     DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     DepartmentHeadFirstName = x.DepartmentHead.FirstName,
                     Description = x.Description,
-                    NoOfEmployees = x.NoOfEmployees
+                    //NoOfEmployees = x.NoOfEmployees
                 })
                 .ToListAsync();
 
@@ -59,7 +59,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Name = x.Name,
                     DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     Description = x.Description,
-                    NoOfEmployees = x.NoOfEmployees
+                    //NoOfEmployees = x.NoOfEmployees
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 

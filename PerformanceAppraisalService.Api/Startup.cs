@@ -97,6 +97,7 @@ namespace PerformanceAppraisalService.Api
             services.AddTransient<ICriteria_GroupService, Criteria_GroupService>();
             services.AddTransient<ICriteria_Service, Criteria_Service>();
             services.AddTransient<IResultService, ResultService>();
+            services.AddTransient<IDepartmentCriteriaGroupService, DepartmentCriteriaGroupService>();
             services.AddCors();
 
             services.AddControllers();

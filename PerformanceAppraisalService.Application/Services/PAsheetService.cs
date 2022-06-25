@@ -25,10 +25,11 @@ namespace PerformanceAppraisalService.Application.Services
         {
             var pa_sheet = new PAsheet
             {
-                Department = pasheetDto.Department,
-                Dep_Head_Name = pasheetDto.Dep_Head_Name,
+                //Department = pasheetDto.Department,
+               // Dep_Head_Name = pasheetDto.Dep_Head_Name,
                 Start_date = pasheetDto.Start_date,
-                Due_date = pasheetDto.Due_date
+                Due_date = pasheetDto.Due_date,
+              //  PanelId = pasheetDto.PanelId
 
             };
 
@@ -44,8 +45,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new PAsheetDto
                 {
                     Id = x.Id,
-                    Department = x.Department,
-                    Dep_Head_Name = x.Dep_Head_Name,
+                   // Department = x.Department,
+                   // Dep_Head_Name = x.Dep_Head_Name,
                     Start_date = x.Start_date, 
                     Due_date = x.Due_date
                 })
@@ -60,8 +61,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new PAsheetDto
                 {
                     Id = x.Id,
-                    Department = x.Department,
-                    Dep_Head_Name = x.Dep_Head_Name,
+                   // Department = x.Department,
+                   // Dep_Head_Name = x.Dep_Head_Name,
                     Start_date = x.Start_date,
                     Due_date = x.Due_date
                 })
@@ -76,8 +77,8 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (pasheet != null)
             {
-                pasheet.Department = pasheetDto.Department;
-                pasheet.Dep_Head_Name = pasheetDto.Dep_Head_Name;
+               // pasheet.Department = pasheetDto.Department;
+               // pasheet.Dep_Head_Name = pasheetDto.Dep_Head_Name;
                 pasheet.Start_date = pasheetDto.Start_date;
                 pasheet.Due_date = pasheetDto.Due_date;
 

@@ -10,8 +10,9 @@ namespace PerformanceAppraisalService.Domain.Entities
         public Guid PanelId { get; set; }
         public Panel Panel { get; set; }
 
-       // public Guid ReviwerId { get; set; }
-       // public Reviwer Reviwer { get; set; }
+        public Guid ReviwerId { get; set; }
+
+        public Reviwer Reviwer { get; set; }
     }
 
     

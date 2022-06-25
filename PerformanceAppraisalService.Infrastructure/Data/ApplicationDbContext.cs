@@ -30,6 +30,8 @@ namespace PerformanceAppraisalService.Infrastructure.Data
         public DbSet<Result> Results { get; set; }
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<DepartmentCriteriaGroup> DepartmentCriteriaGroups { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

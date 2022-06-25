@@ -12,6 +12,8 @@ namespace PerformanceAppraisalService.Application.Dtos
         public DateTime Start_date { get; set; }
         public DateTime Due_date { get; set; }
 
+        public Guid PanelId { get; set; }
+
 
     }
 }
