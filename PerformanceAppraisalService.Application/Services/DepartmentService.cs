@@ -19,12 +19,14 @@ namespace PerformanceAppraisalService.Application.Services
         }
         public async Task<string> CreateDepartmentAsync(DepartmentDto departmentDto)
         {
+   
             var department = new Department
             {
                 Name = departmentDto.Name,
                 //DepartmentHeadId = departmentDto.DepartmentHeadId,
                 Description = departmentDto.Description,
                 NoOfEmployees = departmentDto.NoOfEmployees
+
             };
 
             _context.Add(department);
@@ -32,6 +34,7 @@ namespace PerformanceAppraisalService.Application.Services
 
             return "Department Create success...!";
         }
+
 
         public async Task<List<DepartmentDto>> GetDepartmentListAsync()
         {
@@ -43,12 +46,27 @@ namespace PerformanceAppraisalService.Application.Services
                     DepartmentHeadId = (Guid)x.DepartmentHeadId,
                     DepartmentHeadFirstName = x.DepartmentHead.FirstName,
                     Description = x.Description,
-                    //NoOfEmployees = x.NoOfEmployees
+                    NoOfEmployees = (int)x.NoOfEmployees
                 })
                 .ToListAsync();
 
             return departmentsList;
+
+
+
+            /*     var employeeList = await _context.Employees.Include(x => x.Department).Where
+                     .Select(x => new Employee
+                     {
+                         Id = x.Id,
+                         Name = x.Department.Name,
+                         //Description = x.Description,
+                         HeadName = x.FirstName
+                     }).Distinct()
+                     .ToListAsync();*/
         }
+
+
+
 
         public async Task<DepartmentDto> GetDepartmentByIdAsync(Guid id)
         {
@@ -58,8 +76,11 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     Name = x.Name,
                     DepartmentHeadId = (Guid)x.DepartmentHeadId,
+                    DepartmentHeadFirstName = x.DepartmentHead.FirstName,
                     Description = x.Description,
-                    //NoOfEmployees = x.NoOfEmployees
+                    NoOfEmployees = (int)x.NoOfEmployees
+
+
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -75,7 +96,7 @@ namespace PerformanceAppraisalService.Application.Services
                 department.Name = departmentDto.Name;
                 department.DepartmentHeadId = departmentDto.DepartmentHeadId;
                 department.Description = departmentDto.Description;
-                department.NoOfEmployees = departmentDto.NoOfEmployees;
+ 
 
                 await _context.SaveChangesAsync();
                 return "Department update success...!";
@@ -92,10 +113,9 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(departmnent);
                 await _context.SaveChangesAsync();
-                return "Department deleted";
+                return "Department delete sucessful";
             }
-
-            return "Department not deleted";
+            return "cant delete department";
         }
     }
 }

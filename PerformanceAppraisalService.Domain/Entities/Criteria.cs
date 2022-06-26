@@ -12,5 +12,6 @@ namespace PerformanceAppraisalService.Domain.Entities
         public Guid GroupId { get; set; }
         public Criteria_Group Group { get; set; }
 
+ 
     }
 }

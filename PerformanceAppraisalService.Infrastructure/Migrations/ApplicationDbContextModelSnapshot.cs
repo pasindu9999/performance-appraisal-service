@@ -343,6 +343,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Certificateurl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
@@ -353,6 +356,9 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imageurl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -474,9 +480,6 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("PanelId")
                         .HasColumnType("uniqueidentifier");
 
@@ -538,7 +541,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.HasIndex("PanelId");
 
@@ -562,7 +566,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.HasIndex("PanelId");
 
@@ -781,8 +786,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwee", b =>
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("Reviwee")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Reviwee", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -794,8 +799,8 @@ namespace PerformanceAppraisalService.Infrastructure.Migrations
             modelBuilder.Entity("PerformanceAppraisalService.Domain.Entities.Reviwer", b =>
                 {
                     b.HasOne("PerformanceAppraisalService.Domain.Entities.Employee", "Employee")
-                        .WithMany("Reviwers")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("Reviwer")
+                        .HasForeignKey("PerformanceAppraisalService.Domain.Entities.Reviwer", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

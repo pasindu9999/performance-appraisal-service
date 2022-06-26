@@ -24,15 +24,15 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> CreatePanelReviwerAsync(PanelReviwerDto panelDto)
         {
-            var panel = new PanelReviwer
+            var panelReviwer = new PanelReviwer
             {
                 PanelId = panelDto.PanelId,
-                //ReviwerId = panelDto.ReviwerId,
-                CreateDate = panelDto.CreateDate
+                ReviwerId = panelDto.ReviwerId,
+   
             };
 
 
-            _context.Add(panel);
+             _context.Add(panelReviwer);
             await _context.SaveChangesAsync();
 
             return "Organization Create success...!";

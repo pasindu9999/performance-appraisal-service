@@ -83,7 +83,7 @@ namespace PerformanceAppraisalService.Application.Services
 
         public Task<List<ResultDto>> GetResultbyReviwerAsync(Guid ReviwerId)
         {
-            var resultList = _context.Results.Where(x => x.ReviwerId == ReviwerId)
+            var resultList = _context.Results.Where(x=>x.ReviwerId == ReviwerId)
                 .Select(x => new ResultDto
                 {
                     Id = x.Id,

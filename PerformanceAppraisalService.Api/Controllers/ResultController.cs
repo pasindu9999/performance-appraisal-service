@@ -76,7 +76,7 @@ namespace PerformanceAppraisalService.Api.Controllers
         // api/result/delete?id=
         [HttpDelete]
         [Route("delete")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete (Guid id)
         {
             {
                 var response = await _resultService.DeleteResultAsync(id);

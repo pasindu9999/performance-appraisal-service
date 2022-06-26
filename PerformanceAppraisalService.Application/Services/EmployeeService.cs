@@ -1,13 +1,12 @@
-﻿using PerformanceAppraisalService.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceAppraisalService.Application.Dtos;
 using PerformanceAppraisalService.Application.Interfaces;
 using PerformanceAppraisalService.Domain.Entities;
 using PerformanceAppraisalService.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace PerformanceAppraisalService.Application.Services
 {
@@ -22,100 +21,120 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> CreateEmployeeAsync(EmployeeDto employeeDto)
         {
-            var employee = new Employee
-            {
-                RegistrationNumber = employeeDto.RegistrationNumber,
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-                Email = employeeDto.Email,
-                DesignationId = employeeDto.DesignationId
-            };
+                var employee = new Employee
+                {
+                    RegistrationNumber = employeeDto.RegistrationNumber,
+                    FirstName = employeeDto.FirstName,
+                    LastName = employeeDto.LastName,
+                    Email = employeeDto.Email,
+                    DesignationId = employeeDto.DesignationId
+                };
 
-            _context.Add(employee);
-            await _context.SaveChangesAsync();
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
 
-            return "Employee Create success...!";
+                return "Employee Create success...!";
+            
         }
 
         public async Task<List<EmployeeDto>> GetEmployeeListAsync()
         {
-            var employeesList = await _context.Employees
+            var employeeList = await _context.Employees.GroupJoin(_context.Departments, ai => ai.DepartmentId, di => di.Id,
+                    (ai, di) => new { ai, di }
+                    ).SelectMany (x => x.di.DefaultIfEmpty(), (empData, depData) => 
+                    new EmployeeDto{ 
+                        Id = empData.ai.Id,
+                        RegistrationNumber = empData.ai.RegistrationNumber,
+                        FirstName = empData.ai.FirstName,
+                        LastName = empData.ai.LastName,
+                        Email = empData.ai.Email,
+                        DesignationId = empData.ai.DesignationId,
+                        DesignationName = empData.ai.Designation.Name,
+                        DepartmentId = (Guid)empData.ai.DepartmentId,
+                        DepartmentName = depData.Name,
+                        TeamId = (Guid)empData.ai.TeamId,
+                        Imageurl = empData.ai.Imageurl,
+                        Certificateurl = empData.ai.Certificateurl
 
-                .Select(x => new EmployeeDto
-                {
-                    Id = x.Id,
-                    RegistrationNumber = x.RegistrationNumber,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    DesignationName = x.Designation.Name,
-                    Email = x.Email,
-                    DesignationId = x.DesignationId,
-                    DepartmentId = (Guid)x.DepartmentId,
-                    DepartmentName = x.Department.Name
-                }) 
-                .ToListAsync();
+                    }).ToListAsync();
+                  
 
-            return employeesList;
+            return employeeList;
         }
 
         //filter according to the departments
-        public Task<List<EmployeeDto>> GetEmployeesbyDepartmentAsync(Guid departmentId)
+        public async Task<List<EmployeeDto>> GetEmployeesbyDepartmentAsync(Guid departmentId)
         {
-            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.DepartmentId == departmentId)
-                .Select(x => new EmployeeDto
-                {
-                    Id = x.Id,
-                    RegistrationNumber = x.RegistrationNumber,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    DesignationName = x.Designation.Name,
-                    Email = x.Email,
-                    DesignationId = x.DesignationId,
-                    DepartmentId = (Guid)x.DepartmentId,
-                    TeamId = (Guid)x.TeamId
-                })
+            var employeeList = await _context.Employees.Join(_context.Departments, ai => ai.DepartmentId, di => di.Id, (ai, di) =>
+                     new EmployeeDto
+                     {
+                        Id = ai.Id,
+                        RegistrationNumber = ai.RegistrationNumber,
+                        FirstName = ai.FirstName,
+                        LastName = ai.LastName,
+                        Email = ai.Email,
+                        DesignationId = ai.DesignationId,
+                        DesignationName = ai.Designation.Name,
+                        DepartmentId = (Guid)ai.DepartmentId,
+                        DepartmentName = di.Name,
+                        TeamId = (Guid)ai.TeamId,
+                        Imageurl = ai.Imageurl,
+                        Certificateurl = ai.Certificateurl
+                     }).Where(ai => ai.DepartmentId == departmentId)
                 .ToListAsync();
 
-            return employeesList;
+                return employeeList;
 
         }
 
-        //filter according to the teams
-        public Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid teamId)
+  
+        //filter according to the teams n
+        public async Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid teamId)
         {
-            var employeesList = _context.Employees.Include(x => x.Designation).Where(x => x.TeamId == teamId)
-                .Select(x => new EmployeeDto
-                {
-                    Id = x.Id,
-                    RegistrationNumber = x.RegistrationNumber,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    DesignationName = x.Designation.Name,
-                    Email = x.Email,
-                    DesignationId = x.DesignationId,
-                    DepartmentId = (Guid)x.DepartmentId,
-                    TeamId = (Guid)x.TeamId
-                })
+            var employeeList = await _context.Employees.Join(_context.Teams, ai => ai.TeamId, ti => ti.Id, (ai, ti) =>
+                    new EmployeeDto
+                    {
+                        Id = ai.Id,
+                        RegistrationNumber = ai.RegistrationNumber,
+                        FirstName = ai.FirstName,
+                        LastName = ai.LastName,
+                        Email = ai.Email,
+                        DesignationId = ai.DesignationId,
+                        DesignationName = ai.Designation.Name,
+                        DepartmentId = (Guid)ai.DepartmentId,
+                        //DepartmentName = di.Name,
+                        TeamId = (Guid)ai.TeamId,
+                        TeamName = ti.Name,
+                        Imageurl = ai.Imageurl,
+                        Certificateurl = ai.Certificateurl
+                    }).Where(ai => ai.TeamId == teamId)
                 .ToListAsync();
 
-            return employeesList;
+                return employeeList;
 
         }
 
         public async Task<EmployeeDto> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _context.Employees
-                .Select(x => new EmployeeDto
-                {
-                    Id = x.Id,
-                    RegistrationNumber = x.RegistrationNumber,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Email = x.Email,
-                    DesignationId = x.DesignationId,
-                    DepartmentId = (Guid)x.DepartmentId,
-                    TeamId = (Guid)x.TeamId
-                })
+            var employee = await _context.Employees.GroupJoin(_context.Departments, ai => ai.DepartmentId, di => di.Id,
+                    (ai, di) => new { ai, di }
+                    ).SelectMany(x => x.di.DefaultIfEmpty(), (empData, depData) =>
+                   new EmployeeDto
+                   {
+                       Id = empData.ai.Id,
+                       RegistrationNumber = empData.ai.RegistrationNumber,
+                       FirstName = empData.ai.FirstName,
+                       LastName = empData.ai.LastName,
+                       Email = empData.ai.Email,
+                       DesignationId = empData.ai.DesignationId,
+                       DesignationName = empData.ai.Designation.Name,
+                       DepartmentId = (Guid)empData.ai.DepartmentId,
+                       DepartmentName = depData.Name,
+                       TeamId = (Guid)empData.ai.TeamId,
+                       Imageurl = empData.ai.Imageurl,
+                       Certificateurl = empData.ai.Certificateurl
+
+                   })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return employee;
@@ -127,10 +146,10 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (employee != null)
             {
-                employee.RegistrationNumber = employee.RegistrationNumber;
-                employee.FirstName = employee.FirstName;
-                employee.LastName = employee.LastName;
-                employee.Email = employee.Email;
+                employee.RegistrationNumber = employeeDto.RegistrationNumber;
+                employee.FirstName = employeeDto.FirstName;
+                employee.LastName = employeeDto.LastName;
+                employee.Email = employeeDto.Email;
                 employee.DesignationId = employeeDto.DesignationId;
                 employee.DepartmentId = employeeDto.DepartmentId;
                 employee.TeamId = employeeDto.TeamId;
@@ -141,7 +160,9 @@ namespace PerformanceAppraisalService.Application.Services
             return "Employee not update...!";
         }
 
-        public async Task<object> DeleteEmployeeAsync(Guid id)
+
+
+        public async Task<string> DeleteEmployeeAsync(Guid id)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -149,10 +170,13 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 _context.Remove(employee);
                 await _context.SaveChangesAsync();
-                return 1;
+                return "Delete employee sucess..!";
             }
 
-            return 0;
+            return "Can't Delete employee";
         }
+
+
+
     }
 }

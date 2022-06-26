@@ -13,6 +13,6 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<List<TeamDto>> GetTeamsbyDepartmentAsync(Guid DepartmentId);
         Task<TeamDto> GetTeamByIdAsync(Guid id);
         Task<string> UpdateTeamAsync(TeamDto teamDto);
-        Task<object> DeleteTeamAsync(Guid id);
+        Task<string> DeleteTeamAsync(Guid id);
     }
 }
