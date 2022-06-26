@@ -14,7 +14,10 @@ namespace PerformanceAppraisalService.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        
+        public string Certificateurl { get; set; }
+        public string Imageurl { get; set; }
+         //public virtual Department DepartmentHead { get; set; }
+
 
         //relationship with designation 1:m
         public Guid DesignationId { get; set; }
@@ -30,7 +33,8 @@ namespace PerformanceAppraisalService.Domain.Entities
         public Guid? TeamId { get; set; }
         public virtual Team Team { get; set; }
 
-        public ICollection<Reviwer> Reviwers { get; set; }
+        public Reviwer Reviwer { get; set; }
+        public Reviwee Reviwee { get; set; }
 
         //relationship with reviwee 1:1
         //public Guid? TeamId { get; set; }

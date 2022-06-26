@@ -73,8 +73,8 @@ namespace PerformanceAppraisalService.Application.Services
             if (criteria_group != null)
             {
                 criteria_group.Name = criteria_groupDto.Name;
-                criteria_groupDto.Description = criteria_groupDto.Description;
-                criteria_groupDto.Weightages = criteria_groupDto.Weightages;
+                criteria_group.Description = criteria_groupDto.Description;
+                criteria_group.Weightages = criteria_groupDto.Weightages;
 
                 await _context.SaveChangesAsync();
                 return "update sucessfull";

@@ -4,14 +4,13 @@ using System.Text;
 
 namespace PerformanceAppraisalService.Domain.Entities
 {
-    public class PanelReviwer: BaseEntity
+    public class PanelReviwer : BaseEntity
     {
-        public DateTime? CreateDate { get; set; }
         public Guid PanelId { get; set; }
         public Panel Panel { get; set; }
 
-       // public Guid ReviwerId { get; set; }
-       // public Reviwer Reviwer { get; set; }
+        public Guid ReviwerId { get; set; }
+        public Reviwer Reviwer { get; set; }
     }
 
     

@@ -6,6 +6,10 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 {
     public class ApplicationDbContext: IdentityDbContext
     {
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -33,6 +37,8 @@ namespace PerformanceAppraisalService.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.Department)
                 .WithOne(d => d.DepartmentHead)
@@ -43,18 +49,19 @@ namespace PerformanceAppraisalService.Infrastructure.Data
                 .WithOne(t => t.TeamLeader)
                 .HasForeignKey<Team>(e => e.TeamLeaderId);
 
-           /* modelBuilder.Entity<PanelReviwer>()
-                .HasKey(t => new { t.PanelId, t.ReviwerId });
 
-            modelBuilder.Entity<PanelReviwer>()
-                .HasOne(pt => pt.Panel)
-                .WithMany(p => p.PanelReviwers)
-                .HasForeignKey(pt => pt.PanelId);
+            /* modelBuilder.Entity<PanelReviwer>()
+                 .HasKey(t => new { t.PanelId, t.ReviwerId });
 
-            modelBuilder.Entity<PanelReviwer>()
-                .HasOne(pt => pt.Reviwer)
-                .WithMany(t => t.PanelReviwers)
-                .HasForeignKey(pt => pt.ReviwerId); */
+             modelBuilder.Entity<PanelReviwer>()
+                 .HasOne(pt => pt.Panel)
+                 .WithMany(p => p.PanelReviwers)
+                 .HasForeignKey(pt => pt.PanelId);
+
+             modelBuilder.Entity<PanelReviwer>()
+                 .HasOne(pt => pt.Reviwer)
+                 .WithMany(t => t.PanelReviwers)
+                 .HasForeignKey(pt => pt.ReviwerId); */
 
             base.OnModelCreating(modelBuilder);
         }

@@ -29,10 +29,11 @@ namespace PerformanceAppraisalService.Api.Controllers
         }
 
 
+
         // api/department/list
         [HttpGet]
         [Route("list")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List2()
         {
             var result = await _departmentService.GetDepartmentListAsync();
             return Ok(result);

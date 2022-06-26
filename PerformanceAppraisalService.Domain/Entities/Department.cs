@@ -9,7 +9,7 @@ namespace PerformanceAppraisalService.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int NoOfEmployees { get; set; }
+        public int? NoOfEmployees { get; set; }
 
         //relationship with team table 1 : M
         public ICollection<Team> Teams { get; set; }

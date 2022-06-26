@@ -37,7 +37,7 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<TeamDto>> GetTeamListAsync()
         {
-            var teamsList = await _context.Teams
+            var teamsList = await _context.Teams.Include(x=>x.Department)
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
@@ -58,15 +58,17 @@ namespace PerformanceAppraisalService.Application.Services
         //filter according to the departments
         public Task<List<TeamDto>> GetTeamsbyDepartmentAsync(Guid departmentId)
         {
-            var teamsList =  _context.Teams.Include(x => x.Department).Where(x=> x.DepartmentId== departmentId)
+            var teamsList = _context.Teams.Include(x => x.Employees).Include(x => x.Department).Where(x => x.DepartmentId == departmentId)
                 .Select(x => new TeamDto
                 {
                     Id = x.Id,
                     Name = x.Name,
                     DepartmentId = x.DepartmentId,
+                    DepartmentName = x.Department.Name,
                     Description = x.Description,
                     NoOfEmployees = x.NoOfEmployees,
-                    TeamLeaderId = (Guid)x.TeamLeaderId
+                    TeamLeaderId = (Guid)x.TeamLeaderId,
+                    TeamLeaderFirstName = x.TeamLeader.FirstName
                 })
                 .ToListAsync();
 
@@ -98,7 +100,7 @@ namespace PerformanceAppraisalService.Application.Services
 
             if (team.Id != null)
             {
-                team.Name = team.Name;
+                team.Name = teamDto.Name;
                 team.DepartmentId = teamDto.DepartmentId;
                 team.TeamLeaderId = teamDto.TeamLeaderId;
                 team.Description = teamDto.Description;

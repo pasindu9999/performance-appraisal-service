@@ -9,6 +9,6 @@ namespace PerformanceAppraisalService.Application.Dtos
         public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
         public Guid EmployeeDepartmentId { get; set; }
-        public string PanelId { get; set; }
+        public Guid? PanelId { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<List<EmployeeDto>> GetEmployeesbyTeamAsync(Guid TeamId);
         Task<EmployeeDto> GetEmployeeByIdAsync(Guid id);
         Task<string> UpdateEmployeeAsync(EmployeeDto employeeDto);
-        Task<object> DeleteEmployeeAsync(Guid id);
+        Task<string> DeleteEmployeeAsync(Guid id);
+
+  
     }
 }
