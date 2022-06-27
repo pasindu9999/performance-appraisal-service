@@ -30,6 +30,14 @@ namespace PerformanceAppraisalService.Api.Controllers
         }
 
         [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> List()
+        {
+            var result = await _departmentCriteriaGroupService.GetDepartmentCriteria_groupAsync();
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("by-departmentId")]
         public async Task<IActionResult> List(Guid departmentId)
         {

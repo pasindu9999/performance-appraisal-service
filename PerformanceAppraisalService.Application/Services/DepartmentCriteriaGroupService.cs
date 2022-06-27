@@ -44,6 +44,23 @@ namespace PerformanceAppraisalService.Application.Services
             return "criteria group added successfully...!";
         }
 
+        public async Task<List<DepartmentCriteriaGroupDto>> GetDepartmentCriteria_groupAsync()
+        {
+            var departmentCriteriaGroup = await _context.DepartmentCriteriaGroups
+                .Select(x => new DepartmentCriteriaGroupDto
+                {
+                    Id = x.Id,
+                    CriteriaGroupId = x.CriteriaGroupId,
+                    Weightage = x.Weightage,
+                    DepartmentId = x.DepartmentId
+
+                    //  WeightageCount = x.Weightages+ x.WeightageCount
+                })
+                .ToListAsync();
+
+            return departmentCriteriaGroup;
+        }
+
         public async Task<string> DeleteDepartmentCriteriaGroupAsync(Guid id)
         {
             var criteriaGroup = await _context.DepartmentCriteriaGroups.FirstOrDefaultAsync(x => x.Id == id);

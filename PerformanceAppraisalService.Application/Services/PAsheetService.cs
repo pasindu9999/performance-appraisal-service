@@ -16,6 +16,8 @@ namespace PerformanceAppraisalService.Application.Services
 
         private readonly ApplicationDbContext _context;
 
+       
+
         public PAsheetService(ApplicationDbContext context)
         {
             _context = context;
@@ -23,15 +25,19 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<string> CreatePAsheetAsync(PAsheetDto pasheetDto)
         {
+            
+
             var pa_sheet = new PAsheet
             {
-                //Department = pasheetDto.Department,
+                DepartmentId = pasheetDto.DepartmentId,
                // Dep_Head_Name = pasheetDto.Dep_Head_Name,
                 Start_date = pasheetDto.Start_date,
                 Due_date = pasheetDto.Due_date,
               //  PanelId = pasheetDto.PanelId
-
+              
             };
+
+            
 
             _context.Add(pa_sheet);
             await _context.SaveChangesAsync();
@@ -45,7 +51,8 @@ namespace PerformanceAppraisalService.Application.Services
                 .Select(x => new PAsheetDto
                 {
                     Id = x.Id,
-                   // Department = x.Department,
+                    DepartmentName = x.Department.Name,
+                    DepartmentId = x.Department.Id,
                    // Dep_Head_Name = x.Dep_Head_Name,
                     Start_date = x.Start_date, 
                     Due_date = x.Due_date
