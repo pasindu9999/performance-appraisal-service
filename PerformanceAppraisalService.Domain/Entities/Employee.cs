@@ -14,8 +14,8 @@ namespace PerformanceAppraisalService.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Certificateurl { get; set; }
-        public string Imageurl { get; set; }
+       // public string Certificateurl { get; set; }
+       // public string Imageurl { get; set; }
          //public virtual Department DepartmentHead { get; set; }
 
 

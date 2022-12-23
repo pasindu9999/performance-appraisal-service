@@ -27,14 +27,16 @@ namespace PerformanceAppraisalService.Application.Services
         {
             
 
+
             var pa_sheet = new PAsheet
             {
                 DepartmentId = pasheetDto.DepartmentId,
                // Dep_Head_Name = pasheetDto.Dep_Head_Name,
                 Start_date = pasheetDto.Start_date,
                 Due_date = pasheetDto.Due_date,
-              //  PanelId = pasheetDto.PanelId
-              
+                //  PanelId = pasheetDto.PanelId
+               // RemainingTime = pasheetDto.RemainingTime
+
             };
 
             

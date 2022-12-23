@@ -24,7 +24,7 @@ namespace PerformanceAppraisalService.Application.Services
             var reviwer = new Reviwer
             {
                 EmployeeId = reviwerDto.EmployeeId,
-       
+                PanelId = reviwerDto.PanelId
             };
 
 
@@ -70,7 +70,7 @@ namespace PerformanceAppraisalService.Application.Services
                     Id = x.Id,
                     EmployeeId = x.EmployeeId,
                     PanelId = (Guid)x.PanelId,
-                    
+                    EmployeeFirstName = x.Employee.FirstName
                 })
                 .ToListAsync();
 

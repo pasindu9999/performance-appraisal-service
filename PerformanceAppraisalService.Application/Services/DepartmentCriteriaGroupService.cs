@@ -46,14 +46,15 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<List<DepartmentCriteriaGroupDto>> GetDepartmentCriteria_groupAsync()
         {
+
             var departmentCriteriaGroup = await _context.DepartmentCriteriaGroups
                 .Select(x => new DepartmentCriteriaGroupDto
                 {
                     Id = x.Id,
                     CriteriaGroupId = x.CriteriaGroupId,
                     Weightage = x.Weightage,
-                    DepartmentId = x.DepartmentId
-
+                    DepartmentId = x.DepartmentId,
+                   
                     //  WeightageCount = x.Weightages+ x.WeightageCount
                 })
                 .ToListAsync();
@@ -89,18 +90,37 @@ namespace PerformanceAppraisalService.Application.Services
                      Weightage = x.Weightage,
                      DepartmentId = x.DepartmentId,
                      CriteriaGroupId = x.CriteriaGroupId,
-                     Name = x.CriteriaGroup.Name
-
+                     Name = x.CriteriaGroup.Name,
+                     //totalWeightage = x.totalWeightage
                  })
                 .ToListAsync();
 
             return CriteriaGroupList;
         }
 
-        public Task<string> UpdateDepartmentCriteriaGroupAsync(DepartmentCriteriaGroupDto departmentCriteriaGroupDto)
+        public async Task<string> UpdateDepartmentCriteriaGroupAsync(DepartmentCriteriaGroupDto departmentCriteriaGroupDto)
         {
-            throw new NotImplementedException();
+            var departmentCriteria = await _context.DepartmentCriteriaGroups.FirstOrDefaultAsync(x => x.Id == departmentCriteriaGroupDto.Id);
+
+            if (departmentCriteria.Id != null)
+            {
+                departmentCriteria.CriteriaGroupId = departmentCriteriaGroupDto.CriteriaGroupId;
+                departmentCriteria.Weightage = departmentCriteriaGroupDto.Weightage;
+                departmentCriteria.DepartmentId = departmentCriteriaGroupDto.DepartmentId;
+
+
+                await _context.SaveChangesAsync();
+                return "Department criteria update success...!";
+            }
+
+            return "Department criteria not update...!";
         }
 
+        public async Task<int> Totalweightages(Guid id)
+        {
+            var totalWeightage = _context.DepartmentCriteriaGroups.Where(x => x.DepartmentId == id).Sum(x=>x.Weightage);
+
+            return totalWeightage;
+        }
     }
 }

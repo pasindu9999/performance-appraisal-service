@@ -11,5 +11,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public Guid ReviwerId { get; set; }
         public Guid ReviweeId { get; set; }
         public int Marks { get; set; }
+
+        public int[] MarkSelected { get; set; }
     }
 }

@@ -39,7 +39,15 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
-        
+        [HttpGet]
+        [Route("by-pasheetid")]
+        public async Task<IActionResult> ReviweeByPasheetId(Guid id)
+        {
+            var result = await _reviweeService.GetReviweeByPasheetIdAsync(id);
+            return Ok(result);
+        }
+
+
         [HttpGet]
         [Route("by-id")]
         public async Task<IActionResult> OrganizationById(Guid id)

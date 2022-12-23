@@ -25,7 +25,7 @@ namespace PerformanceAppraisalService.Application.Services
             {
                 PanelId = (Guid)reviweeDto.PanelId,
                 EmployeeId = reviweeDto.EmployeeId,
-
+                pasheetId = reviweeDto.pasheetId
             };
 
             _context.Add(reviwee);
@@ -76,6 +76,19 @@ namespace PerformanceAppraisalService.Application.Services
                 .ToListAsync();
 
             return reviweeList;
+        }
+
+        public async Task<List<ReviweeDto>> GetReviweeByPasheetIdAsync(Guid paid)
+        {
+            var reviwee = await _context.Reviwees.Include(x => x.pasheet).Where(x => x.pasheetId == paid)
+                .Select(x => new ReviweeDto
+                {
+                    EmployeeFirstName = x.Employee.FirstName,
+                    EmployeeRegistationNumber = x.Employee.RegistrationNumber
+                })
+                .ToListAsync();
+
+            return reviwee;
         }
 
         public async Task<string> UpdateReviweeAsync(ReviweeDto reviweeDto)

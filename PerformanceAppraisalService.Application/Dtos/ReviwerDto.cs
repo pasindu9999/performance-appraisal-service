@@ -15,5 +15,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public string DepartmentName { get; set; }
         
         public int PanelNumber { get; set; }
+
+      
     }
 }

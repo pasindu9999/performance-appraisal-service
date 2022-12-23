@@ -37,6 +37,16 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
+
+
+        [HttpGet]
+        [Route("totalWeightage")]
+        public async Task<IActionResult> total(Guid id)
+        {
+            var result = await _departmentCriteriaGroupService.Totalweightages(id);
+            return Ok(result);
+        }
+
         [HttpGet]
         [Route("by-departmentId")]
         public async Task<IActionResult> List(Guid departmentId)
@@ -45,6 +55,21 @@ namespace PerformanceAppraisalService.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("by-depId")]
+        public async Task<IActionResult> weightages(Guid departmentId)
+        {
+            var result = await _departmentCriteriaGroupService.Totalweightages(departmentId);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> Update(DepartmentCriteriaGroupDto departmentCriteriaGroupDto)
+        {
+            var response = await _departmentCriteriaGroupService.UpdateDepartmentCriteriaGroupAsync(departmentCriteriaGroupDto);
+            return Ok(response);
+        }
 
         [HttpDelete]
         [Route("delete")]

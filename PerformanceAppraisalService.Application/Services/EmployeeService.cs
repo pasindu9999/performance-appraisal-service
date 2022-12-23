@@ -53,8 +53,8 @@ namespace PerformanceAppraisalService.Application.Services
                         DepartmentId = (Guid)empData.ai.DepartmentId,
                         DepartmentName = depData.Name,
                         TeamId = (Guid)empData.ai.TeamId,
-                        Imageurl = empData.ai.Imageurl,
-                        Certificateurl = empData.ai.Certificateurl
+                        //Imageurl = empData.ai.Imageurl,
+                        //Certificateurl = empData.ai.Certificateurl
 
                     }).ToListAsync();
                   
@@ -78,8 +78,8 @@ namespace PerformanceAppraisalService.Application.Services
                         DepartmentId = (Guid)ai.DepartmentId,
                         DepartmentName = di.Name,
                         TeamId = (Guid)ai.TeamId,
-                        Imageurl = ai.Imageurl,
-                        Certificateurl = ai.Certificateurl
+                       // Imageurl = ai.Imageurl,
+                       // Certificateurl = ai.Certificateurl
                      }).Where(ai => ai.DepartmentId == departmentId)
                 .ToListAsync();
 
@@ -105,8 +105,8 @@ namespace PerformanceAppraisalService.Application.Services
                         //DepartmentName = di.Name,
                         TeamId = (Guid)ai.TeamId,
                         TeamName = ti.Name,
-                        Imageurl = ai.Imageurl,
-                        Certificateurl = ai.Certificateurl
+                        //Imageurl = ai.Imageurl,
+                       // Certificateurl = ai.Certificateurl
                     }).Where(ai => ai.TeamId == teamId)
                 .ToListAsync();
 
@@ -131,8 +131,8 @@ namespace PerformanceAppraisalService.Application.Services
                        DepartmentId = (Guid)empData.ai.DepartmentId,
                        DepartmentName = depData.Name,
                        TeamId = (Guid)empData.ai.TeamId,
-                       Imageurl = empData.ai.Imageurl,
-                       Certificateurl = empData.ai.Certificateurl
+                     //  Imageurl = empData.ai.Imageurl,
+                     //  Certificateurl = empData.ai.Certificateurl
 
                    })
                 .FirstOrDefaultAsync(x => x.Id == id);

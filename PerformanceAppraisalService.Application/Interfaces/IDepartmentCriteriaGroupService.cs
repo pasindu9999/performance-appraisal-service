@@ -16,5 +16,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<DepartmentCriteriaGroupDto> GetDepartmentCriteriaGroupByIdAsync(Guid id);
         Task<string> UpdateDepartmentCriteriaGroupAsync(DepartmentCriteriaGroupDto departmentCriteriaGroupDto);
         Task<string> DeleteDepartmentCriteriaGroupAsync(Guid id);
+
+        Task<int> Totalweightages(Guid id);
     }
 }

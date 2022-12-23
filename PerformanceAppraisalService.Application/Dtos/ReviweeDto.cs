@@ -13,5 +13,7 @@ namespace PerformanceAppraisalService.Application.Dtos
         public int EmployeeRegistationNumber { get; set; }
         public string DepartmentName { get; set; }
         public string EmployeeFirstName { get; set; }
+
+        public Guid pasheetId { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace PerformanceAppraisalService.Application.Interfaces
         Task<ReviweeDto> GetReviweeByIdAsync(Guid id);
         Task<string> UpdateReviweeAsync(ReviweeDto reviweeDto);
         Task<string> DeleteReviweeAsync(Guid id);
+
+        Task<List<ReviweeDto>> GetReviweeByPasheetIdAsync(Guid paid);
     }
 }

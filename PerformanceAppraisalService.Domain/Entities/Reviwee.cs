@@ -13,7 +13,7 @@ namespace PerformanceAppraisalService.Domain.Entities
         public virtual Employee Employee { get; set; }
         public virtual Panel Panel { get; set; }
 
-        public Guid pasheetId { get; set; }
+        public Guid? pasheetId { get; set; }
         public PAsheet pasheet { get; set; }
     }
 }

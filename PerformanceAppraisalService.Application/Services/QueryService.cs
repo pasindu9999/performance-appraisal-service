@@ -38,13 +38,13 @@ namespace PerformanceAppraisalService.Application.Services
 
         public async Task<object> GetRevieweemarks(Guid id)
         {
-            var marks = _context.Results.Where(x => x.ReviweeId == id)
+            var marks =await _context.Results.Where(x => x.ReviweeId == id)
                        .GroupBy(a => a.ReviwerId)
                        .Select(g => new
                        {
                            Id = g.Key,
                            Marks = g.Sum(m => m.Marks)
-                       });
+                       }).ToListAsync();
                        
             return marks;
         }

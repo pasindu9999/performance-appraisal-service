@@ -15,6 +15,8 @@ namespace PerformanceAppraisalService.Application.Dtos
 
         public string Name { get; set; }
 
+        public int totalWeightage { get; set; }
+
 
     }
 }
